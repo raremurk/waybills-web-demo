@@ -1,0 +1,102 @@
+@use '@angular/material' as mat;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Inter Tight';
+  src: url('/assets/InterTight-ExtraLight.ttf');
+}
+
+body { margin: 0; font-family: 'Inter Tight', sans-serif; color: #212121; }
+h1, h2, h3, h4, h5{ margin: 0;}
+
+.container{ padding: 0 16px; }
+
+.header{
+  background-color: #F5F5F5;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  height: 60px;
+  margin: 16px 0;
+  padding: 0 16px;
+
+  .mat-mdc-select-value{
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
+.table-button-1{
+  width: 128px;
+  letter-spacing: 0;
+}
+
+.table-button-2{
+  width: 108px;
+  letter-spacing: 0;
+  margin-left: 4px;
+}
+
+.mat-green{
+  background-color: #58BC82 !important;
+  color: white !important;
+}
+  
+.mat-grey{
+  background-color: #6c8794 !important;
+  color: white !important;
+}
+
+@include mat.form-field-density(-1);
+
+.sort-header-center{
+  .mat-sort-header-container {
+    padding-left: 18px;
+    justify-content: center;
+  }
+}
+
+.mat-mdc-header-cell{
+  line-height: 16px !important;
+	font-size: 16px;
+}
+
+.mat-mdc-cell{
+	font-size: 16px;
+  span{
+    letter-spacing: 0.03em;
+  }
+}
+
+.table-density-4{
+  @include mat.table-density(-4);
+}
+
+.form-field-density-5{
+  @include mat.form-field-density(-5);
+  @include mat.icon-button-density(-5);  
+}
+
+.icon-button-density-5{
+  @include mat.icon-button-density(-5);  
+}
+
+.button-density-2{
+  @include mat.button-density(-2);  
+}
+
+.date-form-field{
+  .mat-mdc-text-field-wrapper{ padding: 0 4px; }  
+  .mat-mdc-form-field-infix{ padding: 0 !important; }
+}
+
+.switch-no-ripple{
+  .mdc-switch__ripple{ display: none; }
+}
+
+.custom-mat-form-field-disabled-style{
+  .mat-form-field-disabled{
+    .mat-mdc-input-element{ color: #545454 !important; }
+    .mdc-line-ripple::before{ background-color: #00000099; }
+  }
+}

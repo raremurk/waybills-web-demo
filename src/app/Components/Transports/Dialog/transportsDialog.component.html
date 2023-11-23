@@ -1,0 +1,21 @@
+<div mat-dialog-content>
+  <div class="flex items-center justify-between icon-button-density-5">
+    <h2>Добавление транспорта</h2>
+    <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+  </div>
+  <div class="text-center mt-5">
+    <mat-form-field>
+      <mat-label>Название транспорта</mat-label>
+      <input matInput [(ngModel)]="transport.name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Шифр</mat-label>
+      <input matInput [(ngModel)]="transport.code">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Коэффициент</mat-label>
+      <input matInput [(ngModel)]="transport.coefficient">
+    </mat-form-field>
+    <button mat-raised-button (click)="createTransport()" color="green">Добавить</button>
+  </div>
+</div>    

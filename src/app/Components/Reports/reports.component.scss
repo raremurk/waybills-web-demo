@@ -1,0 +1,16 @@
+th{ font-weight: bold; }
+
+.mat-column-productionCostCode{
+  width: 20%;
+}
+
+.mat-column-conditionalReferenceHectares, .mat-column-costPrice{
+  text-align: end;
+  width: 40%;
+}
+
+.mat-mdc-footer-row td{
+  border-top: 1px solid #00000099;
+  font-size: 18px;
+  font-weight: bold;
+}

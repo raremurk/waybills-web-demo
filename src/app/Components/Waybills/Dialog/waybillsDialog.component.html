@@ -1,0 +1,269 @@
+<div mat-dialog-content class="form-field-density-5 custom-mat-form-field-disabled-style">
+
+  <div class="flex items-center justify-between">
+
+    <div class="flex gap-1 items-center">
+      <h2 class="waybill-number">{{dialogTitle}}</h2>
+      <mat-form-field class="w-26">
+        <input matInput [(ngModel)]="data.waybill.number" [disabled]="!data.editMode">
+      </mat-form-field>
+    </div>
+
+    <div class="flex gap-1">
+      <button mat-icon-button *ngIf="data.editMode" (click)="saveWaybill()"><mat-icon>check</mat-icon></button>
+      <button mat-icon-button *ngIf="!data.editMode" (click)="enableEdit()"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+    </div>
+
+  </div>
+
+  <div class="flex gap-4 items-end mt-2">
+
+    <div>
+      <div class="flex gap-1.5 items-center justify-end">
+        <h4>Шифр</h4>
+        <mat-form-field class="w-26">
+          <input matInput [matAutocomplete]="transport" [(ngModel)]="transportFilter" (ngModelChange)="filterTransports()" [disabled]="!data.editMode">     
+          <mat-autocomplete #transport="matAutocomplete" (optionSelected)='setTransport($event.option.value)' [displayWith]="getTransportCode">
+            <mat-option *ngFor="let transport of filteredTransports" [value]="transport">{{transport.code}}</mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="flex gap-1 items-center my-1">
+        <div class="display-value-cell w-44">{{data.waybill.fullDate()}}</div>
+        <mat-form-field class="date-form-field w-26">
+          <input matInput [min]="minDate" [matDatepicker]="picker" [(ngModel)]="data.waybill.date" class="hidden" [disabled]="!data.editMode">
+          <mat-datepicker #picker></mat-datepicker>
+          <div class="flex gap-1 items-center">
+            <button mat-icon-button color="primary" (click)="picker.open()" [disabled]="!data.editMode">
+              <mat-icon>today</mat-icon></button> 
+            <div class="flex items-center">
+              <mat-slide-toggle class="switch-no-ripple" color="primary" [(ngModel)]="data.waybill.twoDaysWaybill"
+                [disabled]="data.waybill.isLastDayOfMonth() || !data.editMode"></mat-slide-toggle>
+              <span class="switch-label text-center w-6">2 дня</span>
+            </div>
+          </div>
+        </mat-form-field>
+      </div>
+      <div class="flex gap-1.5 items-center justify-end mt-1">
+        <h4>Водитель</h4>
+        <mat-form-field class="w-56">
+          <input matInput [matAutocomplete]="driver" [(ngModel)]="driverFilter" (ngModelChange)="filterDrivers()" [disabled]="!data.editMode">        
+          <mat-autocomplete #driver="matAutocomplete" (optionSelected)='setDriver($event.option.value)' [displayWith]="getDriverShortFullName">
+            <mat-option *ngFor="let driver of filteredDrivers" [value]="driver">{{driver.shortFullName}}</mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="text-center">Техника</h4>
+      <div class="display-value-cell text-center mb-1">{{getTransportName(data.waybill.transport)}}</div>
+      <div class="flex gap-1.5 items-center">
+        <h4>Табельный №</h4>
+        <div class="display-value-cell w-9">{{getDriverPersonnelNumber(data.waybill.driver)}}</div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <h4>Выдача ГСМ</h4>
+      <div class="grid grid-cols-3 gap-x-1 mt-1">
+        <h5>Начало</h5>  
+        <h5>Выдано</h5> 
+        <h5>Конец</h5>
+        <mat-form-field class="w-20">
+          <input matInput [(ngModel)]="data.waybill.startFuel" [disabled]="!data.editMode">
+        </mat-form-field>
+        <mat-form-field class="w-20">
+          <input matInput [(ngModel)]="data.waybill.fuelTopUp" [disabled]="!data.editMode">
+        </mat-form-field>
+        <mat-form-field class="w-20">
+          <input matInput [(ngModel)]="data.waybill.endFuel" [disabled]="!data.editMode">
+        </mat-form-field>
+      </div>
+    </div>
+    
+    <div class="text-center">
+      <h4>Расход ГСМ</h4>
+      <div class="grid grid-cols-2 gap-x-1 mt-1">
+        <h5>По факту</h5>   
+        <h5>По норме</h5>
+        <div class="display-value-cell w-12">{{data.waybill.factFuelConsumption}}</div>
+        <div class="display-value-cell w-12">{{data.waybill.normalFuelConsumption}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="flex items-center justify-between my-1">
+      <h3>Выполнение работ</h3>
+      <mat-form-field class="w-24">
+        <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize()">
+          <mat-option *ngFor="let number of [3, 6, 9, 12]" [value]="number">{{number}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="hidden">
+        <mat-paginator [pageSize]="pageSize"></mat-paginator>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </div>
+
+  <div class="table-density-4 sort-header-center mb-7">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="productionCostCode">
+        <th mat-header-cell *matHeaderCellDef rowspan="2"> ШПЗ </th>    
+        <td mat-cell *matCellDef="let operation">
+          <input [(ngModel)]="operation.productionCostCode" class="table-input" [disabled]="!data.editMode"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="numberOfRuns">
+        <th mat-header-cell *matHeaderCellDef rowspan="2"> Число ездок </th>    
+        <td mat-cell *matCellDef="let operation">
+          <input [(ngModel)]="operation.numberOfRuns" class="table-input" [disabled]="!data.editMode"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalMileage">
+        <th mat-header-cell *matHeaderCellDef> Всего </th>    
+        <td mat-cell *matCellDef="let operation">
+          <input [(ngModel)]="operation.totalMileage" class="table-input" [disabled]="!data.editMode"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalMileageWithLoad">
+        <th mat-header-cell *matHeaderCellDef> В т.ч. с грузом </th>    
+        <td mat-cell *matCellDef="let operation">
+          <input [(ngModel)]="operation.totalMileageWithLoad" class="table-input" [disabled]="!data.editMode"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="transportedLoad">
+        <th mat-header-cell *matHeaderCellDef rowspan="2" class="highlighted-header"> Перевезено груза, тонн </th>    
+        <td mat-cell *matCellDef="let operation">
+          <input [(ngModel)]="operation.transportedLoad" class="table-input" [disabled]="!data.editMode"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="norm">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Норма </th>
+        <td mat-cell *matCellDef="let operation">
+          <input [(ngModel)]="operation.norm" class="table-input" [disabled]="!data.editMode"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="fact">
+        <th mat-header-cell *matHeaderCellDef> Факт. </th>    
+        <td mat-cell *matCellDef="let operation">
+          <input [(ngModel)]="operation.fact" class="table-input" [disabled]="!data.editMode"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="mileageWithLoad">
+        <th mat-header-cell *matHeaderCellDef class="highlighted-header"> Длина ездки с грузом </th>    
+        <td mat-cell *matCellDef="let operation" class="calculated-cell">{{operation.mileageWithLoad}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="normShift">
+        <th mat-header-cell *matHeaderCellDef rowspan="2"> Нормо-смена </th>    
+        <td mat-cell *matCellDef="let operation" class="calculated-cell">{{operation.normShift}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="conditionalReferenceHectares">
+        <th mat-header-cell *matHeaderCellDef rowspan="2"> Условный эталонный гектар </th>    
+        <td mat-cell *matCellDef="let operation" class="calculated-cell">{{operation.conditionalReferenceHectares}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="fuelConsumptionRatePerUnit">
+        <th mat-header-cell *matHeaderCellDef> За 1 ед. </th>    
+        <td mat-cell *matCellDef="let operation">
+          <input [(ngModel)]="operation.fuelConsumptionPerUnit" class="table-input" [disabled]="!data.editMode"></td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalFuelConsumptionRate">
+        <th mat-header-cell *matHeaderCellDef> Всего </th>    
+        <td mat-cell *matCellDef="let operation" class="calculated-cell">{{operation.totalFuelConsumption}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="mileage">
+        <th mat-header-cell *matHeaderCellDef colspan="2"> Пробег </th>    
+      </ng-container>
+
+      <ng-container matColumnDef="done">
+        <th mat-header-cell *matHeaderCellDef colspan="3"> Сделано </th>    
+      </ng-container>
+
+      <ng-container matColumnDef="fuel">
+        <th mat-header-cell *matHeaderCellDef colspan="2"> Норма расхода ГСМ </th>    
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="mainHeadersColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="childHeadersColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: dataColumns;"></tr> 
+
+    </table>
+  </div>
+
+  <div class="flex gap-4 text-center">
+
+    <div>
+      <h4 class="w-28">Для расчетов</h4>
+      <div class="grid grid-cols-2 gap-x-1">
+        <h5>Норма</h5>
+        <h5>Факт</h5>
+        @for (item of aboba() | keyvalue: keyDescOrder; track item.key) {
+          <h3>{{item.key}}</h3>
+          <h3>{{item.value}}</h3>
+        }
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-x-4 gap-y-1">
+      <div *ngFor="let _ of [].constructor(2)" class="flex gap-4">
+        <h4 class="w-24">Количество</h4>
+        <h4 class="w-24">Расценка</h4>
+        <h4 class="w-20">Сумма</h4>
+      </div>
+      <div *ngFor="let calculation of data.waybill.calculations" class="flex items-center">
+        <mat-form-field class="w-24">
+          <input matInput [(ngModel)]="calculation.quantity" [disabled]="!data.editMode">
+        </mat-form-field>
+        <span class="w-4">&#215;</span>
+        <mat-form-field class="w-24">
+          <input matInput [(ngModel)]="calculation.price" [disabled]="!data.editMode">
+        </mat-form-field>
+        <span class="w-4">=</span>
+        <div class="display-value-cell w-12">{{calculation.sum}}</div>
+      </div>
+    </div>
+
+    <div>
+      <h4>Отработано</h4>
+      <div class="grid grid-cols-2 gap-x-1 mt-1">
+        <h5>Дней</h5> 
+        <h5>Часов</h5>
+        <mat-form-field class="w-16">
+          <input matInput [(ngModel)]="data.waybill.days" [disabled]="!data.editMode">
+        </mat-form-field>
+        <mat-form-field class="w-16">
+          <input matInput [(ngModel)]="data.waybill.hours" [disabled]="!data.editMode">
+        </mat-form-field> 
+      </div>
+    </div>
+
+    <div class="w-24">
+      <h4>Сумма заработка</h4>
+      <div class="w-full money-div">{{data.waybill.earnings}}</div>   
+    </div>
+
+    <div>
+      <h4>Дополнительно</h4>
+      <div class="grid grid-cols-2 gap-x-1 mt-1">
+        <h5>Выходные</h5>
+        <h5>Премия</h5>
+        <mat-form-field class="w-24">
+          <input matInput [(ngModel)]="data.waybill.weekend" [disabled]="!data.editMode">
+        </mat-form-field> 
+        <mat-form-field class="w-24">
+          <input matInput [(ngModel)]="data.waybill.bonus" [disabled]="!data.editMode">
+        </mat-form-field>
+      </div>
+    </div>  
+  </div>  
+</div>    

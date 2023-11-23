@@ -1,0 +1,82 @@
+<div class="container">
+  <h1 class="header">{{title}}</h1>
+  <div class="sort-header-center form-field-density-5">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container *ngFor="let filter of filters" matColumnDef="{{filter.columnDef}}">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-form-field appearance="outline" floatLabel="always">
+            <mat-label>{{filter.label}}</mat-label>
+            <input matInput [(ngModel)]="filter.value" (keyup)="applyFilter()" placeholder="...">
+            <button *ngIf="filter.value" matSuffix mat-icon-button (click)="clear(filter)"><mat-icon>close</mat-icon></button>
+          </mat-form-field></th>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Фамилия </th>    
+        <td mat-cell *matCellDef="let driver" [ngSwitch]="driver.id">
+          <mat-form-field *ngSwitchCase="editableDriver.id">
+            <input matInput [(ngModel)]="editableDriver.lastName" placeholder="Введите фамилию">
+          </mat-form-field>
+          <span *ngSwitchDefault>{{driver.lastName}}</span></td>
+      </ng-container>
+  
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Имя </th>
+        <td mat-cell *matCellDef="let driver" [ngSwitch]="driver.id">
+          <mat-form-field *ngSwitchCase="editableDriver.id">
+            <input matInput [(ngModel)]="editableDriver.firstName" placeholder="Введите имя">
+          </mat-form-field>
+          <span *ngSwitchDefault>{{driver.firstName}}</span></td>
+      </ng-container>
+
+      <ng-container matColumnDef="middleName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Отчество </th>
+        <td mat-cell *matCellDef="let driver" [ngSwitch]="driver.id">
+          <mat-form-field *ngSwitchCase="editableDriver.id">
+            <input matInput [(ngModel)]="editableDriver.middleName" placeholder="Введите отчество">
+          </mat-form-field>
+          <span *ngSwitchDefault>{{driver.middleName}}</span></td>
+      </ng-container>
+  
+      <ng-container matColumnDef="personnelNumber">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Табельный номер </th>
+        <td mat-cell *matCellDef="let driver" [ngSwitch]="driver.id">
+          <mat-form-field *ngSwitchCase="editableDriver.id">
+            <input matInput [(ngModel)]="editableDriver.personnelNumber" placeholder="Введите табельный номер">
+          </mat-form-field>
+          <span *ngSwitchDefault>{{driver.personnelNumber}}</span></td>
+      </ng-container>
+
+      <ng-container matColumnDef="operations">
+        <th mat-header-cell *matHeaderCellDef>
+          <button mat-raised-button color="primary" (click)="openDialog()"><mat-icon>add</mat-icon>Добавить</button>
+        </th>
+        <td mat-cell *matCellDef="let driver" [ngSwitch]="driver.id" class="button-density-2">
+          <div *ngSwitchCase="editableDriver.id" class="flex justify-between">
+            <button mat-raised-button color="green" (click)="updateDriver()" class="table-button-1">
+              <mat-icon>check</mat-icon>Сохранить</button>
+            <button mat-raised-button color="grey" (click)="cancel()" class="table-button-2">
+              <mat-icon>close</mat-icon>Отмена</button>
+          </div>
+          <div *ngSwitchDefault class="flex justify-between">
+            <button mat-raised-button color="primary" (click)="editDriver(driver)" class="table-button-1">
+              <mat-icon>edit</mat-icon>Изменить</button>
+            <button mat-raised-button color="warn" (click)="deleteDriver(driver.id)" class="table-button-2">
+              <mat-icon>delete</mat-icon>Удалить</button>
+          </div>
+        </td>
+      </ng-container> 
+  
+      <tr mat-header-row *matHeaderRowDef="displayedFilterColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4"><h3 class="text-center">Нет данных соответствующих фильтру</h3></td>
+      </tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
+</div>

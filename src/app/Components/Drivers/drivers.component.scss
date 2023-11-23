@@ -1,0 +1,35 @@
+th{
+  font-weight: bold;
+}
+
+.mat-column-firstName, .mat-column-lastName, .mat-column-middleName, .mat-column-birthday,
+.mat-column-lastNameFilter, .mat-column-firstNameFilter, .mat-column-middleNameFilter, .mat-column-birthdayFilter{
+  padding: 0 0 0 16px;
+  mat-form-field{
+    width: 184px;
+    margin-left: -16px;
+  }
+}
+
+.mat-column-personnelNumber{
+  padding: 0 0 0 16px;
+  mat-form-field{
+    width: 100px;
+    margin-left: -16px;
+  }
+}
+
+.mat-column-personnelNumberFilter{
+  padding: 0 0 0 16px;
+  mat-form-field{
+    width: 216px;
+    margin-left: -16px;
+  }
+}
+
+.mat-column-operations{
+  min-width: 240px; 
+  width: 240px;    
+  padding: 0;
+  text-align: end;
+}

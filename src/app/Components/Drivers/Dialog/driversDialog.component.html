@@ -1,0 +1,25 @@
+<div mat-dialog-content>
+  <div class="flex items-center justify-between icon-button-density-5 mb-5">
+    <h2 class="m-0">Добавление водителя</h2>
+    <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+  </div>
+  <div class="text-center">
+    <mat-form-field>
+      <mat-label>Фамилия</mat-label>
+      <input matInput [(ngModel)]="driver.lastName">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Имя</mat-label>
+      <input matInput [(ngModel)]="driver.firstName">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Отчество</mat-label>
+      <input matInput [(ngModel)]="driver.middleName">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Табельный номер</mat-label>
+      <input matInput [(ngModel)]="driver.personnelNumber">
+    </mat-form-field>
+    <button mat-raised-button (click)="createDriver()" color="green">Добавить</button>
+  </div>     
+</div>    

@@ -1,0 +1,98 @@
+.mat-mdc-dialog-content{
+  max-height: 100%;
+  min-width: 1100;
+}
+
+.w-26{
+  width: 104px; 
+}
+
+.waybill-number{
+  letter-spacing: 0.087em;
+}
+
+.switch-label{
+  font-size: 14px;
+  color: #212121;
+  line-height: 17px;
+}
+
+.display-value-cell{
+  background-color: #DBDBDB;
+  font-weight: bold;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 16px;
+  border-radius: 5px; 
+}
+
+.mat-column-numberOfRuns, .mat-column-totalMileage, .mat-column-totalMileageWithLoad, 
+.mat-column-transportedLoad, .mat-column-norm, .mat-column-fact, .mat-column-mileageWithLoad, .mat-column-normShift, 
+.mat-column-conditionalReferenceHectares, .mat-column-fuelConsumptionRatePerUnit, .mat-column-totalFuelConsumptionRate, 
+.mat-column-mileage, .mat-column-done, .mat-column-fuel{
+  border-left: 1px solid #E0E0E0;
+  text-align: center;
+  padding: 0px;
+}
+
+.mat-column-productionCostCode{
+  text-align: center;
+  padding: 0px;
+  width: 13%;
+}
+
+.mat-column-numberOfRuns{
+  width: 6%;
+}
+
+.mat-column-totalMileage, .mat-column-totalMileageWithLoad,
+.mat-column-norm, .mat-column-fact, .mat-column-mileageWithLoad{
+  width: 8%;
+}
+
+.highlighted-header{
+  background-color: #c9cff0;
+}
+
+.mat-column-transportedLoad, .mat-column-normShift, .mat-column-conditionalReferenceHectares{
+  width: 9%;
+}
+
+.mat-column-fuelConsumptionRatePerUnit, .mat-column-totalFuelConsumptionRate{
+  width: 7%;
+}
+
+.table-input{
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  caret-color: #3F51B5;
+  font-size: 16px;
+  text-align: end;
+  box-sizing: border-box;
+  height: 35px;
+  width: 100%;
+  padding: 0 16px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+}
+
+.table-input:focus{
+  background-color: #F5F5F5;
+  outline: none;
+  border-bottom: 2px solid #3F51B5;
+}
+
+.calculated-cell{
+  background-color: #F5F5F5;
+  font-size: 16px;
+  text-align: end;
+  padding-right: 16px;
+}
+
+.money-div{
+  background-color: #DBDBDB;
+  font-size: 20px;
+  font-weight: bold;
+  height: 38px;
+  line-height: 38px;
+  border: 1px solid #00000099;
+}
