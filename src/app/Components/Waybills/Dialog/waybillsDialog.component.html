@@ -39,7 +39,7 @@
             <button mat-icon-button color="primary" (click)="picker.open()" [disabled]="!data.editMode">
               <mat-icon>today</mat-icon></button> 
             <div class="flex items-center">
-              <mat-slide-toggle class="switch-no-ripple" color="primary" [(ngModel)]="data.waybill.twoDaysWaybill"
+              <mat-slide-toggle class="switch-no-ripple" color="primary"
                 [disabled]="data.waybill.isLastDayOfMonth() || !data.editMode"></mat-slide-toggle>
               <span class="switch-label text-center w-6">2 дня</span>
             </div>

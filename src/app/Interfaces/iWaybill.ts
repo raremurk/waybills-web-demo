@@ -7,7 +7,6 @@ export interface IWaybill{
   id: number,
   number: string,
   date: string,
-  twoDaysWaybill: boolean,
   days: string,
   hours: string,
   startFuel: string,

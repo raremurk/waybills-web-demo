@@ -10,8 +10,7 @@ import '@angular/common/locales/global/ru';
 export class Waybill{
   public id: number = 0;
   public number: string = '';
-  private _date: Date = new Date();
-  private _twoDaysWaybill: boolean = false;
+  public date: Date = new Date();
   public days: string = '';
   public hours: string = '';
 
@@ -35,8 +34,7 @@ export class Waybill{
     if(waybill){
       this.id = waybill.id;
       this.number = waybill.number;
-      this._date = new Date(waybill.date);
-      this._twoDaysWaybill = waybill.twoDaysWaybill;
+      this.date = new Date(waybill.date);
       this.days = waybill.days;
       this.hours = waybill.hours;
       this.startFuel = waybill.startFuel;
@@ -57,25 +55,6 @@ export class Waybill{
     while (this.calculations.length < this.calculationsCount) {
       this.calculations.push(new Calculation());
     }
-  }
-
-  public get date(){
-    return this._date;
-  }
-
-  public set date(date: Date){
-    this._date = date; 
-    if(this.isLastDayOfMonth()){
-      this._twoDaysWaybill = false
-    }
-  }
-
-  public get twoDaysWaybill(){
-    return this._twoDaysWaybill;
-  }
-
-  public set twoDaysWaybill(value: boolean){
-    this._twoDaysWaybill = this.isLastDayOfMonth() ? false : value;
   }
 
   public get transport(){
@@ -111,15 +90,15 @@ export class Waybill{
   transportName = () => this.transport ? this.transport.name : '';
 
   public fullDate(){
-    let day = this._date.getDate();
-    let daysRange = this._twoDaysWaybill ? `${day}—${day + 1}` : `${day}`;
-    let monthAndYear = formatDate(this._date, 'MMMM YYYY', 'ru');
+    let day = this.date.getDate();
+    let daysRange = Number(this.days) === 2 ? `${day}—${day + 1}` : `${day}`;
+    let monthAndYear = formatDate(this.date, 'MMMM YYYY', 'ru');
     return `${daysRange} ${monthAndYear}`;
   }
 
   public isLastDayOfMonth(){
-    let lastDayOfMonth = new Date(this._date.getFullYear(), this._date.getMonth() + 1, 0).getDate();
-    let day = this._date.getDate();
+    let lastDayOfMonth = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
+    let day = this.date.getDate();
     return day === lastDayOfMonth;
   }
 
@@ -127,8 +106,7 @@ export class Waybill{
     return {
       id: this.id,
       number: Number(this.number),
-      date: formatDate(this._date, 'YYYY-MM-dd', 'ru'),
-      twoDaysWaybill: this._twoDaysWaybill,
+      date: formatDate(this.date, 'YYYY-MM-dd', 'ru'),
       days: Number(this.days),
       hours: Number(this.hours),
       startFuel: Number(this.startFuel),
