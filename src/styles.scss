@@ -74,11 +74,14 @@ h1, h2, h3, h4, h5{ margin: 0;}
 
 .form-field-density-5{
   @include mat.form-field-density(-5);
-  @include mat.icon-button-density(-5);  
 }
 
 .icon-button-density-5{
   @include mat.icon-button-density(-5);  
+}
+
+.icon-button-density-3{
+  @include mat.icon-button-density(-3);  
 }
 
 .button-density-2{
@@ -86,12 +89,8 @@ h1, h2, h3, h4, h5{ margin: 0;}
 }
 
 .date-form-field{
-  .mat-mdc-text-field-wrapper{ padding: 0 4px; }  
+  .mat-mdc-text-field-wrapper{ padding: 0; }  
   .mat-mdc-form-field-infix{ padding: 0 !important; }
-}
-
-.switch-no-ripple{
-  .mdc-switch__ripple{ display: none; }
 }
 
 .custom-mat-form-field-disabled-style{

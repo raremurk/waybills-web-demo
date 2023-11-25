@@ -11,7 +11,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule, MatPaginator } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Driver } from "../../../CreationModels/driver";
@@ -36,7 +35,6 @@ import { ITransport } from "../../../Interfaces/ITransport";
     MatInputModule,
     MatPaginatorModule,
     MatSelectModule,
-    MatSlideToggleModule,
     MatSortModule,
     MatTableModule],
   templateUrl: 'waybillsDialog.component.html',

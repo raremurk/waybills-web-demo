@@ -1,10 +1,10 @@
 <div mat-dialog-content class="form-field-density-5 custom-mat-form-field-disabled-style">
 
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between icon-button-density-5">
 
     <div class="flex gap-1 items-center">
-      <h2 class="waybill-number">{{dialogTitle}}</h2>
-      <mat-form-field class="w-26">
+      <h2 class="tracking-widest">{{dialogTitle}}</h2>
+      <mat-form-field class="w-24">
         <input matInput [(ngModel)]="data.waybill.number" [disabled]="!data.editMode">
       </mat-form-field>
     </div>
@@ -22,7 +22,7 @@
     <div>
       <div class="flex gap-1.5 items-center justify-end">
         <h4>Шифр</h4>
-        <mat-form-field class="w-26">
+        <mat-form-field class="w-24">
           <input matInput [matAutocomplete]="transport" [(ngModel)]="transportFilter" (ngModelChange)="filterTransports()" [disabled]="!data.editMode">     
           <mat-autocomplete #transport="matAutocomplete" (optionSelected)='setTransport($event.option.value)' [displayWith]="getTransportCode">
             <mat-option *ngFor="let transport of filteredTransports" [value]="transport">{{transport.code}}</mat-option>
@@ -31,24 +31,17 @@
       </div>
 
       <div class="flex gap-1 items-center my-1">
-        <div class="display-value-cell w-44">{{data.waybill.fullDate()}}</div>
-        <mat-form-field class="date-form-field w-26">
+        <div class="display-value-cell w-60">{{data.waybill.fullDate()}}</div>
+        <mat-form-field class="icon-button-density-3 date-form-field w-9">
           <input matInput [min]="minDate" [matDatepicker]="picker" [(ngModel)]="data.waybill.date" class="hidden" [disabled]="!data.editMode">
           <mat-datepicker #picker></mat-datepicker>
-          <div class="flex gap-1 items-center">
-            <button mat-icon-button color="primary" (click)="picker.open()" [disabled]="!data.editMode">
-              <mat-icon>today</mat-icon></button> 
-            <div class="flex items-center">
-              <mat-slide-toggle class="switch-no-ripple" color="primary"
-                [disabled]="data.waybill.isLastDayOfMonth() || !data.editMode"></mat-slide-toggle>
-              <span class="switch-label text-center w-6">2 дня</span>
-            </div>
-          </div>
+          <button mat-icon-button color="primary" (click)="picker.open()" [disabled]="!data.editMode">
+            <mat-icon>today</mat-icon></button>
         </mat-form-field>
       </div>
       <div class="flex gap-1.5 items-center justify-end mt-1">
         <h4>Водитель</h4>
-        <mat-form-field class="w-56">
+        <mat-form-field class="w-full">
           <input matInput [matAutocomplete]="driver" [(ngModel)]="driverFilter" (ngModelChange)="filterDrivers()" [disabled]="!data.editMode">        
           <mat-autocomplete #driver="matAutocomplete" (optionSelected)='setDriver($event.option.value)' [displayWith]="getDriverShortFullName">
             <mat-option *ngFor="let driver of filteredDrivers" [value]="driver">{{driver.shortFullName}}</mat-option>
@@ -58,7 +51,7 @@
     </div>
 
     <div>
-      <h4 class="text-center">Техника</h4>
+      <h4 class="text-center">Транспорт</h4>
       <div class="display-value-cell text-center mb-1">{{getTransportName(data.waybill.transport)}}</div>
       <div class="flex gap-1.5 items-center">
         <h4>Табельный №</h4>
@@ -239,7 +232,7 @@
         <h5>Дней</h5> 
         <h5>Часов</h5>
         <mat-form-field class="w-16">
-          <input matInput [(ngModel)]="data.waybill.days" [disabled]="!data.editMode">
+          <input matInput [(ngModel)]="data.waybill.days" maxlength="1" [disabled]="!data.editMode">
         </mat-form-field>
         <mat-form-field class="w-16">
           <input matInput [(ngModel)]="data.waybill.hours" [disabled]="!data.editMode">
