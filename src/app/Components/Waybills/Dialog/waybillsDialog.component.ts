@@ -5,7 +5,6 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { MatDividerModule } from "@angular/material/divider";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
@@ -29,7 +28,6 @@ import { ITransport } from "../../../Interfaces/ITransport";
     MatButtonModule,
     MatDatepickerModule,
     MatDialogModule,
-    MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
@@ -45,7 +43,7 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   dialogTitle = 'Путевой лист №'
   waybillsRoute = 'waybills';
   minDate = new Date(2023, 0, 1);
-  pageSize = 3;
+  pageSize = 4;
 
   transportFilter: ITransport | string = '';
   filteredTransports: ITransport[] = [];

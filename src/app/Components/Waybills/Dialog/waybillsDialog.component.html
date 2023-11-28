@@ -88,18 +88,17 @@
   </div>
 
   <div>
-    <div class="flex items-center justify-between my-1">
+    <div class="flex items-center justify-between mb-1">
       <h3>Выполнение работ</h3>
       <mat-form-field class="w-24">
         <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize()">
-          <mat-option *ngFor="let number of [3, 6, 9, 12]" [value]="number">{{number}}</mat-option>
+          <mat-option *ngFor="let number of [4, 8, 12]" [value]="number">{{number}}</mat-option>
         </mat-select>
       </mat-form-field>
       <div class="hidden">
         <mat-paginator [pageSize]="pageSize"></mat-paginator>
       </div>
     </div>
-    <mat-divider></mat-divider>
   </div>
 
   <div class="table-density-4 sort-header-center mb-7">
@@ -185,7 +184,7 @@
         <th mat-header-cell *matHeaderCellDef colspan="2"> Норма расхода ГСМ </th>    
       </ng-container>
   
-      <tr mat-header-row *matHeaderRowDef="mainHeadersColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="mainHeadersColumns" class="small-header"></tr>
       <tr mat-header-row *matHeaderRowDef="childHeadersColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: dataColumns;"></tr> 
 
