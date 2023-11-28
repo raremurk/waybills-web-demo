@@ -88,11 +88,6 @@ h1, h2, h3, h4, h5{ margin: 0;}
   @include mat.button-density(-2);  
 }
 
-.date-form-field{
-  .mat-mdc-text-field-wrapper{ padding: 0; }  
-  .mat-mdc-form-field-infix{ padding: 0 !important; }
-}
-
 .custom-mat-form-field-disabled-style{
   .mat-form-field-disabled{
     .mat-mdc-input-element{ color: #545454 !important; }
