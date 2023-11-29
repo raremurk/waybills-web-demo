@@ -43,7 +43,7 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   dialogTitle = 'Путевой лист №'
   waybillsRoute = 'waybills';
   minDate = new Date(2023, 0, 1);
-  pageSize = 4;
+  pageSize = 5;
 
   transportFilter: ITransport | string = '';
   filteredTransports: ITransport[] = [];
@@ -79,6 +79,7 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(){
+    this.sort.getNextSortDirection = () => this.sort.direction === '' ? 'desc' : '';
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
