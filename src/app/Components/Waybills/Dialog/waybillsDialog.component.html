@@ -49,12 +49,12 @@
       </div>
     </div>
 
-    <div>
-      <h4 class="text-center">Транспорт</h4>
-      <div class="display-value-cell text-center mb-1">{{getTransportName(data.waybill.transport)}}</div>
+    <div class="text-center">
+      <h4>Транспорт</h4>
+      <div class="display-value-cell mb-1">{{getTransportName(data.waybill.transport)}}</div>
       <div class="flex gap-1.5 items-center">
         <h4>Табельный №</h4>
-        <div class="display-value-cell w-9">{{getDriverPersonnelNumber(data.waybill.driver)}}</div>
+        <div class="display-value-cell w-16">{{getDriverPersonnelNumber(data.waybill.driver)}}</div>
       </div>
     </div>
 
@@ -81,8 +81,8 @@
       <div class="grid grid-cols-2 gap-x-1 mt-1">
         <h5>По факту</h5>
         <h5>По норме</h5>
-        <div class="display-value-cell w-12">{{data.waybill.factFuelConsumption}}</div>
-        <div class="display-value-cell w-12">{{data.waybill.normalFuelConsumption}}</div>
+        <div class="display-value-cell w-20">{{data.waybill.factFuelConsumption | toFixed}}</div>
+        <div class="display-value-cell w-20">{{data.waybill.normalFuelConsumption | toFixed}}</div>
       </div>
     </div>
   </div>
@@ -129,9 +129,9 @@
       </ng-container>
 
       <ng-container matColumnDef="transportedLoad">
-        <th mat-header-cell *matHeaderCellDef rowspan="2" class="highlighted-header"> Перевезено груза, тонн </th>    
+        <th mat-header-cell *matHeaderCellDef rowspan="2"> Перевезено груза, тонн </th>    
         <td mat-cell *matCellDef="let operation">
-          <input [(ngModel)]="operation.transportedLoad" class="table-input" [disabled]="!data.editMode"></td>
+          <input [(ngModel)]="operation.transportedLoad" class="table-input font-bold" [disabled]="!data.editMode"></td>
       </ng-container>
 
       <ng-container matColumnDef="norm">
@@ -147,8 +147,8 @@
       </ng-container>
 
       <ng-container matColumnDef="mileageWithLoad">
-        <th mat-header-cell *matHeaderCellDef class="highlighted-header"> Длина ездки с грузом </th>    
-        <td mat-cell *matCellDef="let operation" class="calculated-cell">{{operation.mileageWithLoad}}</td>
+        <th mat-header-cell *matHeaderCellDef> Длина ездки с грузом </th>    
+        <td mat-cell *matCellDef="let operation" class="calculated-cell font-bold">{{operation.mileageWithLoad}}</td>
       </ng-container>
 
       <ng-container matColumnDef="normShift">
@@ -161,13 +161,13 @@
         <td mat-cell *matCellDef="let operation" class="calculated-cell">{{operation.conditionalReferenceHectares}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="fuelConsumptionRatePerUnit">
+      <ng-container matColumnDef="fuelConsumptionPerUnit">
         <th mat-header-cell *matHeaderCellDef> За 1 ед. </th>    
         <td mat-cell *matCellDef="let operation">
           <input [(ngModel)]="operation.fuelConsumptionPerUnit" class="table-input" [disabled]="!data.editMode"></td>
       </ng-container>
 
-      <ng-container matColumnDef="totalFuelConsumptionRate">
+      <ng-container matColumnDef="totalFuelConsumption">
         <th mat-header-cell *matHeaderCellDef> Всего </th>    
         <td mat-cell *matCellDef="let operation" class="calculated-cell">{{operation.totalFuelConsumption}}</td>
       </ng-container>
@@ -193,34 +193,39 @@
 
   <div class="flex gap-4 text-center">
 
-    <div>
-      <h4 class="w-28">Для расчетов</h4>
-      <div class="grid grid-cols-2 gap-x-1">
-        <h5>Норма</h5>
-        <h5>Факт</h5>
-        @for (item of aboba() | keyvalue: keyDescOrder; track item.key) {
-          <h3>{{item.key}}</h3>
-          <h3>{{item.value}}</h3>
+    <div class="w-36">
+      <h4>Для расчетов</h4>
+      <div class="grid grid-cols-2 gap-x-2 gap-y-1">
+        <h5 class="h-4 leading-4">Норма</h5>
+        <h5 class="h-4 leading-4">Факт</h5>
+        @for (item of calculationHelp() | keyvalue: keyDescOrder; track item.key) {
+          <div class="calculation-helper-cell bg-cyan-800">{{item.key | toFixed: 3}}</div>
+          <div class="calculation-helper-cell bg-emerald-600">{{item.value | toFixed: 3}}</div>
+        } @empty {
+          <div class="calculation-helper-cell bg-cyan-800">0.000</div>
+          <div class="calculation-helper-cell bg-emerald-600">0.000</div>
         }
       </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-x-4 gap-y-1">
-      <div *ngFor="let _ of [].constructor(2)" class="flex gap-4">
-        <h4 class="w-24">Количество</h4>
-        <h4 class="w-24">Расценка</h4>
-        <h4 class="w-20">Сумма</h4>
-      </div>
-      <div *ngFor="let calculation of data.waybill.calculations" class="flex items-center">
-        <mat-form-field class="w-24">
-          <input matInput [(ngModel)]="calculation.quantity" [disabled]="!data.editMode">
-        </mat-form-field>
-        <span class="w-4">&#215;</span>
-        <mat-form-field class="w-24">
-          <input matInput [(ngModel)]="calculation.price" [disabled]="!data.editMode">
-        </mat-form-field>
-        <span class="w-4">=</span>
-        <div class="display-value-cell w-12">{{calculation.sum}}</div>
+    <div>
+      <div class="grid grid-cols-2 gap-x-4 gap-y-1">
+        <div *ngFor="let _ of [].constructor(2)" class="flex gap-4">
+          <h4 class="w-24">Количество</h4>
+          <h4 class="w-24">Расценка</h4>
+          <h4 class="w-20">Сумма</h4>
+        </div>
+        <div *ngFor="let calculation of data.waybill.calculations" class="flex items-center">
+          <mat-form-field class="w-24">
+            <input matInput [(ngModel)]="calculation.quantity" [disabled]="!data.editMode">
+          </mat-form-field>
+          <span class="w-4">&#215;</span>
+          <mat-form-field class="w-24">
+            <input matInput [(ngModel)]="calculation.price" [disabled]="!data.editMode">
+          </mat-form-field>
+          <span class="w-4">=</span>
+          <div class="display-value-cell w-20">{{calculation.sum}}</div>
+        </div>
       </div>
     </div>
 
@@ -240,7 +245,7 @@
 
     <div class="w-24">
       <h4>Сумма заработка</h4>
-      <div class="w-full money-div">{{data.waybill.earnings}}</div>   
+      <div class="w-full money-div">{{data.waybill.earnings | toFixed: 2}}</div>   
     </div>
 
     <div>
@@ -255,6 +260,6 @@
           <input matInput [(ngModel)]="data.waybill.bonus" [disabled]="!data.editMode">
         </mat-form-field>
       </div>
-    </div>  
+    </div>
   </div>  
 </div>    

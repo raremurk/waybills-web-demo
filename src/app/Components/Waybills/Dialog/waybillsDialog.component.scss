@@ -15,13 +15,12 @@
   font-weight: bold;
   height: 36px;
   line-height: 36px;
-  padding: 0 16px;
   border-radius: 5px; 
 }
 
 .mat-column-numberOfRuns, .mat-column-totalMileage, .mat-column-totalMileageWithLoad, 
 .mat-column-transportedLoad, .mat-column-norm, .mat-column-fact, .mat-column-mileageWithLoad, .mat-column-normShift, 
-.mat-column-conditionalReferenceHectares, .mat-column-fuelConsumptionRatePerUnit, .mat-column-totalFuelConsumptionRate, 
+.mat-column-conditionalReferenceHectares, .mat-column-fuelConsumptionPerUnit, .mat-column-totalFuelConsumption, 
 .mat-column-mileage, .mat-column-done, .mat-column-fuel{
   border-left: 1px solid #E0E0E0;
   text-align: center;
@@ -43,15 +42,11 @@
   width: 8%;
 }
 
-.highlighted-header{
-  background-color: #c9cff0;
-}
-
 .mat-column-transportedLoad, .mat-column-normShift, .mat-column-conditionalReferenceHectares{
   width: 9%;
 }
 
-.mat-column-fuelConsumptionRatePerUnit, .mat-column-totalFuelConsumptionRate{
+.mat-column-fuelConsumptionPerUnit, .mat-column-totalFuelConsumption{
   width: 7%;
 }
 
@@ -76,16 +71,27 @@
 
 .calculated-cell{
   background-color: #F5F5F5;
-  font-size: 16px;
   text-align: end;
   padding-right: 16px;
+}
+
+.calculation-helper-cell{
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: end;
+  height: 22px;
+  line-height: 22px;
+  padding: 0 8px 0 4px;
+  border-radius: 2px; 
 }
 
 .money-div{
   background-color: #DBDBDB;
   font-size: 20px;
   font-weight: bold;
-  height: 38px;
-  line-height: 38px;
-  border: 1px solid #00000099;
+  height: 39px;
+  line-height: 39px;
+  border-radius: 5px 5px 0 0; 
+  border-bottom: 1px solid #00000099;
 }

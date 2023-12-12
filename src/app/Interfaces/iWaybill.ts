@@ -12,13 +12,13 @@ export interface IWaybill{
   startFuel: string,
   fuelTopUp: string,
   endFuel: string,
-  factFuelConsumption: string,
-  normalFuelConsumption: string,
+  factFuelConsumption: number,
+  normalFuelConsumption: number,
   driver: IDriver | null,
   transport: ITransport | null,
-  earnings: string,
-  weekend: string,
-  bonus: string,
+  earnings: number,
+  weekend: number,
+  bonus: number,
   operations: IOperation[],
   calculations: ICalculation[]
 }

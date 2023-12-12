@@ -18,6 +18,7 @@ import { Waybill } from "../../../CreationModels/waybill";
 import { DataService } from "../../../data.service";
 import { formatResult } from "../../../formatResult";
 import { ITransport } from "../../../Interfaces/ITransport";
+import { ToFixedPipe } from "../../../toFixedPipe";
 
 @Component({
   standalone: true,
@@ -34,7 +35,8 @@ import { ITransport } from "../../../Interfaces/ITransport";
     MatPaginatorModule,
     MatSelectModule,
     MatSortModule,
-    MatTableModule],
+    MatTableModule,
+    ToFixedPipe],
   templateUrl: 'waybillsDialog.component.html',
   styleUrls: ['./waybillsDialog.component.scss'],
   providers: [DataService]
@@ -55,9 +57,9 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   mainHeadersColumns = ['productionCostCode', 'numberOfRuns', 'mileage', 'transportedLoad', 'done', 'normShift',
     'conditionalReferenceHectares', 'fuel'];
   childHeadersColumns = ['totalMileage', 'totalMileageWithLoad', 'norm', 'fact', 'mileageWithLoad',
-    'fuelConsumptionRatePerUnit', 'totalFuelConsumptionRate'];
+    'fuelConsumptionPerUnit', 'totalFuelConsumption'];
   dataColumns = ['productionCostCode', 'numberOfRuns', 'totalMileage', 'totalMileageWithLoad', 'transportedLoad','norm', 'fact',
-    'mileageWithLoad', 'normShift', 'conditionalReferenceHectares', 'fuelConsumptionRatePerUnit', 'totalFuelConsumptionRate'];
+    'mileageWithLoad', 'normShift', 'conditionalReferenceHectares', 'fuelConsumptionPerUnit', 'totalFuelConsumption'];
 
   @ViewChild(MatSort) sort = new MatSort();
   @ViewChild(MatPaginator) paginator = <MatPaginator>{};
@@ -124,33 +126,19 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
     this.filteredDrivers = this.data.drivers.filter(x => x.shortFullName.toLowerCase().includes(filter.toLowerCase()));
   }
 
-  setTransport(transport: ITransport){
-    this.data.waybill.transport = transport;
-    this.data.waybill.operations.forEach(x => x.coefficient = transport.coefficient);
-  }
+  setTransport = (transport: ITransport) => this.data.waybill.transport = transport;
+  setDriver = (driver: Driver) => this.data.waybill.driver = driver;
 
-  setDriver(driver: Driver){
-    this.data.waybill.driver = driver;
-  }
-
-  aboba(){
-    let map: Map<number, string> = new Map();
-    let operations = this.data.waybill.operations.filter(x => !isNaN(Number(x.fact)) && Number(x.fact) > 0);
-    operations = operations.filter(x => !isNaN(Number(x.norm)) && Number(x.norm) > 0);
-    operations.forEach(x => 
-      {
-        let currentValue = map.get(Number(x.norm));
-        if(currentValue === undefined){
-          map.set(Number(x.norm), formatResult(Number(x.fact), 3));
-        }
-        else{
-          map.set(Number(x.norm), formatResult(Number(map.get(Number(x.norm))) + Number(x.fact), 3));
-        }
-      });
+  calculationHelp(){
+    let map = new Map<number, number>();
+    let operations = this.data.waybill.operations.filter(x => Number(x.norm) > 0 && Number(x.fact) > 0);
+    operations.forEach(x => {
+      let currentValue = map.get(Number(x.norm));
+      let newValue = currentValue === undefined ? Number(x.fact) : currentValue + Number(x.fact);
+      map.set(Number(x.norm), newValue);
+    });
     return map;
   }
 
-  keyDescOrder = (a: KeyValue<number,string>, b: KeyValue<number,string>): number => {
-    return a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
-  }
+  keyDescOrder = (a: KeyValue<number,number>, b: KeyValue<number,number>) => a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
 }
