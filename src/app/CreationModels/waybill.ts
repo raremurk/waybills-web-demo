@@ -80,20 +80,6 @@ export class Waybill{
   driverShortFullName = () => this.driver ? this.driver.shortFullName : '';
   transportName = () => this.transport ? this.transport.name : '';
 
-  fullDate = () => {
-    let endOfRange = '';
-    let days = Number(this.days);
-    if(days > 1){
-      let startDay = this.date.getDate();
-      let lastDayOfMonth = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
-      if(startDay < lastDayOfMonth){
-        let endDay = startDay + days - 1;
-        endOfRange = endDay > lastDayOfMonth ? `—${lastDayOfMonth}` : `—${endDay}`;
-      }
-    }
-    return formatDate(this.date, `d${endOfRange} MMMM yyyy`, 'ru');
-  }
-
   toJSON() {
     return {
       id: this.id,

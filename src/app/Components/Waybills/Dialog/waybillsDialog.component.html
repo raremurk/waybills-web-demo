@@ -33,7 +33,7 @@
       <div class="my-1">
         <mat-form-field class="icon-button-density-3 w-full">
           <input matInput [min]="minDate" [matDatepicker]="picker" [(ngModel)]="data.waybill.date" class="hidden" [disabled]="!data.editMode">
-          <span class="font-bold">{{data.waybill.fullDate()}}</span>
+          <span class="font-bold">{{data.waybill.date | rangeDate : data.waybill.days}}</span>
           <mat-datepicker #picker></mat-datepicker>
           <button mat-icon-button matSuffix color="primary" (click)="picker.open()" [disabled]="!data.editMode"><mat-icon>today</mat-icon></button>
         </mat-form-field>

@@ -10,7 +10,7 @@ import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Title } from "@angular/platform-browser";
 import { DataService } from "../../data.service";
 import { ICostPriceReport } from "../../Interfaces/iCostPriceReport";
-import { ToFixedPipe } from "../../toFixedPipe";
+import { ToFixedPipe } from "../../Pipes/toFixedPipe";
 import * as XLSX from 'xlsx';
 
 @Component({

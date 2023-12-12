@@ -18,7 +18,8 @@ import { Waybill } from "../../../CreationModels/waybill";
 import { DataService } from "../../../data.service";
 import { formatResult } from "../../../formatResult";
 import { ITransport } from "../../../Interfaces/ITransport";
-import { ToFixedPipe } from "../../../toFixedPipe";
+import { RangeDatePipe } from "../../../Pipes/rangeDatePipe";
+import { ToFixedPipe } from "../../../Pipes/toFixedPipe";
 
 @Component({
   standalone: true,
@@ -36,7 +37,8 @@ import { ToFixedPipe } from "../../../toFixedPipe";
     MatSelectModule,
     MatSortModule,
     MatTableModule,
-    ToFixedPipe],
+    ToFixedPipe,
+    RangeDatePipe],
   templateUrl: 'waybillsDialog.component.html',
   styleUrls: ['./waybillsDialog.component.scss'],
   providers: [DataService]

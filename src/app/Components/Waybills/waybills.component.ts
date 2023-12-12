@@ -14,12 +14,21 @@ import { IDriver } from "../../Interfaces/iDriver";
 import { IShortWaybill } from "../../Interfaces/iShortWaybill";
 import { ITransport } from "../../Interfaces/ITransport";
 import { IWaybill } from "../../Interfaces/iWaybill";
-import { ToFixedPipe } from "../../toFixedPipe";
+import { RangeDatePipe } from "../../Pipes/rangeDatePipe";
+import { ToFixedPipe } from "../../Pipes/toFixedPipe";
 import { WaybillsDialogComponent } from "./Dialog/waybillsDialog.component";
      
 @Component({
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatSelectModule, MatSortModule, MatButtonModule, MatIconModule, ToFixedPipe],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatSelectModule,
+    MatSortModule,
+    MatButtonModule,
+    MatIconModule,
+    ToFixedPipe,
+    RangeDatePipe],
   templateUrl: './waybills.component.html',
   styleUrls: ['./waybills.component.scss'],
   providers: [DataService]

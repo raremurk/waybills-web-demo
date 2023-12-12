@@ -18,7 +18,7 @@
 
       <ng-container matColumnDef="date">
         <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Дата </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.date}}</td>
+        <td mat-cell *matCellDef="let waybill">{{waybill.date | rangeDate : waybill.days}}</td>
       </ng-container>
   
       <ng-container matColumnDef="driverShortFullName">
