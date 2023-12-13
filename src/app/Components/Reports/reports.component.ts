@@ -32,7 +32,7 @@ export class ReportsComponent implements OnInit{
   title = 'Отчеты';
   months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
   year = new Date().getFullYear();
-  month = new Date().getMonth();
+  month = new Date().getMonth() + 1;
 
   dataSource = new MatTableDataSource<ICostPriceReport>();
   dataColumns = ['productionCostCode', 'conditionalReferenceHectares', 'costPrice'];
@@ -50,7 +50,8 @@ export class ReportsComponent implements OnInit{
   }
 
   getCostPriceReport(): void{
-    this.dataService.getCostPriceReport(this.month).subscribe({next:(data: ICostPriceReport[]) => this.dataSource.data = data});   
+    this.dataService.getCostPriceReport(this.year, this.month)
+      .subscribe((data: ICostPriceReport[]) => this.dataSource.data = data);   
   }
 
   getTotalConditionalReferenceHectares(): number{

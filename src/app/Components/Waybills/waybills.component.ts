@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
@@ -22,6 +23,7 @@ import { WaybillsDialogComponent } from "./Dialog/waybillsDialog.component";
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatTableModule,
     MatSelectModule,
     MatSortModule,
@@ -37,6 +39,10 @@ export class WaybillsComponent implements OnInit{
   title = 'Путевые листы';
   driversRoute = 'drivers';
   transportsRoute = 'transports';
+  months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+  year = new Date().getFullYear();
+  month = new Date().getMonth();
+  driverId = 0;
   drivers: Driver[] = [];
   transports: ITransport[] = [];
   waybill = new Waybill();
@@ -58,7 +64,7 @@ export class WaybillsComponent implements OnInit{
   ngOnInit(){
     this.titleService.setTitle(this.title);
     this.loadAllDrivers();
-    this.loadAllWaybills();
+    this.loadWaybills();
     this.loadAllTransports();
   }
 
@@ -95,12 +101,9 @@ export class WaybillsComponent implements OnInit{
     })     
   }
 
-  loadAllWaybills(): void{
-    this.dataService.getAllWaybills().subscribe({next:(data: IShortWaybill[]) => this.dataSource.data = data});   
-  }
-
-  loadDriverWaybills(driverId: number): void{
-    this.dataService.getDriverWaybills(driverId).subscribe({next:(data: IShortWaybill[]) => this.dataSource.data = data});   
+  loadWaybills(): void{
+    this.dataService.getWaybills(this.year, this.month, this.driverId)
+      .subscribe({next:(data: IShortWaybill[]) => this.dataSource.data = data});   
   }
 
   loadAllDrivers(): void{

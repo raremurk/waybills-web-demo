@@ -11,17 +11,18 @@ export class DataService {
 	url = 'https://localhost:7150/api/';
 	driversRoute = 'drivers';
 	waybillsRoute = 'waybills';
-	driverWaybillsRoute = 'waybills/driver';
-	costPriceReportsRoute = 'waybills/reports';
+	reportsRoute = 'reports';
+	costPriceReportRoute = 'reports/costCode';
 
 	constructor(private http: HttpClient) { }
 
-	getCostPriceReport = (month: number) => this.http.get<ICostPriceReport[]>(this.url + this.costPriceReportsRoute + '/' + month);
+	getCostPriceReport = (year: number, month: number) => 
+		this.http.get<ICostPriceReport[]>(this.url + this.costPriceReportRoute + '/' + year + '/' + month);
  
 	getAllDrivers = () => this.http.get<IDriver[]>(this.url + this.driversRoute);
 
-	getAllWaybills = () => this.http.get<IShortWaybill[]>(this.url + this.waybillsRoute);
-	getDriverWaybills = (id: number) => this.http.get<IShortWaybill[]>(this.url + this.driverWaybillsRoute + '/' + id);
+	getWaybills = (year: number, month: number, driverId: number) => 
+		this.http.get<IShortWaybill[]>(this.url + this.waybillsRoute + '/' + year + '/' + month + '/' + driverId);
 	getWaybill = (id: number) => this.http.get<IWaybill>(this.url + this.waybillsRoute + '/' + id);
 	createWaybill = (waybill: Waybill) => this.http.post(this.url + this.waybillsRoute, waybill);
 	updateWaybill = (id: number, waybill: Waybill) => this.http.put(this.url + this.waybillsRoute + '/' + id, waybill);
