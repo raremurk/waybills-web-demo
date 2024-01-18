@@ -1,19 +1,23 @@
-th{
-	font-weight: bold;
+th{	font-weight: bold; }
+
+.mat-column-name{
+	min-width: 250px;
+	mat-form-field{	margin-left: -16px;	}
 }
 
-.mat-column-code{
-	width: 30%;
-}
-
-mat-form-field{
-	width: 184px;
-	margin-left: -16px;
+.mat-column-code, .mat-column-coefficient{
+	min-width: 120px;
+	text-align: end;
+	mat-form-field{
+		width: 80px;
+		margin-right: -16px;
+		input{ text-align: end;	}		
+	}
 }
 
 .mat-column-operations{
-	min-width: 240px; 
-	width: 240px;    
-	padding: 0;
+	min-width: 240px;
+	width: 240px;
+	padding-right: 0;
 	text-align: end;
 }

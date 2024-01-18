@@ -1,35 +1,22 @@
-th{
-  font-weight: bold;
-}
+th{ font-weight: bold; }
 
-.mat-column-firstName, .mat-column-lastName, .mat-column-middleName, .mat-column-birthday,
-.mat-column-lastNameFilter, .mat-column-firstNameFilter, .mat-column-middleNameFilter, .mat-column-birthdayFilter{
-  padding: 0 0 0 16px;
-  mat-form-field{
-    width: 184px;
-    margin-left: -16px;
-  }
+.mat-column-firstName, .mat-column-lastName, .mat-column-middleName{
+  min-width: 250px;
+  mat-form-field{ margin-left: -16px; }
 }
 
 .mat-column-personnelNumber{
-  padding: 0 0 0 16px;
-  mat-form-field{
-    width: 100px;
-    margin-left: -16px;
-  }
-}
-
-.mat-column-personnelNumberFilter{
-  padding: 0 0 0 16px;
-  mat-form-field{
-    width: 216px;
-    margin-left: -16px;
-  }
+  text-align: end;
+	mat-form-field{
+		width: 80px;
+		margin-right: -16px;
+		input{ text-align: end;	}		
+	}
 }
 
 .mat-column-operations{
-  min-width: 240px; 
-  width: 240px;    
-  padding: 0;
+  min-width: 256px; 
+  width: 256px;    
+  padding-right: 0;
   text-align: end;
 }

@@ -6,12 +6,12 @@ import { MatDialog } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Title } from "@angular/platform-browser";
 import { Transport } from "../../CreationModels/transport";
 import { DataService } from "../../data.service";
+import { ITransport } from "../../Interfaces/ITransport";
 import { TransportsDialogComponent } from "./Dialog/transportsDialog.component";
 
 @Component({
@@ -23,7 +23,6 @@ import { TransportsDialogComponent } from "./Dialog/transportsDialog.component";
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatPaginatorModule,
     MatSortModule,
     MatTableModule],
   templateUrl: './transports.component.html',
@@ -35,7 +34,7 @@ export class TransportsComponent implements OnInit{
   transportsRoute = 'transports';
   transport = new Transport();
   editableTransport = new Transport();
-  dataSource = new MatTableDataSource<Transport>();
+  dataSource = new MatTableDataSource<ITransport>();
   displayedColumns = ['name', 'code', 'coefficient', 'operations'];
   @ViewChild(MatSort) sort = new MatSort();
 
@@ -46,7 +45,11 @@ export class TransportsComponent implements OnInit{
     this.loadAllTransports();
   }
 
-  openDialog() {
+  ngAfterViewInit(){
+    this.dataSource.sort = this.sort;
+  }
+
+  openDialog(){
     this.dialog.open(TransportsDialogComponent, { autoFocus: 'dialog', width: '428px'})
     .afterClosed().subscribe((result: Transport) => {
       if(result.id === 0){
@@ -56,26 +59,23 @@ export class TransportsComponent implements OnInit{
     });
   }
     
-  loadAllTransports() {
-    this.dataService.getAll(this.transportsRoute).subscribe({next:(data: any) => {
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.sort = this.sort;
-    }});    
+  loadAllTransports(){
+    this.dataService.getAllTransports().subscribe({next:(data: ITransport[]) => this.dataSource.data = data});    
   }
 
-  editTransport(_transport: Transport) {
+  editTransport(_transport: Transport){
     this.transport = _transport;
     this.editableTransport = { ..._transport}; 
   }
 
-  updateTransport() {
+  updateTransport(){
     this.dataService.update(this.transportsRoute, this.editableTransport.id, this.editableTransport).subscribe(() => {
       Object.assign(this.transport, this.editableTransport); 
       this.cancel();
     });
   }  
 
-  deleteTransport(id: number) {
+  deleteTransport(id: number){
     this.dataService.delete(this.transportsRoute, id).subscribe(() => {
       var index = this.dataSource.data.findIndex(x => x.id === id);
       this.dataSource.data.splice(index, 1);
@@ -83,7 +83,7 @@ export class TransportsComponent implements OnInit{
     });
   }
 
-  cancel() {    
+  cancel(){    
     this.editableTransport.id = 0;
   }
 } 
