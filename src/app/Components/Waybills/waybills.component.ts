@@ -40,7 +40,7 @@ export class WaybillsComponent implements OnInit{
   driversRoute = 'drivers';
   transportsRoute = 'transports';
   months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-  year = new Date().getFullYear();
+  year = 2023;
   month = new Date().getMonth();
   driverId = 0;
   drivers: Driver[] = [];
@@ -64,7 +64,7 @@ export class WaybillsComponent implements OnInit{
   ngOnInit(){
     this.titleService.setTitle(this.title);
     this.loadAllDrivers();
-    this.loadWaybills();
+    this.loadAllWaybills();
     this.loadAllTransports();
   }
 
@@ -72,12 +72,12 @@ export class WaybillsComponent implements OnInit{
     this.dataSource.sort = this.sort;
   }
 
-  openCreateDialog(): void{
+  openCreateDialog(){
     this.waybill = new Waybill();
     this.openDialog(true); 
   }
 
-  openEditDialog(waybillToEdit: Waybill): void{
+  openEditDialog(waybillToEdit: Waybill){
     this.editableWaybill = waybillToEdit;
     this.dataService.getWaybill(waybillToEdit.id).subscribe((data: IWaybill) => {
       this.waybill = new Waybill(data);     
@@ -85,7 +85,7 @@ export class WaybillsComponent implements OnInit{
     });
   }
 
-  openDialog(mode: boolean): void{
+  openDialog(mode: boolean){
     this.dialog.open(WaybillsDialogComponent, 
       { autoFocus: 'dialog', 
         disableClose: true,
@@ -101,20 +101,20 @@ export class WaybillsComponent implements OnInit{
     })     
   }
 
-  loadWaybills(): void{
-    this.dataService.getWaybills(this.year, this.month, this.driverId)
+  loadAllWaybills(){
+    this.dataService.getAllWaybills(this.year, this.month, this.driverId)
       .subscribe({next:(data: IShortWaybill[]) => this.dataSource.data = data});   
   }
 
-  loadAllDrivers(): void{
+  loadAllDrivers(){
     this.dataService.getAllDrivers().subscribe({next:(data: IDriver[]) => this.drivers = data.map(x => new Driver(x))});    
   }
 
-  loadAllTransports(): void{
+  loadAllTransports(){
     this.dataService.getAll(this.transportsRoute).subscribe({next:(data: any) => this.transports = data});    
   }
 
-  deleteWaybill(id: number): void{
+  deleteWaybill(id: number){
     this.dataService.deleteWaybill(id).subscribe(() => {
       var index = this.dataSource.data.findIndex(x => x.id === id);
       this.dataSource.data.splice(index, 1);
@@ -122,10 +122,10 @@ export class WaybillsComponent implements OnInit{
     });
   }
 
-  getTotalDays = (): number => this.dataSource.data.reduce((acc, value) => acc + value.days, 0);
-  getTotalHours = (): number => this.dataSource.data.reduce((acc, value) => acc + value.hours, 0);
-  getTotalEarnings = (): number => this.dataSource.data.reduce((acc, value) => acc + value.earnings, 0);
-  getTotalFactFuelConsumption = (): number => this.dataSource.data.reduce((acc, value) => acc + value.factFuelConsumption, 0);
-  getTotalNormalFuelConsumption = (): number => this.dataSource.data.reduce((acc, value) => acc + value.normalFuelConsumption, 0);
-  getTotalConditionalReferenceHectares = (): number => this.dataSource.data.reduce((acc, value) => acc + value.conditionalReferenceHectares, 0);
+  getTotalDays = () => this.dataSource.data.reduce((acc, value) => acc + value.days, 0);
+  getTotalHours = () => this.dataSource.data.reduce((acc, value) => acc + value.hours, 0);
+  getTotalEarnings = () => this.dataSource.data.reduce((acc, value) => acc + value.earnings, 0);
+  getTotalFactFuelConsumption = () => this.dataSource.data.reduce((acc, value) => acc + value.factFuelConsumption, 0);
+  getTotalNormalFuelConsumption = () => this.dataSource.data.reduce((acc, value) => acc + value.normalFuelConsumption, 0);
+  getTotalConditionalReferenceHectares = () => this.dataSource.data.reduce((acc, value) => acc + value.conditionalReferenceHectares, 0);
 }

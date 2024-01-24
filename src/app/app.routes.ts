@@ -5,6 +5,7 @@ import { TransportsComponent } from "./Components/Transports/transports.componen
 import { WaybillsComponent } from "./Components/Waybills/waybills.component";
 import { ReportsComponent } from './Components/Reports/reports.component';
 import { NotFoundComponent } from "./Components/Not-found/not-found.component";
+import { MonthTotalComponent } from './Components/MonthTotal/monthTotal.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'waybills', pathMatch:'full'}, 
@@ -12,5 +13,6 @@ export const routes: Routes = [
   { path: 'transports', component: TransportsComponent},
   { path: 'waybills', component: WaybillsComponent},
   { path: 'reports', component: ReportsComponent},
+  { path: 'monthTotal', component: MonthTotalComponent},
   { path: '**', component: NotFoundComponent }
 ];

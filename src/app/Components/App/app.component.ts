@@ -11,6 +11,6 @@ import { RouterLinkActive, RouterLink, RouterOutlet } from "@angular/router";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  labels: string[] = ['Путевые листы', 'Отчеты', 'Водители', 'Транспорт'];
-	links: string[] = ['/waybills', '/reports', '/drivers', '/transports'];
+  labels: string[] = ['Путевые листы', 'Итого за месяц', 'Отчеты', 'Водители', 'Транспорт'];
+	links: string[] = ['/waybills', '/monthTotal', '/reports', '/drivers', '/transports'];
 }

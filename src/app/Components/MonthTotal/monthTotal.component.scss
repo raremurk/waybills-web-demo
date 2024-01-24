@@ -1,0 +1,31 @@
+th{ font-weight: bold; }
+
+.mat-column-waybillsCount, .mat-column-days, .mat-column-hours, .mat-column-earnings, .mat-column-weekend, .mat-column-bonus, 
+.mat-column-factFuelConsumption, .mat-column-normalFuelConsumption, .mat-column-numberOfRuns, .mat-column-totalMileage, 
+.mat-column-totalMileageWithLoad, .mat-column-transportedLoad, .mat-column-normShift, .mat-column-conditionalReferenceHectares{
+  text-align: end;
+  padding: 0;
+}
+
+.mat-column-driverFullName, .mat-column-transport{
+  min-width: 240px;
+}
+
+.mat-column-earnings{
+  min-width: 80px;
+}
+
+.mat-column-totalMileageWithLoad{
+  min-width: 82px;
+}
+
+.mat-column-conditionalReferenceHectares{ padding-right: 16px; }
+
+.code-cell{
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  height: 19px;
+  padding: 0 8px;
+  border-radius: 2px; 
+}
