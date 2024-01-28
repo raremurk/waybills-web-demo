@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
@@ -10,7 +10,8 @@ import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Title } from "@angular/platform-browser";
 import { Driver } from "../../CreationModels/driver";
 import { Waybill } from "../../CreationModels/waybill";
-import { DataService } from "../../data.service";
+import { DataService } from "../../Services/data.service";
+import { DateService } from "../../Services/date.service";
 import { IDriver } from "../../Interfaces/iDriver";
 import { IShortWaybill } from "../../Interfaces/iShortWaybill";
 import { ITransport } from "../../Interfaces/ITransport";
@@ -32,16 +33,12 @@ import { WaybillsDialogComponent } from "./Dialog/waybillsDialog.component";
     ToFixedPipe,
     RangeDatePipe],
   templateUrl: './waybills.component.html',
-  styleUrls: ['./waybills.component.scss'],
-  providers: [DataService]
+  styleUrls: ['./waybills.component.scss']
 })
-export class WaybillsComponent implements OnInit{ 
+export class WaybillsComponent implements OnInit, AfterViewInit{
   title = 'Путевые листы';
   driversRoute = 'drivers';
   transportsRoute = 'transports';
-  months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-  year = 2023;
-  month = new Date().getMonth();
   driverId = 0;
   drivers: Driver[] = [];
   transports: ITransport[] = [];
@@ -59,13 +56,15 @@ export class WaybillsComponent implements OnInit{
 
   @ViewChild(MatSort) sort = new MatSort();
    
-  constructor(public dialog: MatDialog, private titleService: Title, private dataService: DataService){ }
+  constructor(public dialog: MatDialog, private titleService: Title, private dataService: DataService, 
+    private dateService: DateService){ }
     
   ngOnInit(){
     this.titleService.setTitle(this.title);
     this.loadAllDrivers();
     this.loadAllWaybills();
     this.loadAllTransports();
+    this.dateService.dateValueChange.subscribe(() => this.loadAllWaybills());
   }
 
   ngAfterViewInit(){
@@ -102,7 +101,7 @@ export class WaybillsComponent implements OnInit{
   }
 
   loadAllWaybills(){
-    this.dataService.getAllWaybills(this.year, this.month, this.driverId)
+    this.dataService.getAllWaybills(this.dateService.year, this.dateService.month, this.driverId)
       .subscribe({next:(data: IShortWaybill[]) => this.dataSource.data = data});   
   }
 

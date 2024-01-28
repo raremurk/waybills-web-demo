@@ -15,7 +15,7 @@ import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Driver } from "../../../CreationModels/driver";
 import { Operation } from "../../../CreationModels/operation";
 import { Waybill } from "../../../CreationModels/waybill";
-import { DataService } from "../../../data.service";
+import { DataService } from "../../../Services/data.service";
 import { formatResult } from "../../../formatResult";
 import { ITransport } from "../../../Interfaces/ITransport";
 import { RangeDatePipe } from "../../../Pipes/rangeDatePipe";

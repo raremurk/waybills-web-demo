@@ -1,48 +1,42 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
-import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Title } from "@angular/platform-browser";
-import { DataService } from "../../data.service";
+import { DataService } from "../../Services/data.service";
 import { ICostPriceReport } from "../../Interfaces/iCostPriceReport";
 import { ToFixedPipe } from "../../Pipes/toFixedPipe";
 import * as XLSX from 'xlsx';
+import { DateService } from "../../Services/date.service";
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
     MatTableModule,
-    MatSelectModule,
     MatSortModule,
     MatButtonModule,
     MatIconModule,
     ToFixedPipe],
   templateUrl: './reports.component.html',
-  styleUrl: './reports.component.scss',
-  providers: [DataService]
+  styleUrl: './reports.component.scss'
 })
-export class ReportsComponent implements OnInit{ 
+export class ReportsComponent implements OnInit, AfterViewInit{
   title = 'Отчеты';
-  months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-  year = new Date().getFullYear();
-  month = new Date().getMonth() + 1;
-
   dataSource = new MatTableDataSource<ICostPriceReport>();
   dataColumns = ['productionCostCode', 'conditionalReferenceHectares', 'costPrice'];
   @ViewChild(MatSort) sort = new MatSort();
    
-  constructor(public dialog: MatDialog, private titleService: Title, private dataService: DataService){ }
+  constructor(public dialog: MatDialog, private titleService: Title, private dataService: DataService, 
+    private dateService: DateService){ }
     
   ngOnInit(){
     this.titleService.setTitle(this.title);
     this.getCostPriceReport();
+    this.dateService.dateValueChange.subscribe(() => this.getCostPriceReport());
   }
 
   ngAfterViewInit(){
@@ -50,7 +44,7 @@ export class ReportsComponent implements OnInit{
   }
 
   getCostPriceReport(): void{
-    this.dataService.getCostPriceReport(this.year, this.month)
+    this.dataService.getCostPriceReport(this.dateService.year, this.dateService.month)
       .subscribe((data: ICostPriceReport[]) => this.dataSource.data = data);   
   }
 
@@ -71,7 +65,7 @@ export class ReportsComponent implements OnInit{
     }
     data.push(total);
 
-    let fileName = `Себестоимость-${this.months[this.month - 1]}.xlsx`;
+    let fileName = `Себестоимость-${this.dateService.year, this.dateService.month}.xlsx`;
     
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
     var wscols = [{wch:14}, {wch:14}, {wch:14}];  

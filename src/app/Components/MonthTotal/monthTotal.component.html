@@ -1,18 +1,8 @@
 <div class="container">
-  <div class="header gap-4 form-field-density-5">
-    <button mat-raised-button class="mr-auto invisible"><mat-icon>description</mat-icon>Скачать</button>
+  <div class="header justify-between">
+    <button mat-raised-button class="invisible"><mat-icon>description</mat-icon>Скачать</button>
     <h1>{{title}}</h1>
-    <mat-form-field class="w-40">
-      <mat-select [(ngModel)]="month" (ngModelChange)="getDriverMonthTotals()">
-        <mat-option *ngFor="let month of months; index as i" [value]="i+1">{{month}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="w-24">
-      <mat-select [(ngModel)]="year" (ngModelChange)="getDriverMonthTotals()">
-        <mat-option [value]="2023">2023</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <button mat-raised-button color="green" class="ml-auto"><mat-icon>description</mat-icon>Скачать</button>
+    <button mat-raised-button color="green"><mat-icon>description</mat-icon>Скачать</button>
   </div>
   <div class="table-density-4">
     <table mat-table [dataSource]="dataSource" matSort>

@@ -3,7 +3,7 @@
 
 @font-face {
   font-family: 'Inter Tight';
-  src: url('/assets/InterTight-ExtraLight.ttf');
+  src: url('./assets/InterTight-ExtraLight.ttf');
 }
 
 body { margin: 0; font-family: 'Inter Tight', sans-serif; color: #212121; }
@@ -14,7 +14,6 @@ h1, h2, h3, h4, h5{ margin: 0; }
 .header{
   background-color: #F5F5F5;
   display: flex;
-  justify-content: center;
   align-items: center;  
   height: 60px;
   margin-top: 16px;

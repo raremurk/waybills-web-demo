@@ -1,19 +1,9 @@
 <div class="container">
-  <div class="header gap-4 form-field-density-5">
+  <div class="header justify-center gap-4 form-field-density-5">
     <h1>{{title}}</h1>
     <mat-form-field>
       <mat-select [(ngModel)]="driverId" (ngModelChange)="loadAllWaybills()" placeholder="Укажите водителя">
         <mat-option *ngFor="let driver of drivers" [value]="driver.id">{{driver.shortFullName}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="w-40">
-      <mat-select [(ngModel)]="month" (ngModelChange)="loadAllWaybills()">
-        <mat-option *ngFor="let month of months; index as i" [value]="i+1">{{month}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="w-24">
-      <mat-select [(ngModel)]="year" (ngModelChange)="loadAllWaybills()">
-        <mat-option [value]="2023">2023</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

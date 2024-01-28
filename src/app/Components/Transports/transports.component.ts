@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
@@ -10,7 +10,7 @@ import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Title } from "@angular/platform-browser";
 import { Transport } from "../../CreationModels/transport";
-import { DataService } from "../../data.service";
+import { DataService } from "../../Services/data.service";
 import { ITransport } from "../../Interfaces/ITransport";
 import { TransportsDialogComponent } from "./Dialog/transportsDialog.component";
 
@@ -26,10 +26,9 @@ import { TransportsDialogComponent } from "./Dialog/transportsDialog.component";
     MatSortModule,
     MatTableModule],
   templateUrl: './transports.component.html',
-  styleUrls: ['./transports.component.scss'],
-  providers: [DataService]
+  styleUrls: ['./transports.component.scss']
 })
-export class TransportsComponent implements OnInit{ 
+export class TransportsComponent implements OnInit, AfterViewInit{
   title = 'Транспорт';     
   transportsRoute = 'transports';
   transport = new Transport();

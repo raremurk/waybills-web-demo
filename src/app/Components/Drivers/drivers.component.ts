@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
@@ -9,7 +9,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSort, MatSortModule } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Title } from "@angular/platform-browser";
-import { DataService } from "../../data.service";
+import { DataService } from "../../Services/data.service";
 import { Driver } from "../../CreationModels/driver";
 import { DriversDialogComponent } from "./Dialog/driversDialog.component";
 import { IDriver } from "../../Interfaces/iDriver";
@@ -26,10 +26,9 @@ import { IDriver } from "../../Interfaces/iDriver";
     MatSortModule,
     MatTableModule],
   templateUrl: './drivers.component.html',
-  styleUrls: ['./drivers.component.scss'],
-  providers: [DataService]
+  styleUrls: ['./drivers.component.scss']
 })
-export class DriversComponent implements OnInit{ 
+export class DriversComponent implements OnInit, AfterViewInit{
   title = 'Водители';
   driversRoute = 'drivers'; 
   driver = new Driver();

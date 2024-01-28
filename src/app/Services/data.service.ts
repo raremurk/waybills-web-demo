@@ -1,14 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Waybill } from "./CreationModels/waybill";
-import { ICostPriceReport } from "./Interfaces/iCostPriceReport";
-import { IDriver } from "./Interfaces/iDriver";
-import { IDriverMonthTotal } from "./Interfaces/iDriverMonthTotal";
-import { IShortWaybill } from "./Interfaces/iShortWaybill";
-import { ITransport } from "./Interfaces/ITransport";
-import { IWaybill } from "./Interfaces/iWaybill";
+import { Waybill } from "../CreationModels/waybill";
+import { ICostPriceReport } from "../Interfaces/iCostPriceReport";
+import { IDriver } from "../Interfaces/iDriver";
+import { IDriverMonthTotal } from "../Interfaces/iDriverMonthTotal";
+import { IShortWaybill } from "../Interfaces/iShortWaybill";
+import { ITransport } from "../Interfaces/ITransport";
+import { IWaybill } from "../Interfaces/iWaybill";
  
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class DataService {    
 	url = 'https://localhost:7150/api/';
 	driversRoute = 'drivers';
