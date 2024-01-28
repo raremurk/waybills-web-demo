@@ -10,7 +10,7 @@ import { IWaybill } from "../Interfaces/iWaybill";
  
 @Injectable({ providedIn: 'root' })
 export class DataService {    
-	url = 'https://localhost:7150/api/';
+	url = 'http://localhost:5000/api/';
 	driversRoute = 'drivers';
 	transportsRoute = 'transports';
 	waybillsRoute = 'waybills';
