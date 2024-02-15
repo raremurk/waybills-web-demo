@@ -5,7 +5,7 @@ import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { Transport } from "../../../CreationModels/transport";
+import { Transport } from "../../../Models/transport";
 
 @Component({
   standalone: true,

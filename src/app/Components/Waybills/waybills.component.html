@@ -3,7 +3,7 @@
     <h1>{{title}}</h1>
     <mat-form-field>
       <mat-select [(ngModel)]="driverId" (ngModelChange)="loadAllWaybills()" placeholder="Укажите водителя">
-        <mat-option *ngFor="let driver of drivers" [value]="driver.id">{{driver.shortFullName}}</mat-option>
+        <mat-option *ngFor="let driver of drivers" [value]="driver.id">{{driver | driverFullName}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

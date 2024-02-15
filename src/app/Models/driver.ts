@@ -16,10 +16,4 @@ export class Driver{
       this.personnelNumber = driver.personnelNumber;
     }
   }
-
-  get shortFullName(){
-    let firstNameInitial = this.firstName ? ` ${this.firstName[0]}. ` : '';
-    let middleNameInitial = this.middleName ? `${this.middleName[0]}.` : '';
-    return ''.concat(this.lastName, firstNameInitial, middleNameInitial);
-  }
 }

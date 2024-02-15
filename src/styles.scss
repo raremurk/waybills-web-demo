@@ -93,7 +93,7 @@ h1, h2, h3, h4, h5{ margin: 0; }
 
 .custom-mat-form-field-disabled-style{
   .mat-form-field-disabled{
-    .mat-mdc-input-element{ color: #545454 !important; }
+    .mat-mdc-input-element, .mat-mdc-select-value{ color: #545454 !important; }
     .mdc-line-ripple::before{ background-color: #00000099; }
   }
 }

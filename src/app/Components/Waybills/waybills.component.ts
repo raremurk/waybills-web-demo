@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
@@ -8,16 +8,14 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Title } from "@angular/platform-browser";
-import { Driver } from "../../CreationModels/driver";
-import { Waybill } from "../../CreationModels/waybill";
-import { DataService } from "../../Services/data.service";
-import { DateService } from "../../Services/date.service";
 import { IDriver } from "../../Interfaces/iDriver";
 import { IShortWaybill } from "../../Interfaces/iShortWaybill";
 import { ITransport } from "../../Interfaces/ITransport";
-import { IWaybill } from "../../Interfaces/iWaybill";
+import { DriverFullNamePipe } from "../../Pipes/driverFullNamePipe";
 import { RangeDatePipe } from "../../Pipes/rangeDatePipe";
 import { ToFixedPipe } from "../../Pipes/toFixedPipe";
+import { DataService } from "../../Services/data.service";
+import { DateService } from "../../Services/date.service";
 import { WaybillsDialogComponent } from "./Dialog/waybillsDialog.component";
      
 @Component({
@@ -31,19 +29,17 @@ import { WaybillsDialogComponent } from "./Dialog/waybillsDialog.component";
     MatButtonModule,
     MatIconModule,
     ToFixedPipe,
-    RangeDatePipe],
+    RangeDatePipe,
+    DriverFullNamePipe],
   templateUrl: './waybills.component.html',
   styleUrls: ['./waybills.component.scss']
 })
 export class WaybillsComponent implements OnInit, AfterViewInit{
   title = 'Путевые листы';
-  driversRoute = 'drivers';
-  transportsRoute = 'transports';
   driverId = 0;
-  drivers: Driver[] = [];
+  drivers: IDriver[] = [];
   transports: ITransport[] = [];
-  waybill = new Waybill();
-  editableWaybill = new Waybill();
+  editableWaybill = <IShortWaybill>{};
 
   dataSource = new MatTableDataSource<IShortWaybill>();
   mainHeadersColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'fuel', 
@@ -57,7 +53,7 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
   @ViewChild(MatSort) sort = new MatSort();
    
   constructor(public dialog: MatDialog, private titleService: Title, private dataService: DataService, 
-    private dateService: DateService){ }
+    private dateService: DateService) { }
     
   ngOnInit(){
     this.titleService.setTitle(this.title);
@@ -71,47 +67,38 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
     this.dataSource.sort = this.sort;
   }
 
-  openCreateDialog(){
-    this.waybill = new Waybill();
-    this.openDialog(true); 
-  }
+  openCreateDialog = () => this.openDialog(0, true)
 
-  openEditDialog(waybillToEdit: Waybill){
+  openEditDialog(waybillToEdit: IShortWaybill){
     this.editableWaybill = waybillToEdit;
-    this.dataService.getWaybill(waybillToEdit.id).subscribe((data: IWaybill) => {
-      this.waybill = new Waybill(data);     
-      this.openDialog(false);   
-    });
+    this.openDialog(waybillToEdit.id, false);   
   }
 
-  openDialog(mode: boolean){
-    this.dialog.open(WaybillsDialogComponent, 
+  openDialog(waybillId: number, mode: boolean){
+    let dialogRed = this.dialog.open(WaybillsDialogComponent, 
       { autoFocus: 'dialog', 
         disableClose: true,
         height: "calc(100% - 16px)", 
         width: "calc(100% - 16px)", 
         maxWidth: "100%", 
         maxHeight: "100%", 
-        data: { 
+        data: {
+          waybillId: waybillId,
           editMode: mode,
           drivers: this.drivers,
-          transports: this.transports,
-          waybill: this.waybill }
-    })     
+          transports: this.transports}
+    })
+    dialogRed.afterClosed().subscribe();
   }
+
+  loadAllDrivers = () => this.dataService.getAllDrivers().subscribe((data: IDriver[]) => this.drivers = data);
 
   loadAllWaybills(){
     this.dataService.getAllWaybills(this.dateService.year, this.dateService.month, this.driverId)
-      .subscribe({next:(data: IShortWaybill[]) => this.dataSource.data = data});   
+      .subscribe((data: IShortWaybill[]) => this.dataSource.data = data);   
   }
 
-  loadAllDrivers(){
-    this.dataService.getAllDrivers().subscribe({next:(data: IDriver[]) => this.drivers = data.map(x => new Driver(x))});    
-  }
-
-  loadAllTransports(){
-    this.dataService.getAll(this.transportsRoute).subscribe({next:(data: any) => this.transports = data});    
-  }
+  loadAllTransports = () => this.dataService.getAllTransports().subscribe((data: ITransport[]) => this.transports = data);    
 
   deleteWaybill(id: number){
     this.dataService.deleteWaybill(id).subscribe(() => {

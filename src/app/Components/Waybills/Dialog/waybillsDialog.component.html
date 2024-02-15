@@ -1,16 +1,18 @@
 <div mat-dialog-content class="form-field-density-5 custom-mat-form-field-disabled-style">
 
-  <div class="flex items-center justify-between icon-button-density-5">
+  <div class="flex items-center justify-between icon-button-density-3">
 
     <div class="flex items-center justify-between w-72">
       <h2>{{dialogTitle}}</h2>
       <mat-form-field class="w-24">
-        <input matInput [(ngModel)]="data.waybill.number" [disabled]="!data.editMode">
+        <input matInput [(ngModel)]="waybill.number" [disabled]="!data.editMode">
       </mat-form-field>
     </div>
 
     <div class="flex gap-1">
+      <button mat-icon-button *ngIf="!data.waybillId && !data.editMode" (click)="nextWaybill()"><mat-icon>add</mat-icon></button>
       <button mat-icon-button *ngIf="data.editMode" (click)="saveWaybill()"><mat-icon>check</mat-icon></button>
+      <button mat-icon-button *ngIf="waybill.id && data.editMode" (click)="disableEdit()"><mat-icon>arrow_back</mat-icon></button>
       <button mat-icon-button *ngIf="!data.editMode" (click)="enableEdit()"><mat-icon>edit</mat-icon></button>
       <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
     </div>
@@ -32,8 +34,8 @@
 
       <div class="my-1">
         <mat-form-field class="icon-button-density-3 w-full">
-          <input matInput [min]="minDate" [matDatepicker]="picker" [(ngModel)]="data.waybill.date" class="hidden" [disabled]="!data.editMode">
-          <span class="font-bold">{{data.waybill.date | rangeDate : data.waybill.days}}</span>
+          <input matInput [min]="minDate" [matDatepicker]="picker" [(ngModel)]="waybill.date" class="hidden" [disabled]="!data.editMode">
+          <span class="font-bold">{{waybill.date | rangeDate : waybill.days}}</span>
           <mat-datepicker #picker></mat-datepicker>
           <button mat-icon-button matSuffix color="primary" (click)="picker.open()" [disabled]="!data.editMode"><mat-icon>today</mat-icon></button>
         </mat-form-field>
@@ -42,8 +44,8 @@
         <h4>Водитель</h4>
         <mat-form-field class="w-52">
           <input matInput [matAutocomplete]="driver" [(ngModel)]="driverFilter" (ngModelChange)="filterDrivers()" spellcheck="false" [disabled]="!data.editMode">
-          <mat-autocomplete #driver="matAutocomplete" (optionSelected)='setDriver($event.option.value)' [displayWith]="getDriverShortFullName">
-            <mat-option *ngFor="let driver of filteredDrivers" [value]="driver">{{driver.shortFullName}}</mat-option>
+          <mat-autocomplete #driver="matAutocomplete" (optionSelected)='setDriver($event.option.value)' [displayWith]="driverFullNamePipe.transform">
+            <mat-option *ngFor="let driver of filteredDrivers" [value]="driver">{{driver | driverFullName}}</mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </div>
@@ -51,10 +53,10 @@
 
     <div class="text-center">
       <h4>Транспорт</h4>
-      <div class="display-value-cell mb-1">{{getTransportName(data.waybill.transport)}}</div>
+      <div class="display-value-cell mb-1">{{waybill.transport?.name}}</div>
       <div class="flex gap-1.5 items-center">
         <h4>Табельный №</h4>
-        <div class="display-value-cell w-16">{{getDriverPersonnelNumber(data.waybill.driver)}}</div>
+        <div class="display-value-cell w-16">{{waybill.driver?.personnelNumber}}</div>
       </div>
     </div>
 
@@ -65,13 +67,13 @@
         <h5>Выдано</h5>
         <h5>Конец</h5>
         <mat-form-field class="w-20">
-          <input matInput [(ngModel)]="data.waybill.startFuel" [disabled]="!data.editMode">
+          <input matInput [(ngModel)]="waybill.startFuel" [disabled]="!data.editMode">
         </mat-form-field>
         <mat-form-field class="w-20">
-          <input matInput [(ngModel)]="data.waybill.fuelTopUp" [disabled]="!data.editMode">
+          <input matInput [(ngModel)]="waybill.fuelTopUp" [disabled]="!data.editMode">
         </mat-form-field>
         <mat-form-field class="w-20">
-          <input matInput [(ngModel)]="data.waybill.endFuel" [disabled]="!data.editMode">
+          <input matInput [(ngModel)]="waybill.endFuel" [disabled]="!data.editMode">
         </mat-form-field>
       </div>
     </div>
@@ -81,8 +83,8 @@
       <div class="grid grid-cols-2 gap-x-1 mt-1">
         <h5>По факту</h5>
         <h5>По норме</h5>
-        <div class="display-value-cell w-20">{{data.waybill.factFuelConsumption | toFixed}}</div>
-        <div class="display-value-cell w-20">{{data.waybill.normalFuelConsumption | toFixed}}</div>
+        <div class="display-value-cell w-20">{{waybill.factFuelConsumption}}</div>
+        <div class="display-value-cell w-20">{{waybill.normalFuelConsumption}}</div>
       </div>
     </div>
   </div>
@@ -91,8 +93,8 @@
     <div class="flex items-end justify-between">
       <h3>Выполнение работ</h3>
       <mat-form-field class="w-24">
-        <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize()">
-          <mat-option *ngFor="let number of [5, 8, 12]" [value]="number">{{number}}</mat-option>
+        <mat-select [(ngModel)]="pageSize" (selectionChange)="changePageSize()" [disabled]="!data.editMode">
+          <mat-option *ngFor="let number of pageSizes" [value]="number">{{number}}</mat-option>
         </mat-select>
       </mat-form-field>
       <div class="hidden">
@@ -215,7 +217,7 @@
           <h4 class="w-24">Расценка</h4>
           <h4 class="w-20">Сумма</h4>
         </div>
-        <div *ngFor="let calculation of data.waybill.calculations" class="flex items-center">
+        <div *ngFor="let calculation of waybill.calculations" class="flex items-center">
           <mat-form-field class="w-24">
             <input matInput [(ngModel)]="calculation.quantity" [disabled]="!data.editMode">
           </mat-form-field>
@@ -235,17 +237,17 @@
         <h5>Дней</h5> 
         <h5>Часов</h5>
         <mat-form-field class="w-16">
-          <input matInput [(ngModel)]="data.waybill.days" maxlength="1" [disabled]="!data.editMode">
+          <input matInput [(ngModel)]="waybill.days" maxlength="1" [disabled]="!data.editMode">
         </mat-form-field>
         <mat-form-field class="w-16">
-          <input matInput [(ngModel)]="data.waybill.hours" [disabled]="!data.editMode">
+          <input matInput [(ngModel)]="waybill.hours" [disabled]="!data.editMode">
         </mat-form-field> 
       </div>
     </div>
 
     <div class="w-24">
       <h4>Сумма заработка</h4>
-      <div class="w-full money-div">{{data.waybill.earnings | toFixed: 2}}</div>   
+      <div class="w-full money-div">{{waybill.earnings}}</div>   
     </div>
 
     <div>
@@ -254,10 +256,10 @@
         <h5>Выходные</h5>
         <h5>Премия</h5>
         <mat-form-field class="w-24">
-          <input matInput [(ngModel)]="data.waybill.weekend" [disabled]="!data.editMode">
+          <input matInput [(ngModel)]="waybill.weekend" [disabled]="!data.editMode">
         </mat-form-field> 
         <mat-form-field class="w-24">
-          <input matInput [(ngModel)]="data.waybill.bonus" [disabled]="!data.editMode">
+          <input matInput [(ngModel)]="waybill.bonus" [disabled]="!data.editMode">
         </mat-form-field>
       </div>
     </div>

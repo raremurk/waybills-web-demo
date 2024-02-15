@@ -1,18 +1,18 @@
 import { CommonModule } from "@angular/common";
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatSort, MatSortModule } from "@angular/material/sort";
+import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Title } from "@angular/platform-browser";
-import { DataService } from "../../Services/data.service";
-import { Driver } from "../../CreationModels/driver";
-import { DriversDialogComponent } from "./Dialog/driversDialog.component";
 import { IDriver } from "../../Interfaces/iDriver";
+import { Driver } from "../../Models/driver";
+import { DataService } from "../../Services/data.service";
+import { DriversDialogComponent } from "./Dialog/driversDialog.component";
 
 @Component({
   standalone: true,
