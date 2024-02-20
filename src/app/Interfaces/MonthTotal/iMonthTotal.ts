@@ -1,6 +1,4 @@
-export interface ITransportMonthTotal{
-  transportName: string,
-  transportCode: number,
+export interface IMonthTotal{
   waybillsCount: number,
   days: number,
   hours: number,
@@ -14,5 +12,5 @@ export interface ITransportMonthTotal{
   totalMileageWithLoad: number,
   transportedLoad: number,
   normShift: number,
-  conditionalReferenceHectares: number,
+  conditionalReferenceHectares: number
 }

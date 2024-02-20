@@ -14,3 +14,7 @@ th{ font-weight: bold; }
   font-size: 18px;
   font-weight: bold;
 }
+
+tr.expanded-row { height: 0; }
+.data-row td { border-bottom-width: 0; }
+tr.data-row:not(.active-expanded-row):hover { background: whitesmoke; }

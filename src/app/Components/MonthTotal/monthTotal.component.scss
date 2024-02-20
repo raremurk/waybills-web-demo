@@ -7,25 +7,98 @@ th{ font-weight: bold; }
   padding: 0;
 }
 
-.mat-column-driverFullName, .mat-column-transport{
-  min-width: 240px;
+.mat-column-driverFullName{ padding-right: 0; }
+.mat-column-transportName{ padding: 0 0 0 32px; }
+.mat-column-driverFullName, .mat-column-transportName{
+  min-width: 248px;
+  width: 248px;  
+}
+
+.mat-column-waybillsCount{
+  min-width: 52px;
+  width: 52px;
+}
+
+.mat-column-days{
+  min-width: 48px;
+  width: 48px;
+}
+
+.mat-column-hours{
+  min-width: 58px;
+  width: 58px;
 }
 
 .mat-column-earnings{
   min-width: 80px;
+  width: 80px;
+}
+
+.mat-column-weekend{
+  min-width: 58px;
+  width: 58px;
+}
+
+.mat-column-bonus{
+  min-width: 76px;
+  width: 76px;
+}
+
+.mat-column-factFuelConsumption{
+  min-width: 56px;
+  width: 56px;
+}
+
+.mat-column-normalFuelConsumption{
+  min-width: 68px;
+  width: 68px;
+}
+
+.mat-column-numberOfRuns{
+  min-width: 64px;
+  width: 64px;
+}
+
+.mat-column-totalMileage{
+  min-width: 72px;
+  width: 72px;
 }
 
 .mat-column-totalMileageWithLoad{
   min-width: 82px;
+  width: 82px;
 }
 
-.mat-column-conditionalReferenceHectares{ padding-right: 16px; }
+.mat-column-transportedLoad{
+  min-width: 108px;
+  width: 108px;
+}
+
+.mat-column-normShift{
+  min-width: 74px;
+  width: 74px;
+}
+
+.mat-column-conditionalReferenceHectares{
+  min-width: 94px;
+  width: 94px;
+}
+
+.mat-column-expand{
+  min-width: 50px;
+  width: 50px;
+  padding-right: 10px;
+}
 
 .code-cell{
   color: white;
   font-weight: bold;
   text-align: center;
-  height: 19px;
+  height: 20px;
   padding: 0 8px;
   border-radius: 2px; 
 }
+
+.expanded-td{ padding: 0; }
+tr.expanded-row { height: 0; }
+tr.data-row:hover { background: whitesmoke; }
