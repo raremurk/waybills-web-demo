@@ -1,12 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Waybill } from "../CreationModels/waybill";
 import { ICostPriceReport } from "../Interfaces/iCostPriceReport";
 import { IDriver } from "../Interfaces/iDriver";
-import { IDriverMonthTotal } from "../Interfaces/iDriverMonthTotal";
 import { IShortWaybill } from "../Interfaces/iShortWaybill";
 import { ITransport } from "../Interfaces/ITransport";
 import { IWaybill } from "../Interfaces/iWaybill";
+import { IDriverMonthTotal } from "../Interfaces/MonthTotal/iDriverMonthTotal";
+import { WaybillCreation } from "../Models/Waybill/waybillCreation";
  
 @Injectable({ providedIn: 'root' })
 export class DataService {    
@@ -20,8 +20,8 @@ export class DataService {
 
 	constructor(private http: HttpClient) { }
 
-	getCostPriceReport = (year: number, month: number) => 
-		this.http.get<ICostPriceReport[]>(this.url + this.costPriceReportRoute + '/' + year + '/' + month);
+	getCostPriceReport = (year: number, month: number, price: number) => 
+		this.http.get<ICostPriceReport[]>(this.url + this.costPriceReportRoute + '/' + year + '/' + month + '/' + price);
 	getDriverMonthTotals = (year: number, month: number) => 
 		this.http.get<IDriverMonthTotal[]>(this.url + this.monthTotalRoute + '/' + year + '/' + month);
  
@@ -31,8 +31,8 @@ export class DataService {
 		this.http.get<IShortWaybill[]>(this.url + this.waybillsRoute + '/' + year + '/' + month + '/' + driverId);
 
 	getWaybill = (id: number) => this.http.get<IWaybill>(this.url + this.waybillsRoute + '/' + id);
-	createWaybill = (waybill: Waybill) => this.http.post(this.url + this.waybillsRoute, waybill);
-	updateWaybill = (id: number, waybill: Waybill) => this.http.put(this.url + this.waybillsRoute + '/' + id, waybill);
+	createWaybill = (waybill: WaybillCreation) => this.http.post<IWaybill>(this.url + this.waybillsRoute, waybill);
+	updateWaybill = (id: number, waybill: WaybillCreation) => this.http.put<IWaybill>(this.url + this.waybillsRoute + '/' + id, waybill);
 	deleteWaybill = (id: number) => this.http.delete(this.url + this.waybillsRoute + '/' + id);
 
 	getAll(route: string){

@@ -1,6 +1,6 @@
 export interface ICalculation{
   id: number,
-  quantity: string,
-  price: string,
-  sum: string
+  quantity: number,
+  price: number,
+  sum: number
 }

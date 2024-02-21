@@ -12,7 +12,7 @@ export class SnackbarInterceptor implements HttpInterceptor {
 		return next.handle(request).pipe(
 			tap(e => {
 				if (request.method == "POST" || request.method == "PUT" || request.method == "DELETE")
-					if (e instanceof HttpResponse && (e.status == 201 || e.status == 204)) {
+					if (e instanceof HttpResponse && (e.status == 200 || e.status == 201 || e.status == 204)) {
 						this.snackBar.open('Операция прошла успешно', '', { duration: 2000 });
 					}
 			}),

@@ -7,7 +7,7 @@ import '@angular/common/locales/global/ru';
   standalone: true
 })
 export class RangeDatePipe implements PipeTransform{
-  transform = (dateValue: string | Date, daysValue: string | number) => {
+  transform(dateValue: string | Date, daysValue: string | number){
     let endOfRange = '';
     let date = new Date(dateValue);
     let days = Number(daysValue);

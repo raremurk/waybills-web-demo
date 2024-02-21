@@ -12,14 +12,18 @@ import { MatPaginatorModule, MatPaginator } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
-import { Driver } from "../../../CreationModels/driver";
-import { Operation } from "../../../CreationModels/operation";
-import { Waybill } from "../../../CreationModels/waybill";
-import { DataService } from "../../../Services/data.service";
-import { formatResult } from "../../../formatResult";
+import { firstValueFrom } from "rxjs";
+import { IDriver } from "../../../Interfaces/iDriver";
 import { ITransport } from "../../../Interfaces/ITransport";
+import { IWaybill } from "../../../Interfaces/iWaybill";
+import { OperationCreation } from "../../../Models/Operation/operationCreation";
+import { OperationView } from "../../../Models/Operation/operationView";
+import { WaybillCreation } from "../../../Models/Waybill/waybillCreation";
+import { WaybillView } from "../../../Models/Waybill/waybillView";
+import { DriverFullNamePipe } from "../../../Pipes/driverFullNamePipe";
 import { RangeDatePipe } from "../../../Pipes/rangeDatePipe";
 import { ToFixedPipe } from "../../../Pipes/toFixedPipe";
+import { DataService } from "../../../Services/data.service";
 
 @Component({
   standalone: true,
@@ -38,24 +42,28 @@ import { ToFixedPipe } from "../../../Pipes/toFixedPipe";
     MatSortModule,
     MatTableModule,
     ToFixedPipe,
-    RangeDatePipe],
+    RangeDatePipe,
+    DriverFullNamePipe],
   templateUrl: 'waybillsDialog.component.html',
   styleUrls: ['./waybillsDialog.component.scss'],
-  providers: [DataService]
+  providers: [DriverFullNamePipe]
 })
 export class WaybillsDialogComponent implements OnInit, AfterViewInit{
-  dialogTitle = 'Путевой лист №'
-  waybillsRoute = 'waybills';
+  dialogTitle = 'Путевой лист №';
   minDate = new Date(2023, 0, 1);
-  pageSize = 5;
+  waybill: WaybillCreation | WaybillView = new WaybillCreation();
+  iWaybill: IWaybill = <IWaybill>{};
 
   transportFilter: ITransport | string = '';
   filteredTransports: ITransport[] = [];
 
-  driverFilter: Driver | string = '';
-  filteredDrivers: Driver[] = [];
+  driverFilter: IDriver | string = '';
+  filteredDrivers: IDriver[] = [];
 
-  dataSource = new MatTableDataSource<Operation>();
+  pageSize = 5;
+  pageSizes = Array.from({length: 13 - this.pageSize}, (_, i) => i + this.pageSize);
+
+  dataSource = new MatTableDataSource<OperationCreation | OperationView>();
   mainHeadersColumns = ['productionCostCode', 'numberOfRuns', 'mileage', 'transportedLoad', 'done', 'normShift',
     'conditionalReferenceHectares', 'fuel'];
   childHeadersColumns = ['totalMileage', 'totalMileageWithLoad', 'norm', 'fact', 'mileageWithLoad',
@@ -66,18 +74,17 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   @ViewChild(MatSort) sort = new MatSort();
   @ViewChild(MatPaginator) paginator = <MatPaginator>{};
   
-  constructor(private dataService: DataService, public dialogRef: MatDialogRef<WaybillsDialogComponent>,
+  constructor(private dataService: DataService, public driverFullNamePipe: DriverFullNamePipe, 
+    public dialogRef: MatDialogRef<WaybillsDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
       public data: {
+        waybillId: number,
         editMode: boolean,
-        drivers: Driver[],
-        transports: ITransport[],
-        waybill: Waybill}) { }
+        drivers: IDriver[],
+        transports: ITransport[]}) { }
 
   ngOnInit(){
-    this.transportFilter = this.data.waybill.transport ?? '';
-    this.driverFilter = this.data.waybill.driver ?? '';
-    this.dataSource.data = this.data.waybill.operations;
+    this.initializeWaybill();
     this.filteredTransports = this.data.transports;
     this.filteredDrivers = this.data.drivers;
   }
@@ -88,32 +95,59 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
     this.dataSource.paginator = this.paginator;
   }
 
-  getTransportName = (transport : ITransport | null) => transport ? transport.name : '';
-  getTransportCode = (transport : ITransport | null) => transport ? transport.code.toString() : '';
-
-  getDriverPersonnelNumber = (driver : Driver | null) => driver ? driver.personnelNumber.toString() : '';
-  getDriverShortFullName = (driver : Driver | null) => driver ? driver.shortFullName : '';
-
-  changePageSize = () => this.paginator._changePageSize(this.pageSize);
+  async initializeWaybill(){
+    if(this.data.waybillId){
+      this.iWaybill = await firstValueFrom(this.dataService.getWaybill(this.data.waybillId));
+      this.waybill = new WaybillView(this.iWaybill);
+      
+      let operationsCount = this.iWaybill.operations.length;
+      if(operationsCount > this.pageSize){
+        this.pageSize = operationsCount;
+        this.changePageSize();
+      }
+    }
+    this.dataSource.data = this.waybill.operations;
+    this.transportFilter = this.waybill.transport ?? '';
+    this.driverFilter = this.waybill.driver ?? '';
+  }
   
   saveWaybill(){
-    if(this.data.waybill.id === 0){
-      this.dataService.createWaybill(this.data.waybill).subscribe(() =>{
-        let waybill = new Waybill();
-        waybill.date = new Date(this.data.waybill.date.setDate(this.data.waybill.date.getDate() + 1));
-        waybill.driver = this.data.waybill.driver;
-        waybill.transport = this.data.waybill.transport;
-        this.data.waybill = waybill;
-        this.dataSource.data = waybill.operations;
+    if(this.waybill instanceof WaybillCreation){
+      let httpAction = this.waybill.id === 0 ?
+        this.dataService.createWaybill(this.waybill) : this.dataService.updateWaybill(this.waybill.id, this.waybill);
+      httpAction.subscribe((data: IWaybill) => {
+          this.iWaybill = data;
+          this.waybill = new WaybillView(this.iWaybill);
+          this.transportFilter = this.iWaybill.transport ?? '';
+          this.driverFilter = this.iWaybill.driver ?? '';
+          this.dataSource.data = this.waybill.operations;
+          this.data.editMode = false;
       });
-    }
-    else{
-      this.dataService.updateWaybill(this.data.waybill.id, this.data.waybill).subscribe();
     }
   }
 
-  enableEdit(){
+  nextWaybill(){
+    let waybill = new WaybillCreation();
+    waybill.date = new Date(this.waybill.date.setDate(this.waybill.date.getDate() + 1));
+    waybill.driver = this.waybill.driver;
+    waybill.transport = this.waybill.transport;
+    this.waybill = waybill;
+    this.dataSource.data = waybill.operations;
     this.data.editMode = true;
+  }
+
+  enableEdit(){
+    this.waybill = new WaybillCreation(this.iWaybill);
+    this.dataSource.data = this.waybill.operations;
+    this.data.editMode = true;
+  }
+
+  disableEdit(){
+    this.data.editMode = false;
+    this.waybill = new WaybillView(this.iWaybill);
+    this.dataSource.data = this.waybill.operations;
+    this.transportFilter = this.iWaybill.transport ?? '';
+    this.driverFilter = this.iWaybill.driver ?? '';
   }
 
   filterTransports(){
@@ -124,20 +158,25 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
 
   filterDrivers(){
     let filter = typeof this.driverFilter === 'string' ? 
-      this.driverFilter.trim() : this.getDriverShortFullName(this.driverFilter);
-    this.filteredDrivers = this.data.drivers.filter(x => x.shortFullName.toLowerCase().includes(filter.toLowerCase()));
+      this.driverFilter.trim() : this.driverFullNamePipe.transform(this.driverFilter);
+    this.filteredDrivers = this.data.drivers.filter(x => this.driverFullNamePipe.transform(x).toLowerCase().includes(filter.toLowerCase()));
   }
 
-  setTransport = (transport: ITransport) => this.data.waybill.transport = transport;
-  setDriver = (driver: Driver) => this.data.waybill.driver = driver;
+  getTransportCode = (transport : ITransport | null) => transport ? transport.code.toString() : '';
+
+  setTransport = (transport: ITransport) => this.waybill.transport = transport;
+  setDriver = (driver: IDriver) => this.waybill.driver = driver;
+
+  changePageSize = () => this.paginator._changePageSize(this.pageSize);
 
   calculationHelp(){
     let map = new Map<number, number>();
-    let operations = this.data.waybill.operations.filter(x => Number(x.norm) > 0 && Number(x.fact) > 0);
+    let operations = this.waybill.operations.map(x => { return {norm: Number(x.norm), fact: Number(x.fact)} });
+    operations = operations.filter(x => x.norm > 0 && x.fact > 0);
     operations.forEach(x => {
-      let currentValue = map.get(Number(x.norm));
-      let newValue = currentValue === undefined ? Number(x.fact) : currentValue + Number(x.fact);
-      map.set(Number(x.norm), newValue);
+      let currentValue = map.get(x.norm);
+      let newValue = currentValue === undefined ? x.fact : currentValue + x.fact;
+      map.set(x.norm, newValue);
     });
     return map;
   }

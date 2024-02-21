@@ -5,7 +5,7 @@
     <button mat-raised-button color="green"><mat-icon>description</mat-icon>Скачать</button>
   </div>
   <div class="table-density-4">
-    <table mat-table [dataSource]="dataSource" matSort>
+    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
   
       <ng-container matColumnDef="driverFullName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Водитель </th>
@@ -13,84 +13,59 @@
           <span class="code-cell bg-emerald-600">{{driverTotal.driverPersonnelNumber}}</span>
           {{driverTotal.driverFullName}}</td>
       </ng-container>
-  
-      <ng-container matColumnDef="transport">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Транспорт </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          @for (transportTotal of driverTotal.transportTotals; track transportTotal) {
-            <span class="code-cell bg-cyan-800">{{transportTotal.transportCode}}</span>
-            {{transportTotal.transportName}}      
-          }</td>
+
+      @for (column of columns; track column) {
+        <ng-container [matColumnDef]="column.columnDef">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">{{column.header}}</th>
+          <td mat-cell *matCellDef="let row">{{column.cell(row)}}</td>
+        </ng-container>
+      }
+
+      <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          @if (expandedRow === row) {
+            <mat-icon>keyboard_arrow_up</mat-icon>
+          } @else {
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          }
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="expandedRow">
+        <td mat-cell *matCellDef="let row" [attr.colspan]="dataColumns.length" class="expanded-td">
+          <div [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
+            <table mat-table [dataSource]="row.transportTotals">
+
+              <ng-container matColumnDef="transportName">
+                <td mat-cell *matCellDef="let row">
+                  <span class="code-cell bg-cyan-800">{{row.transportCode}}</span>
+                  {{row.transportName}}  
+              </ng-container>
+
+              @for (column of columns; track column) {
+                <ng-container [matColumnDef]="column.columnDef">
+                  <td mat-cell *matCellDef="let row">{{column.cell(row)}}</td>
+                </ng-container>
+              }
+              
+              <ng-container matColumnDef="expand">
+                <td mat-cell *matCellDef="let row"></td>
+              </ng-container>
+
+              <tr mat-row *matRowDef="let row; columns: expandDataColumns;" class="data-row"></tr>
+            </table>
+          </div>
+        </td>
       </ng-container>
   
-      <ng-container matColumnDef="days">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Дней </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.days}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="hours">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Часов </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.hours | toFixed: 1}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="earnings">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Сумма </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.earnings | toFixed: 2}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="factFuelConsumption">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> ГСМ Факт </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.factFuelConsumption}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="normalFuelConsumption">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> ГСМ Норма </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.normalFuelConsumption}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="numberOfRuns">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Число ездок </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.numberOfRuns}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="totalMileage">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Пробег всего </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.totalMileage | toFixed: 1}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="totalMileageWithLoad">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Пробег с грузом </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.totalMileageWithLoad | toFixed: 1}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="transportedLoad">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Перевезено груза, тонн </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.transportedLoad | toFixed: 3}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="normShift">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Нормо-смена </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.normShift | toFixed: 2}}</div></td>
-      </ng-container>
-  
-      <ng-container matColumnDef="conditionalReferenceHectares">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Условн. гектар </th>
-        <td mat-cell *matCellDef="let driverTotal">
-          <div *ngFor="let transportTotal of driverTotal.transportTotals">{{transportTotal.conditionalReferenceHectares | toFixed: 2}}</div></td>
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="dataColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: dataColumns;"></tr>
+      <tr mat-header-row *matHeaderRowDef="dataColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: dataColumns;"
+          class="data-row"
+          [class.active-expanded-row]="expandedRow === row"
+          (click)="expandedRow = expandedRow === row ? null : row">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedRow'];" class="expanded-row"></tr>
     </table>
   </div>
 </div>
