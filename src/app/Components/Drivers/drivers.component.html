@@ -53,7 +53,7 @@
           <div *ngSwitchDefault class="flex justify-between">
             <button mat-raised-button color="primary" (click)="editDriver(driver)" class="table-button-1">
               <mat-icon>edit</mat-icon>Изменить</button>
-            <button mat-raised-button color="warn" (click)="deleteDriver(driver.id)" class="table-button-2">
+            <button mat-raised-button color="warn" (click)="openDeleteDialog(driver)" class="table-button-2">
               <mat-icon>delete</mat-icon>Удалить</button>
           </div>
         </td>
