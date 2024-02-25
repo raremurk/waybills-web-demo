@@ -11,7 +11,9 @@ import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { Title } from "@angular/platform-browser";
 import { IDriver } from "../../Interfaces/iDriver";
 import { Driver } from "../../Models/driver";
+import { DriverFullNamePipe } from "../../Pipes/driverFullNamePipe";
 import { DataService } from "../../Services/data.service";
+import { ConfirmationDialogComponent } from "../ConfirmationDialog/confirmationDialog.component";
 import { DriversDialogComponent } from "./Dialog/driversDialog.component";
 
 @Component({
@@ -26,7 +28,8 @@ import { DriversDialogComponent } from "./Dialog/driversDialog.component";
     MatSortModule,
     MatTableModule],
   templateUrl: './drivers.component.html',
-  styleUrls: ['./drivers.component.scss']
+  styleUrls: ['./drivers.component.scss'],
+  providers: [DriverFullNamePipe]
 })
 export class DriversComponent implements OnInit, AfterViewInit{
   title = 'Водители';
@@ -37,7 +40,8 @@ export class DriversComponent implements OnInit, AfterViewInit{
   displayedColumns = ['lastName', 'firstName', 'middleName', 'personnelNumber', 'operations'];  
   @ViewChild(MatSort) sort = new MatSort();
 
-  constructor(public dialog: MatDialog, private titleService: Title, private dataService: DataService){ }
+  constructor(private dialog: MatDialog, private titleService: Title, private dataService: DataService,
+    private driverFullNamePipe: DriverFullNamePipe){ }
     
   ngOnInit(){  
     this.titleService.setTitle(this.title); 
@@ -53,6 +57,21 @@ export class DriversComponent implements OnInit, AfterViewInit{
       if(result.id === 0) {
         this.dataService.create(this.driversRoute, result)
           .subscribe({next:(createdDriver: any) => this.dataSource.data = [...this.dataSource.data, createdDriver]});
+      }
+    });
+  }
+
+  openDeleteDialog(driver: IDriver){
+    let dialogRef = this.dialog.open(ConfirmationDialogComponent, 
+      { width: "400px", 
+        data: { 
+          action: 'Удаление водителя',
+          objectName: this.driverFullNamePipe.transform(driver),
+          objectCode: driver.personnelNumber }
+    });
+    dialogRef.afterClosed().subscribe((confirm: boolean) => {
+      if(confirm === true){
+        this.deleteDriver(driver.id);
       }
     });
   }

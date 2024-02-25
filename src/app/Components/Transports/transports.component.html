@@ -44,7 +44,7 @@
           <div *ngSwitchDefault class="flex justify-end">
             <button mat-raised-button color="primary" (click)="editTransport(transport)" class="table-button-1">
               <mat-icon>edit</mat-icon>Изменить</button>
-            <button mat-raised-button color="warn" (click)="deleteTransport(transport.id)" class="table-button-2">
+            <button mat-raised-button color="warn" (click)="openDeleteDialog(transport)" class="table-button-2">
               <mat-icon>delete</mat-icon>Удалить</button>
           </div>
         </td>

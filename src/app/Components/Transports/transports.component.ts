@@ -12,6 +12,7 @@ import { Title } from "@angular/platform-browser";
 import { ITransport } from "../../Interfaces/ITransport";
 import { Transport } from "../../Models/transport";
 import { DataService } from "../../Services/data.service";
+import { ConfirmationDialogComponent } from "../ConfirmationDialog/confirmationDialog.component";
 import { TransportsDialogComponent } from "./Dialog/transportsDialog.component";
 
 @Component({
@@ -37,7 +38,7 @@ export class TransportsComponent implements OnInit, AfterViewInit{
   displayedColumns = ['name', 'code', 'coefficient', 'operations'];
   @ViewChild(MatSort) sort = new MatSort();
 
-  constructor(public dialog: MatDialog, private titleService: Title, private dataService: DataService){ }
+  constructor(private dialog: MatDialog, private titleService: Title, private dataService: DataService){ }
     
   ngOnInit(){
     this.titleService.setTitle(this.title);
@@ -54,6 +55,21 @@ export class TransportsComponent implements OnInit, AfterViewInit{
       if(result.id === 0){
         this.dataService.create(this.transportsRoute, result)
         .subscribe({next:(createdTransport: any) => this.dataSource.data = [...this.dataSource.data, createdTransport]});
+      }
+    });
+  }
+
+  openDeleteDialog(transport: Transport){
+    let dialogRef = this.dialog.open(ConfirmationDialogComponent, 
+      { width: "400px", 
+        data: { 
+          action: 'Удаление транспорта',
+          objectName: transport.name,
+          objectCode: transport.code }
+    });
+    dialogRef.afterClosed().subscribe((confirm: boolean) => {
+      if(confirm === true){
+        this.deleteTransport(transport.id);
       }
     });
   }

@@ -16,6 +16,7 @@ import { RangeDatePipe } from "../../Pipes/rangeDatePipe";
 import { ToFixedPipe } from "../../Pipes/toFixedPipe";
 import { DataService } from "../../Services/data.service";
 import { DateService } from "../../Services/date.service";
+import { ConfirmationDialogComponent } from "../ConfirmationDialog/confirmationDialog.component";
 import { WaybillsDialogComponent } from "./Dialog/waybillsDialog.component";
      
 @Component({
@@ -42,13 +43,11 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
   editableWaybill = <IShortWaybill>{};
 
   dataSource = new MatTableDataSource<IShortWaybill>();
-  mainHeadersColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'fuel', 
-    'conditionalReferenceHectares', 'operations'];
+  mainHeadersColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'weekend', 'bonus',
+    'fuel', 'conditionalReferenceHectares', 'operations'];
   childHeadersColumns = ['factFuelConsumption', 'normalFuelConsumption'];
-  dataColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 
+  dataColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'weekend', 'bonus',
     'factFuelConsumption', 'normalFuelConsumption', 'conditionalReferenceHectares', 'operations'];
-  footerColumns = ['number', 'days', 'hours', 'earnings', 'factFuelConsumption', 'normalFuelConsumption', 
-    'conditionalReferenceHectares', 'operations'];
 
   @ViewChild(MatSort) sort = new MatSort();
    
@@ -91,6 +90,21 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
     dialogRed.afterClosed().subscribe();
   }
 
+  openDeleteDialog(waybill: IShortWaybill){
+    let dialogRef = this.dialog.open(ConfirmationDialogComponent, 
+      { width: "400px", 
+        data: { 
+          action: 'Удаление путевого листа',
+          objectName: 'Путевой лист №',
+          objectCode: waybill.number }
+    });
+    dialogRef.afterClosed().subscribe((confirm: boolean) => {
+      if(confirm === true){
+        this.deleteWaybill(waybill.id);
+      }
+    });
+  }
+
   loadAllDrivers = () => this.dataService.getAllDrivers().subscribe((data: IDriver[]) => this.drivers = data);
 
   loadAllWaybills(){
@@ -107,11 +121,4 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
       this.dataSource.data = [...this.dataSource.data];
     });
   }
-
-  getTotalDays = () => this.dataSource.data.reduce((acc, value) => acc + value.days, 0);
-  getTotalHours = () => this.dataSource.data.reduce((acc, value) => acc + value.hours, 0);
-  getTotalEarnings = () => this.dataSource.data.reduce((acc, value) => acc + value.earnings, 0);
-  getTotalFactFuelConsumption = () => this.dataSource.data.reduce((acc, value) => acc + value.factFuelConsumption, 0);
-  getTotalNormalFuelConsumption = () => this.dataSource.data.reduce((acc, value) => acc + value.normalFuelConsumption, 0);
-  getTotalConditionalReferenceHectares = () => this.dataSource.data.reduce((acc, value) => acc + value.conditionalReferenceHectares, 0);
 }
