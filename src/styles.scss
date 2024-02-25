@@ -48,6 +48,10 @@ h1, h2, h3, h4, h5{ margin: 0; }
 
 @include mat.form-field-density(-1);
 
+.sort-arrow-margin-0{
+  .mat-sort-header-arrow{ margin: 0 !important; }
+}
+
 .sort-header-center{
   .mat-sort-header-container {
     padding-left: 18px;
@@ -84,7 +88,7 @@ h1, h2, h3, h4, h5{ margin: 0; }
 }
 
 .icon-button-density-3{
-  @include mat.icon-button-density(-3);  
+  @include mat.icon-button-density(-3);
 }
 
 .button-density-2{
