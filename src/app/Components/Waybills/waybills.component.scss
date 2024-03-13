@@ -16,9 +16,10 @@ th{ font-weight: bold; }
 
 .mat-column-number, .mat-column-days{ padding-left: 0; }
 .mat-column-date, .mat-column-driverShortFullName, .mat-column-transportName{ white-space: nowrap; }
+.mat-column-fuel{ border-bottom-width: 0; }
 
-.mat-column-fuel{
-  text-align: center;
-  padding-left: 3%;
-  border-bottom-width: 0;
+.fuel-header{
+  display: flex;
+  justify-content: center;
+  padding: 0 33.42px 0 45%;
 }
