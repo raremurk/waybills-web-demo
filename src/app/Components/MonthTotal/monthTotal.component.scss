@@ -1,22 +1,25 @@
 th{ font-weight: bold; }
+.small-header{ height: 22px; }
 
-.mat-column-waybillsCount, .mat-column-days, .mat-column-hours, .mat-column-earnings, .mat-column-weekend, .mat-column-bonus, 
+.mat-column-days, .mat-column-hours, .mat-column-earnings, .mat-column-weekend, .mat-column-bonus, 
 .mat-column-factFuelConsumption, .mat-column-normalFuelConsumption, .mat-column-numberOfRuns, .mat-column-totalMileage, 
 .mat-column-totalMileageWithLoad, .mat-column-transportedLoad, .mat-column-normShift, .mat-column-conditionalReferenceHectares{
   text-align: end;
-  padding: 0;
+  padding: 0 0 0 6px;
 }
 
-.mat-column-driverFullName{ padding-right: 0; }
-.mat-column-transportName{ padding: 0 0 0 32px; }
-.mat-column-driverFullName, .mat-column-transportName{
+.mat-column-mainEntityName{ padding-right: 0; }
+.mat-column-childEntityName{ padding: 0 0 0 32px; }
+.mat-column-mainEntityName, .mat-column-childEntityName{
   min-width: 248px;
   width: 248px;  
 }
 
 .mat-column-waybillsCount{
+  text-align: end;
   min-width: 52px;
   width: 52px;
+  padding: 0;
 }
 
 .mat-column-days{
@@ -44,6 +47,19 @@ th{ font-weight: bold; }
   width: 76px;
 }
 
+.mat-column-fuel, .mat-column-mileage{ border-bottom-width: 0; }
+.fuel-header{
+  display: flex;
+  justify-content: center;
+  padding: 0 33.42px 0 45%;
+}
+
+.mileage-header{
+  display: flex;
+  justify-content: center;
+  padding: 0 50.17px 0 46.45%;
+}
+
 .mat-column-factFuelConsumption{
   min-width: 56px;
   width: 56px;
@@ -65,8 +81,9 @@ th{ font-weight: bold; }
 }
 
 .mat-column-totalMileageWithLoad{
-  min-width: 82px;
-  width: 82px;
+  min-width: 86px;
+  width: 86px;
+  white-space: nowrap;
 }
 
 .mat-column-transportedLoad{
@@ -85,9 +102,29 @@ th{ font-weight: bold; }
 }
 
 .mat-column-expand{
-  min-width: 50px;
-  width: 50px;
-  padding-right: 10px;
+  width: 46px;
+  padding: 0 12px 0 10px;
+  text-align: center;
+  overflow: initial;
+}
+
+.mat-column-expandedRow{
+  padding: 0;
+  tr:first-child:not(:only-child) td{ border-top: 1px solid #E0E0E0; }
+}
+
+.data-row td{ border-bottom-width: 0; }
+tr.expanded-row{ height: 0;}
+
+.mdc-data-table__row:hover{
+  font-weight: bold;
+  background: whitesmoke;
+}
+
+.mat-mdc-footer-row td{
+  font-size: 16px;
+  font-weight: bold;
+  border-top: 1px solid #1F1F1F;
 }
 
 .code-cell{
@@ -98,7 +135,3 @@ th{ font-weight: bold; }
   padding: 0 8px;
   border-radius: 2px; 
 }
-
-.expanded-td{ padding: 0; }
-tr.expanded-row { height: 0; }
-tr.data-row:hover { background: whitesmoke; }

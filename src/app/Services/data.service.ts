@@ -5,7 +5,7 @@ import { IDriver } from "../Interfaces/iDriver";
 import { IShortWaybill } from "../Interfaces/iShortWaybill";
 import { ITransport } from "../Interfaces/ITransport";
 import { IWaybill } from "../Interfaces/iWaybill";
-import { IDriverMonthTotal } from "../Interfaces/MonthTotal/iDriverMonthTotal";
+import { IDetailedEntityMonthTotal } from "../Interfaces/MonthTotal/iDetailedEntityMonthTotal";
 import { WaybillCreation } from "../Models/Waybill/waybillCreation";
  
 @Injectable({ providedIn: 'root' })
@@ -22,8 +22,8 @@ export class DataService {
 
 	getCostPriceReport = (year: number, month: number, price: number) => 
 		this.http.get<ICostPriceReport[]>(this.url + this.costPriceReportRoute + '/' + year + '/' + month + '/' + price);
-	getDriverMonthTotals = (year: number, month: number) => 
-		this.http.get<IDriverMonthTotal[]>(this.url + this.monthTotalRoute + '/' + year + '/' + month);
+	getMonthTotals = (year: number, month: number, entity: string) => 
+		this.http.get<IDetailedEntityMonthTotal[]>(this.url + this.monthTotalRoute + '/' + year + '/' + month + '/' + entity);
  
 	getAllDrivers = () => this.http.get<IDriver[]>(this.url + this.driversRoute);
 	getAllTransports = () => this.http.get<ITransport[]>(this.url + this.transportsRoute);

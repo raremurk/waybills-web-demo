@@ -83,12 +83,12 @@
       </ng-container>
 
       <ng-container matColumnDef="fuel">
-        <th mat-header-cell *matHeaderCellDef colspan="2"> ГСМ </th>
+        <th mat-header-cell *matHeaderCellDef colspan="2"> <div class="fuel-header">ГСМ</div> </th>        
       </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="mainHeadersColumns" class="small-header"></tr>
       <tr mat-header-row *matHeaderRowDef="childHeadersColumns" class="small-header"></tr>
       <tr mat-row *matRowDef="let row; columns: dataColumns;"></tr> 
     </table>
-  </div>  
+  </div>
 </div>
