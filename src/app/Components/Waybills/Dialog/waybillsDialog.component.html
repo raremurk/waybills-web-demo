@@ -14,7 +14,7 @@
       <button mat-icon-button *ngIf="data.editMode" (click)="saveWaybill()"><mat-icon>check</mat-icon></button>
       <button mat-icon-button *ngIf="waybill.id && data.editMode" (click)="disableEdit()"><mat-icon>arrow_back</mat-icon></button>
       <button mat-icon-button *ngIf="!data.editMode" (click)="enableEdit()"><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+      <button mat-icon-button [mat-dialog-close]="changesWereMade"><mat-icon>close</mat-icon></button>
     </div>
 
   </div>
