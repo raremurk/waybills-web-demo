@@ -97,8 +97,12 @@ h1, h2, h3, h4, h5{ margin: 0; }
   @include mat.button-density(-2);  
 }
 
-.button-toggle-3{
+.button-toggle-density-3{
   @include mat.button-toggle-density(-3);  
+}
+
+.tabs-density-3{
+  @include mat.tabs-density(-3);  
 }
 
 .custom-mat-form-field-disabled-style{
@@ -106,4 +110,21 @@ h1, h2, h3, h4, h5{ margin: 0; }
     .mat-mdc-input-element, .mat-mdc-select-value{ color: #545454 !important; }
     .mdc-line-ripple::before{ background-color: #00000099; }
   }
+}
+
+.mat-select-font-bold{
+  .mat-mdc-select-value{ font-weight: bold; }
+} 
+
+.custom-mat-tab-labels{
+  .mdc-tab__content > span {
+    font-size: 16px ;
+    font-weight: bold;    
+  }
+}
+
+.tabs-custom-overflow{
+  .mat-mdc-tab-body-wrapper{ overflow: initial; }
+  .mat-mdc-tab-body-active{ overflow: initial !important; }
+  .mat-mdc-tab-body-content{ overflow: initial; }
 }

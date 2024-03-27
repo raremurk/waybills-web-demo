@@ -1,0 +1,36 @@
+th{ font-weight: bold; }
+.small-header{ height: 22px; }
+
+.mat-column-driver, .mat-column-transport, .mat-column-date{ white-space: nowrap; }
+
+.mat-column-date, .mat-column-startFuel, .mat-column-fuelTopUp, .mat-column-endFuel, .mat-column-factFuelConsumption,
+.mat-column-normalFuelConsumption, .mat-column-fuelEconomy{
+  text-align: end;
+}
+
+.mat-column-check{ width: 56px; }
+
+.mat-column-fuelConsumption{ border-bottom-width: 0; }
+.fuel-consumption-header{
+  display: flex;
+  justify-content: center;
+  padding: 0 70.95px 0 calc(50% - 16px);
+}
+
+.mat-column-factFuelConsumption, .mat-column-normalFuelConsumption{ min-width: 108px; }
+.mat-column-open{ width: 68px; }
+
+.mat-mdc-footer-row td{
+  font-size: 18px;
+  font-weight: bold;
+  border-top: 1px solid #1F1F1F;
+}
+
+.code-cell{
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 2px; 
+}
