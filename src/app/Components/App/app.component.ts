@@ -14,8 +14,8 @@ import { DateService } from "../../Services/date.service";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent{
-  labels: string[] = ['Путевые листы', 'Итого за месяц', 'Отчеты', 'Водители', 'Транспорт'];
-	links: string[] = ['/waybills', '/monthTotal', '/reports', '/drivers', '/transports'];
+  labels: string[] = ['Путевые листы', 'Итого за месяц', 'Отчеты', 'Топливо', 'Водители', 'Транспорт'];
+	links: string[] = ['/waybills', '/monthTotal', '/reports', '/fuel', '/drivers', '/transports'];
 
   constructor(public dateService: DateService){ }
 }

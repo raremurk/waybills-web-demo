@@ -1,0 +1,53 @@
+th{ font-weight: bold; }
+.table-header{ height: 44px; }
+
+.mat-column-driver{ padding-left: 32px; }
+.mat-column-driver, .mat-column-transport{
+  min-width: 300px;
+  width: 300px;  
+}
+
+.mat-column-startFuel, .mat-column-fuelTopUp, .mat-column-endFuel, .mat-column-factFuelConsumption{
+  min-width: 112px;
+  width: 25%;
+  text-align: end;
+}
+
+.mat-column-deviation{
+  min-width: 88px;
+  width: 88px;
+}
+
+.mat-column-expand{
+  min-width: 56px;
+  width: 56px;
+  overflow: initial;
+}
+
+.mat-column-expandedRow{
+  padding: 0;
+  tr:first-child:not(:only-child) td{ border-top: 1px solid #E0E0E0; }
+}
+
+.data-row td{ border-bottom-width: 0; }
+tr.expanded-row{ height: 0;}
+
+.mdc-data-table__row:hover{
+  font-weight: bold;
+  background: whitesmoke;
+}
+
+.mat-mdc-footer-row td{
+  font-size: 18px;
+  font-weight: bold;
+  border-top: 1px solid #1F1F1F;
+}
+
+.code-cell{
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 2px; 
+}

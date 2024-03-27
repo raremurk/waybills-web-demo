@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="header justify-center">
+    <h1>{{title}}</h1>
+  </div>
+  <div class="tabs-density-3 tabs-custom-overflow custom-mat-tab-labels">
+    <mat-tab-group [(selectedIndex)]="tabIndex" mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
+      <mat-tab label="Итого">
+        <div class="text-center table-density-4 button-toggle-density-3 icon-button-density-3 mt-2">
+          <mat-button-toggle-group [(ngModel)]="mainEntity" class="font-bold">
+            <mat-button-toggle value="driver">По водителям</mat-button-toggle>
+            <mat-button-toggle value="transport">По транспорту</mat-button-toggle>
+          </mat-button-toggle-group>
+          @if (mainEntity === 'driver') {
+            <drivers-fuel (identifiers)="showWaybills($event)"></drivers-fuel>
+          } @else {
+            <transports-fuel (identifiers)="showWaybills($event)"></transports-fuel>
+          }
+        </div>
+      </mat-tab>
+      <mat-tab label="Путевые листы">
+        <div class="text-center table-density-4 form-field-density-5 mt-2">
+          <fuel-waybills [identifiers]="identifiers"></fuel-waybills>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

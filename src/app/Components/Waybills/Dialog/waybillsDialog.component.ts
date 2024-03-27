@@ -51,6 +51,7 @@ import { DataService } from "../../../Services/data.service";
 export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   dialogTitle = 'Путевой лист №';
   minDate = new Date(2023, 0, 1);
+  changesWereMade = false;
   waybill: WaybillCreation | WaybillView = new WaybillCreation();
   iWaybill: IWaybill = <IWaybill>{};
 
@@ -122,6 +123,7 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
           this.driverFilter = this.iWaybill.driver ?? '';
           this.dataSource.data = this.waybill.operations;
           this.data.editMode = false;
+          this.changesWereMade = true;
       });
     }
   }

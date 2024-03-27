@@ -1,5 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { IDriverFuelMonthTotal } from "../Interfaces/Fuel/iDriverFuelMonthTotal";
+import { IFuelWaybill } from "../Interfaces/Fuel/iFuelWaybill";
+import { ITransportFuelMonthTotal } from "../Interfaces/Fuel/iTransportFuelMonthTotal";
 import { ICostPriceReport } from "../Interfaces/iCostPriceReport";
 import { IDriver } from "../Interfaces/iDriver";
 import { IShortWaybill } from "../Interfaces/iShortWaybill";
@@ -15,8 +18,11 @@ export class DataService {
 	transportsRoute = 'transports';
 	waybillsRoute = 'waybills';
 	reportsRoute = 'reports';
-	costPriceReportRoute = 'reports/costCode';
-	monthTotalRoute = 'reports/monthTotal';
+	costPriceReportRoute = `${this.reportsRoute}/costCode`;
+	monthTotalRoute = `${this.reportsRoute}/monthTotal`;
+	driversFuelMonthTotalRoute = `${this.reportsRoute}/driversFuelMonthTotal`;
+	transportsFuelMonthTotalRoute = `${this.reportsRoute}/transportsFuelMonthTotal`;
+	fuelWaybillsRoute = `${this.waybillsRoute}/fuelOnly`;
 
 	constructor(private http: HttpClient) { }
 
@@ -24,6 +30,13 @@ export class DataService {
 		this.http.get<ICostPriceReport[]>(this.url + this.costPriceReportRoute + '/' + year + '/' + month + '/' + price);
 	getMonthTotals = (year: number, month: number, entity: string) => 
 		this.http.get<IDetailedEntityMonthTotal[]>(this.url + this.monthTotalRoute + '/' + year + '/' + month + '/' + entity);
+
+	getDriversFuelMonthTotal = (year: number, month: number) => 
+		this.http.get<IDriverFuelMonthTotal[]>(this.url + this.driversFuelMonthTotalRoute + '/' + year + '/' + month);
+	getTransportsFuelMonthTotal = (year: number, month: number) => 
+		this.http.get<ITransportFuelMonthTotal[]>(this.url + this.transportsFuelMonthTotalRoute + '/' + year + '/' + month);
+	getFuelWaybills = (year: number, month: number, driverId: number, transportId: number) => 
+		this.http.get<IFuelWaybill[]>(this.url + this.fuelWaybillsRoute + '/' + year + '/' + month + '/' + driverId + '/' + transportId);
  
 	getAllDrivers = () => this.http.get<IDriver[]>(this.url + this.driversRoute);
 	getAllTransports = () => this.http.get<ITransport[]>(this.url + this.transportsRoute);
