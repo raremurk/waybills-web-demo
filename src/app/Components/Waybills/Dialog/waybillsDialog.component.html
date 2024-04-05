@@ -19,72 +19,93 @@
 
   </div>
 
-  <div class="flex gap-4 items-end mt-2">
-
-    <div>
-      <div class="flex gap-1.5 items-center justify-end">
-        <h4>Шифр</h4>
-        <mat-form-field class="w-24">
-          <input matInput [matAutocomplete]="transport" [(ngModel)]="transportFilter" (ngModelChange)="filterTransports()" [disabled]="!data.editMode">
-          <mat-autocomplete #transport="matAutocomplete" (optionSelected)='setTransport($event.option.value)' [displayWith]="getTransportCode">
-            <mat-option *ngFor="let transport of filteredTransports" [value]="transport">{{transport.code}}</mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+  <div class="flex justify-between items-end mt-2 mb-1">
+    <div class="flex gap-4 items-end">
+      <div>
+        <div class="flex gap-1.5 items-center justify-end">
+          <h4>Шифр</h4>
+          <mat-form-field class="w-24">
+            <input matInput [matAutocomplete]="transport" [(ngModel)]="transportFilter" (ngModelChange)="filterTransports()" [disabled]="!data.editMode">
+            <mat-autocomplete #transport="matAutocomplete" (optionSelected)='setTransport($event.option.value)' [displayWith]="getTransportCode">
+              <mat-option *ngFor="let transport of filteredTransports" [value]="transport">{{transport.code}}</mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+  
+        <div class="my-1">
+          <mat-form-field class="icon-button-density-3 w-full">
+            <input matInput [min]="minDate" [matDatepicker]="picker" [(ngModel)]="waybill.date" class="hidden" [disabled]="!data.editMode">
+            <span class="font-bold">{{waybill.date | rangeDate : waybill.days}}</span>
+            <mat-datepicker #picker></mat-datepicker>
+            <button mat-icon-button matSuffix color="primary" (click)="picker.open()" [disabled]="!data.editMode"><mat-icon>today</mat-icon></button>
+          </mat-form-field>
+        </div>
+        <div class="flex items-center justify-between w-72">
+          <h4>Водитель</h4>
+          <mat-form-field class="w-52">
+            <input matInput [matAutocomplete]="driver" [(ngModel)]="driverFilter" (ngModelChange)="filterDrivers()" spellcheck="false" [disabled]="!data.editMode">
+            <mat-autocomplete #driver="matAutocomplete" (optionSelected)='setDriver($event.option.value)' [displayWith]="driverFullNamePipe.transform">
+              <mat-option *ngFor="let driver of filteredDrivers" [value]="driver">{{driver | driverFullName}}</mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
       </div>
-
-      <div class="my-1">
-        <mat-form-field class="icon-button-density-3 w-full">
-          <input matInput [min]="minDate" [matDatepicker]="picker" [(ngModel)]="waybill.date" class="hidden" [disabled]="!data.editMode">
-          <span class="font-bold">{{waybill.date | rangeDate : waybill.days}}</span>
-          <mat-datepicker #picker></mat-datepicker>
-          <button mat-icon-button matSuffix color="primary" (click)="picker.open()" [disabled]="!data.editMode"><mat-icon>today</mat-icon></button>
-        </mat-form-field>
+  
+      <div class="text-center">
+        <h4>Транспорт</h4>
+        <div class="display-value-cell mb-1">{{waybill.transport?.name}}</div>
+        <div class="flex gap-1.5 items-center">
+          <h4>Табельный №</h4>
+          <div class="display-value-cell w-16">{{waybill.driver?.personnelNumber}}</div>
+        </div>
       </div>
-      <div class="flex items-center justify-between w-72">
-        <h4>Водитель</h4>
-        <mat-form-field class="w-52">
-          <input matInput [matAutocomplete]="driver" [(ngModel)]="driverFilter" (ngModelChange)="filterDrivers()" spellcheck="false" [disabled]="!data.editMode">
-          <mat-autocomplete #driver="matAutocomplete" (optionSelected)='setDriver($event.option.value)' [displayWith]="driverFullNamePipe.transform">
-            <mat-option *ngFor="let driver of filteredDrivers" [value]="driver">{{driver | driverFullName}}</mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+  
+      <div class="text-center">
+        <h4>Выдача ГСМ</h4>
+        <div class="grid grid-cols-3 gap-x-1 mt-1">
+          <h5>Начало</h5>
+          <h5>Выдано</h5>
+          <h5>Конец</h5>
+          <mat-form-field class="w-20">
+            <input matInput [(ngModel)]="waybill.startFuel" [disabled]="!data.editMode">
+          </mat-form-field>
+          <mat-form-field class="w-20">
+            <input matInput [(ngModel)]="waybill.fuelTopUp" [disabled]="!data.editMode">
+          </mat-form-field>
+          <mat-form-field class="w-20">
+            <input matInput [(ngModel)]="waybill.endFuel" [disabled]="!data.editMode">
+          </mat-form-field>
+        </div>
       </div>
-    </div>
+  
+      <div class="text-center">
+        <h4>Расход ГСМ</h4>
+        <div class="grid grid-cols-2 gap-x-1 mt-1">
+          <h5>По факту</h5>
+          <h5>По норме</h5>
+          <div class="display-value-cell w-20">{{waybill.factFuelConsumption}}</div>
+          <div class="display-value-cell w-20">{{waybill.normalFuelConsumption}}</div>
+        </div>
+      </div>
+    </div> 
 
     <div class="text-center">
-      <h4>Транспорт</h4>
-      <div class="display-value-cell mb-1">{{waybill.transport?.name}}</div>
-      <div class="flex gap-1.5 items-center">
-        <h4>Табельный №</h4>
-        <div class="display-value-cell w-16">{{waybill.driver?.personnelNumber}}</div>
+      <div class="flex gap-1 items-center justify-center icon-button-density-5">
+        <h4>Omnicomm</h4>
+        <button mat-icon-button color="primary" (click)="getOmnicommFuel()"><mat-icon>downloading</mat-icon></button>
       </div>
-    </div>
-
-    <div class="text-center">
-      <h4>Выдача ГСМ</h4>
-      <div class="grid grid-cols-3 gap-x-1 mt-1">
+      <h5>{{omnicommFuel.transportName}}</h5>
+      <div class="grid grid-cols-5 gap-x-1">
         <h5>Начало</h5>
         <h5>Выдано</h5>
         <h5>Конец</h5>
-        <mat-form-field class="w-20">
-          <input matInput [(ngModel)]="waybill.startFuel" [disabled]="!data.editMode">
-        </mat-form-field>
-        <mat-form-field class="w-20">
-          <input matInput [(ngModel)]="waybill.fuelTopUp" [disabled]="!data.editMode">
-        </mat-form-field>
-        <mat-form-field class="w-20">
-          <input matInput [(ngModel)]="waybill.endFuel" [disabled]="!data.editMode">
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="text-center">
-      <h4>Расход ГСМ</h4>
-      <div class="grid grid-cols-2 gap-x-1 mt-1">
-        <h5>По факту</h5>
-        <h5>По норме</h5>
-        <div class="display-value-cell w-20">{{waybill.factFuelConsumption}}</div>
-        <div class="display-value-cell w-20">{{waybill.normalFuelConsumption}}</div>
+        <h5>Расход</h5>
+        <h5>Сливы</h5>
+        <div class="display-value-cell w-16">{{omnicommFuel.startFuel}}</div>
+        <div class="display-value-cell w-16">{{omnicommFuel.fuelTopUp}}</div>
+        <div class="display-value-cell w-16">{{omnicommFuel.endFuel}}</div>
+        <div class="display-value-cell w-16">{{omnicommFuel.fuelConsumption}}</div>
+        <div class="display-value-cell w-16">{{omnicommFuel.draining}}</div>
       </div>
     </div>
   </div>

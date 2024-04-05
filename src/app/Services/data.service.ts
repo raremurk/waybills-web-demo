@@ -1,3 +1,4 @@
+import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { IDriverFuelMonthTotal } from "../Interfaces/Fuel/iDriverFuelMonthTotal";
@@ -5,11 +6,13 @@ import { IFuelWaybill } from "../Interfaces/Fuel/iFuelWaybill";
 import { ITransportFuelMonthTotal } from "../Interfaces/Fuel/iTransportFuelMonthTotal";
 import { ICostPriceReport } from "../Interfaces/iCostPriceReport";
 import { IDriver } from "../Interfaces/iDriver";
+import { IOmnicommFuel } from "../Interfaces/IOmnicommFuel";
 import { IShortWaybill } from "../Interfaces/iShortWaybill";
 import { ITransport } from "../Interfaces/ITransport";
 import { IWaybill } from "../Interfaces/iWaybill";
 import { IDetailedEntityMonthTotal } from "../Interfaces/MonthTotal/iDetailedEntityMonthTotal";
 import { WaybillCreation } from "../Models/Waybill/waybillCreation";
+import '@angular/common/locales/global/ru';
  
 @Injectable({ providedIn: 'root' })
 export class DataService {    
@@ -22,9 +25,18 @@ export class DataService {
 	monthTotalRoute = `${this.reportsRoute}/monthTotal`;
 	driversFuelMonthTotalRoute = `${this.reportsRoute}/driversFuelMonthTotal`;
 	transportsFuelMonthTotalRoute = `${this.reportsRoute}/transportsFuelMonthTotal`;
+	omnicommFuelRoute = `${this.reportsRoute}/omnicommFuel`;
+
 	fuelWaybillsRoute = `${this.waybillsRoute}/fuelOnly`;
+	excelWithWaybillsRoute = `${this.waybillsRoute}/excel`;
 
 	constructor(private http: HttpClient) { }
+
+	getLinkOfExcelWithWaybills = (year: number, month: number, driverId: number) =>
+		this.url + this.excelWithWaybillsRoute + '/' + year + '/' + month + '/' + driverId;
+
+	getOmnicommFuel = (date: Date, omnicommId: number) => 
+		this.http.get<IOmnicommFuel>(this.url + this.omnicommFuelRoute + '/' + formatDate(date, 'yyyy-MM-dd', 'ru') + '/' + omnicommId);
 
 	getCostPriceReport = (year: number, month: number, price: number) => 
 		this.http.get<ICostPriceReport[]>(this.url + this.costPriceReportRoute + '/' + year + '/' + month + '/' + price);

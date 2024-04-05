@@ -16,6 +16,10 @@
       <mat-label>Коэффициент</mat-label>
       <input matInput [(ngModel)]="transport.coefficient">
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Omnicomm ID</mat-label>
+      <input matInput [(ngModel)]="transport.omnicommId">
+    </mat-form-field>
     <button mat-raised-button (click)="createTransport()" color="green">Добавить</button>
   </div>
 </div>    

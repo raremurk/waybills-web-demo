@@ -14,6 +14,7 @@ import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { firstValueFrom } from "rxjs";
 import { IDriver } from "../../../Interfaces/iDriver";
+import { IOmnicommFuel } from "../../../Interfaces/IOmnicommFuel";
 import { ITransport } from "../../../Interfaces/ITransport";
 import { IWaybill } from "../../../Interfaces/iWaybill";
 import { OperationCreation } from "../../../Models/Operation/operationCreation";
@@ -54,6 +55,7 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   changesWereMade = false;
   waybill: WaybillCreation | WaybillView = new WaybillCreation();
   iWaybill: IWaybill = <IWaybill>{};
+  omnicommFuel: IOmnicommFuel = { transportName: "—", startFuel: 0, fuelTopUp: 0, endFuel: 0, fuelConsumption: 0, draining: 0 };
 
   transportFilter: ITransport | string = '';
   filteredTransports: ITransport[] = [];
@@ -184,4 +186,9 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   }
 
   keyDescOrder = (a: KeyValue<number,number>, b: KeyValue<number,number>) => a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
+
+  getOmnicommFuel(){
+    let omnicommId = this.waybill.transport ? this.waybill.transport.omnicommId : 0;
+    this.dataService.getOmnicommFuel(this.waybill.date, omnicommId).subscribe((data: IOmnicommFuel) => this.omnicommFuel = data);
+  }
 }
