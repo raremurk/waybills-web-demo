@@ -121,4 +121,7 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
       this.dataSource.data = [...this.dataSource.data];
     });
   }
+
+  getLinkOfExcelWithWaybills = () => 
+    this.dataService.getLinkOfExcelWithWaybills(this.dateService.year, this.dateService.month, this.driverId)
 }

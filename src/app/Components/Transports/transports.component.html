@@ -29,6 +29,15 @@
           </mat-form-field>
           <span *ngSwitchDefault>{{transport.coefficient}}</span></td>
       </ng-container>
+
+      <ng-container matColumnDef="omnicommId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Omnicomm ID </th>
+        <td mat-cell *matCellDef="let transport" [ngSwitch]="transport.id">  
+          <mat-form-field *ngSwitchCase="editableTransport.id">
+            <input matInput [(ngModel)]="editableTransport.omnicommId">
+          </mat-form-field>
+          <span *ngSwitchDefault>{{transport.omnicommId}}</span></td>
+      </ng-container>
   
       <ng-container matColumnDef="operations">
         <th mat-header-cell *matHeaderCellDef>

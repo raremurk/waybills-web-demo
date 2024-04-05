@@ -3,4 +3,5 @@ export class Transport{
   public name: string = '';
   public code: string = '';
   public coefficient: string = '';
+  public omnicommId: string = '';  
 }

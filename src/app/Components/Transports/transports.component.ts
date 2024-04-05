@@ -35,7 +35,7 @@ export class TransportsComponent implements OnInit, AfterViewInit{
   transport = new Transport();
   editableTransport = new Transport();
   dataSource = new MatTableDataSource<ITransport>();
-  displayedColumns = ['name', 'code', 'coefficient', 'operations'];
+  displayedColumns = ['name', 'code', 'coefficient', 'omnicommId', 'operations'];
   @ViewChild(MatSort) sort = new MatSort();
 
   constructor(private dialog: MatDialog, private titleService: Title, private dataService: DataService){ }
