@@ -1,5 +1,6 @@
 th{ font-weight: bold; }
 .small-header{ height: 22px; }
+.mat-mdc-header-row:last-child th { top: 22px !important; }
 
 .mat-column-driver, .mat-column-transport, .mat-column-date{ white-space: nowrap; }
 

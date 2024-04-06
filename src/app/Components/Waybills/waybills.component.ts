@@ -74,7 +74,7 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
   }
 
   openDialog(waybillId: number, mode: boolean){
-    let dialogRed = this.dialog.open(WaybillsDialogComponent, 
+    let dialogRef = this.dialog.open(WaybillsDialogComponent, 
       { autoFocus: 'dialog', 
         disableClose: true,
         height: "calc(100% - 16px)", 
@@ -87,7 +87,11 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
           drivers: this.drivers,
           transports: this.transports}
     })
-    dialogRed.afterClosed().subscribe();
+    dialogRef.afterClosed().subscribe((changesWereMade: boolean) => {
+      if(changesWereMade === true){
+        this.loadAllWaybills();
+      }
+    });
   }
 
   openDeleteDialog(waybill: IShortWaybill){

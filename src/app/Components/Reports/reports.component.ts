@@ -43,7 +43,7 @@ import * as XLSX from 'xlsx';
 })
 export class ReportsComponent implements OnInit, AfterViewInit{
   title = 'Отчеты';
-  price = '27';
+  price = '32.00';
   drivers: IDriver[] = [];
   transports: ITransport[] = [];
   dataSource = new MatTableDataSource<ICostPriceReport>();
@@ -67,7 +67,7 @@ export class ReportsComponent implements OnInit, AfterViewInit{
   }
 
   openDialog(waybillId: number){
-    let dialogRed = this.dialog.open(WaybillsDialogComponent, 
+    let dialogRef = this.dialog.open(WaybillsDialogComponent, 
       { autoFocus: 'dialog', 
         disableClose: true,
         height: "calc(100% - 16px)", 
@@ -80,7 +80,11 @@ export class ReportsComponent implements OnInit, AfterViewInit{
           drivers: this.drivers,
           transports: this.transports}
     })
-    dialogRed.afterClosed().subscribe();
+    dialogRef.afterClosed().subscribe((changesWereMade: boolean) => {
+      if(changesWereMade === true){
+        this.getCostPriceReport();
+      }
+    });
   }
 
   loadAllDrivers = () => this.dataService.getAllDrivers().subscribe((data: IDriver[]) => this.drivers = data);
