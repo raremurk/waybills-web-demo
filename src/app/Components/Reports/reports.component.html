@@ -2,8 +2,9 @@
   <div class="header gap-4 form-field-density-5">
     <button mat-raised-button class="invisible mr-auto"><mat-icon>description</mat-icon>Скачать</button>
     <h1>{{title}}</h1>
-    <mat-form-field class="w-20">
-      <input matInput [(ngModel)]="price" (ngModelChange)="getCostPriceReport()">
+    <mat-form-field class="w-28">
+      <input matInput [(ngModel)]="price" (ngModelChange)="getCostPriceReport()" placeholder="0.00">
+      <span matSuffix class="font-bold pr-2">BYN</span>
     </mat-form-field>
     <button mat-raised-button color="green" (click)="exportExcel()" class="ml-auto"><mat-icon>description</mat-icon>Скачать</button>
   </div>

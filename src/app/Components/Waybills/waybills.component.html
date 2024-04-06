@@ -1,11 +1,17 @@
 <div class="container">
-  <div class="header gap-4 form-field-density-5">
+  <div class="header gap-4 form-field-density-5 icon-button-density-5">
     <a mat-raised-button class="invisible mr-auto"><mat-icon>description</mat-icon>Скачать</a>
     <h1>{{title}}</h1>
-    <mat-form-field>
+    <mat-form-field class="w-64">
       <mat-select [(ngModel)]="driverId" (ngModelChange)="loadAllWaybills()" placeholder="Укажите водителя">
         <mat-option *ngFor="let driver of drivers" [value]="driver.id">{{driver | driverFullName}}</mat-option>
       </mat-select>
+      @if (driverId) {
+        <button matSuffix mat-icon-button
+          (click)="driverId = 0; $event.stopPropagation(); loadAllWaybills();">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
     </mat-form-field>
     <a mat-raised-button color="green" [href]="getLinkOfExcelWithWaybills()" class="ml-auto" target="_blank">
       <mat-icon>description</mat-icon>
