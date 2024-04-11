@@ -1,105 +1,103 @@
-<div class="container">
-  <div class="header gap-4 form-field-density-5 icon-button-density-5">
-    <a mat-raised-button class="invisible mr-auto"><mat-icon>description</mat-icon>Скачать</a>
-    <h1>{{title}}</h1>
-    <mat-form-field class="w-64">
-      <mat-select [(ngModel)]="driverId" (ngModelChange)="loadAllWaybills()" placeholder="Укажите водителя">
-        <mat-option *ngFor="let driver of drivers" [value]="driver.id">{{driver | driverFullName}}</mat-option>
-      </mat-select>
-      @if (driverId) {
-        <button matSuffix mat-icon-button
-          (click)="driverId = 0; $event.stopPropagation(); loadAllWaybills();">
-          <mat-icon>close</mat-icon>
-        </button>
-      }
-    </mat-form-field>
-    <a mat-raised-button color="green" [href]="getLinkOfExcelWithWaybills()" class="ml-auto" target="_blank">
-      <mat-icon>description</mat-icon>
-      Скачать
-    </a>
-  </div>
-  <div class="table-density-4 sort-arrow-margin-0">
-    <table mat-table [dataSource]="dataSource" matSort>
+<div class="flex gap-4 items-center bg-neutral-100 form-field-density-5 icon-button-density-5 mt-4 px-4">
+  <a mat-raised-button class="invisible mr-auto"><mat-icon>description</mat-icon>Скачать</a>
+  <h1 class="leading-10 text-center py-2">{{title}}</h1>
+  <mat-form-field class="w-64" [class.clearable-select]="driverId" class="mat-select-font-bold">
+    <mat-select [(ngModel)]="driverId" (ngModelChange)="loadAllWaybills()" placeholder="Укажите водителя">
+      <mat-option *ngFor="let driver of drivers" [value]="driver.id">{{driver | driverFullName}}</mat-option>
+    </mat-select>
+    @if (driverId) {
+      <button matSuffix mat-icon-button
+        (click)="driverId = 0; $event.stopPropagation(); loadAllWaybills();">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+  <a mat-raised-button color="green" [href]="getLinkOfExcelWithWaybills()" class="ml-auto" target="_blank">
+    <mat-icon>description</mat-icon>
+    Скачать
+  </a>
+</div>
+<div class="container table-density-4 sort-arrow-margin-0">
+  <table mat-table [dataSource]="dataSource" matSort>
 
-      <ng-container matColumnDef="number">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Номер </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.number}}</td>
-      </ng-container>
+    <ng-container matColumnDef="number">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Номер </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.number}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header rowspan="2" class="sort-header-center"> Дата </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.date | rangeDate : waybill.days}}</td>
-      </ng-container>
-  
-      <ng-container matColumnDef="driverShortFullName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header rowspan="2"> Водитель </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.driverShortFullName}}</td>
-      </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header rowspan="2" class="sort-header-center"> Дата </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.date | rangeDate : waybill.days}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="transportName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header rowspan="2"> Транспорт </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.transportName}}</td>
-      </ng-container>
+    <ng-container matColumnDef="driverShortFullName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header rowspan="2"> Водитель </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.driverShortFullName}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="days">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Дни </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.days}}</td>
-      </ng-container>
+    <ng-container matColumnDef="transportName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header rowspan="2"> Транспорт </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.transportName}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="hours">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Часы </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.hours | toFixed : 1}}</td>
-      </ng-container>
+    <ng-container matColumnDef="days">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Дни </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.days}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="earnings">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Сумма </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.earnings | toFixed : 2}}</td>
-      </ng-container>
+    <ng-container matColumnDef="hours">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Часы </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.hours | toFixed : 1}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="weekend">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Выходные </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.weekend | toFixed : 2}}</td>
-      </ng-container>
+    <ng-container matColumnDef="earnings">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Сумма </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.earnings | toFixed : 2}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="bonus">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Премия </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.bonus | toFixed : 2}}</td>
-      </ng-container>
+    <ng-container matColumnDef="weekend">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Выходные </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.weekend | toFixed : 2}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="factFuelConsumption">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Факт </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.factFuelConsumption}}</td>
-      </ng-container>
+    <ng-container matColumnDef="bonus">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Премия </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.bonus | toFixed : 2}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="normalFuelConsumption">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Норма </th>
-        <td mat-cell *matCellDef="let waybill">{{waybill.normalFuelConsumption}}</td>
-      </ng-container>
+    <ng-container matColumnDef="factFuelConsumption">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Факт </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.factFuelConsumption}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="conditionalReferenceHectares">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Условный гектар </th>    
-        <td mat-cell *matCellDef="let waybill">{{waybill.conditionalReferenceHectares | toFixed: 2}}</td>
-      </ng-container>
- 
-      <ng-container matColumnDef="operations">
-        <th mat-header-cell *matHeaderCellDef rowspan="2">
-          <button mat-raised-button color="primary" (click)="openCreateDialog()"><mat-icon>add</mat-icon>Добавить</button>
-        </th>
-        <td mat-cell *matCellDef="let waybill">
-          <div class="flex gap-4 justify-center icon-button-density-3">
-            <button mat-icon-button color="primary" (click)="openEditDialog(waybill)"><mat-icon>open_in_new</mat-icon></button>
-            <button mat-icon-button color="warn" (click)="openDeleteDialog(waybill)"><mat-icon>delete</mat-icon></button>
-          </div>
-        </td>
-      </ng-container>
+    <ng-container matColumnDef="normalFuelConsumption">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Норма </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.normalFuelConsumption}}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="fuel">
-        <th mat-header-cell *matHeaderCellDef colspan="2"> <div class="fuel-header">ГСМ</div> </th>        
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="mainHeadersColumns" class="small-header"></tr>
-      <tr mat-header-row *matHeaderRowDef="childHeadersColumns" class="small-header"></tr>
-      <tr mat-row *matRowDef="let row; columns: dataColumns;"></tr> 
-    </table>
-  </div>
+    <ng-container matColumnDef="conditionalReferenceHectares">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Условный гектар </th>    
+      <td mat-cell *matCellDef="let waybill">{{waybill.conditionalReferenceHectares | toFixed: 2}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="operations">
+      <th mat-header-cell *matHeaderCellDef rowspan="2">
+        <button mat-raised-button color="primary" (click)="openCreateDialog()"><mat-icon>add</mat-icon>Добавить</button>
+      </th>
+      <td mat-cell *matCellDef="let waybill">
+        <div class="flex gap-4 justify-center icon-button-density-3">
+          <button mat-icon-button color="primary" (click)="openEditDialog(waybill)"><mat-icon>open_in_new</mat-icon></button>
+          <button mat-icon-button color="warn" (click)="openDeleteDialog(waybill)"><mat-icon>delete</mat-icon></button>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fuel">
+      <th mat-header-cell *matHeaderCellDef colspan="2"> <div class="fuel-header">ГСМ</div> </th>        
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="mainHeadersColumns" class="small-header"></tr>
+    <tr mat-header-row *matHeaderRowDef="childHeadersColumns" class="small-header"></tr>
+    <tr mat-row *matRowDef="let row; columns: dataColumns;"></tr> 
+  </table>
 </div>

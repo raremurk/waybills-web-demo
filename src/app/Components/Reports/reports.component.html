@@ -1,66 +1,22 @@
-<div class="container">
-  <div class="header gap-4 form-field-density-5">
-    <button mat-raised-button class="invisible mr-auto"><mat-icon>description</mat-icon>Скачать</button>
-    <h1>{{title}}</h1>
-    <mat-form-field class="w-28">
-      <input matInput [(ngModel)]="price" (ngModelChange)="getCostPriceReport()" placeholder="0.00">
-      <span matSuffix class="font-bold pr-2">BYN</span>
-    </mat-form-field>
-    <button mat-raised-button color="green" (click)="exportExcel()" class="ml-auto"><mat-icon>description</mat-icon>Скачать</button>
-  </div>
-  <div class="table-density-4">
-    <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
-
-      <ng-container matColumnDef="productionCostCode">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc"> ШПЗ </th>
-        <td mat-cell *matCellDef="let row">{{row.productionCostCode}}</td>
-        <td mat-footer-cell *matFooterCellDef> Итого </td>
-      </ng-container>
-
-      <ng-container matColumnDef="conditionalReferenceHectares">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Условный эталонный гектар </th>
-        <td mat-cell *matCellDef="let row">{{row.conditionalReferenceHectares | toFixed: 2}}</td>
-        <td mat-footer-cell *matFooterCellDef>{{getTotalConditionalReferenceHectares() | toFixed: 2}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="costPrice">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Себестоимость </th>
-        <td mat-cell *matCellDef="let row">{{row.costPrice | toFixed: 2}}</td>
-        <td mat-footer-cell *matFooterCellDef>{{getTotalCostPrice() | toFixed: 2}}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="expand">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let row">
-          @if (expandedRow === row) {
-            <mat-icon>keyboard_arrow_up</mat-icon>
-          } @else {
-            <mat-icon>keyboard_arrow_down</mat-icon>
-          }
-        </td>
-        <td mat-footer-cell *matFooterCellDef></td>
-      </ng-container>
-    
-      <ng-container matColumnDef="expandedRow">
-        <td mat-cell *matCellDef="let row" [attr.colspan]="dataColumns.length">
-          <div [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
-            Номера путевых листов:
-            @for (item of row.waybillIdentifiers; track item.id) {
-              <button (click)="openDialog(item.id)">{{item.number}}</button>                
-            }
-          </div>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="dataColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: dataColumns;"
-          class="data-row"
-          [class.active-expanded-row]="expandedRow === row"
-          (click)="expandedRow = expandedRow === row ? null : row">
-      </tr>
-      <tr mat-row *matRowDef="let row; columns: ['expandedRow']" class="expanded-row"></tr>
-      <tr mat-footer-row *matFooterRowDef="dataColumns; sticky: true"></tr>
-    </table>
-  </div>  
+<div class="relative mt-4">
+  <h1 class="leading-9 text-center bg-neutral-100 py-1">{{title}}</h1>
+  <button mat-raised-button color="green" class="download-button"><mat-icon>description</mat-icon>Скачать</button>
 </div>
-
+<div class="tabs-density-3 tabs-custom-overflow custom-mat-tab-labels">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
+    <mat-tab label="Итого за месяц">
+      <ng-template matTabContent>
+        <div class="container mt-2">
+          <month-total></month-total>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Себестоимость">
+      <ng-template matTabContent>
+        <div class="container mt-2">
+          <cost-price></cost-price>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>
