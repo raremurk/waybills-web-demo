@@ -8,13 +8,13 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatIconModule } from "@angular/material/icon";
 import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
-import { Title } from "@angular/platform-browser";
-import { IDetailedEntityMonthTotal } from "../../Interfaces/MonthTotal/iDetailedEntityMonthTotal";
-import { IMonthTotal } from "../../Interfaces/MonthTotal/iMonthTotal";
-import { DataService } from "../../Services/data.service";
-import { DateService } from "../../Services/date.service";
+import { IDetailedEntityMonthTotal } from "../../../Interfaces/MonthTotal/iDetailedEntityMonthTotal";
+import { IMonthTotal } from "../../../Interfaces/MonthTotal/iMonthTotal";
+import { DataService } from "../../../Services/data.service";
+import { DateService } from "../../../Services/date.service";
 
 @Component({
+  selector: 'month-total',
   standalone: true,
   imports: [
     CommonModule,
@@ -36,7 +36,6 @@ import { DateService } from "../../Services/date.service";
   styleUrl: './monthTotal.component.scss'
 })
 export class MonthTotalComponent implements OnInit, AfterViewInit{
-  title = 'Итого за месяц';
   mainEntity = 'Водитель';
   columns = [
     {
@@ -133,10 +132,9 @@ export class MonthTotalComponent implements OnInit, AfterViewInit{
   expandedRow: IDetailedEntityMonthTotal | null = <IDetailedEntityMonthTotal>{};
   @ViewChild(MatSort) sort = new MatSort();
 
-  constructor(private titleService: Title, private dataService: DataService, private dateService: DateService){ }
+  constructor(private dataService: DataService, private dateService: DateService){ }
     
   ngOnInit(){
-    this.titleService.setTitle(this.title);
     this.getMonthTotals();
     this.dateService.dateValueChange.subscribe(() => this.getMonthTotals());
   }
