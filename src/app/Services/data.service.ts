@@ -59,14 +59,6 @@ export class DataService {
 	createWaybill = (waybill: WaybillCreation) => this.http.post<IWaybill>(this.url + this.waybillsRoute, waybill);
 	updateWaybill = (id: number, waybill: WaybillCreation) => this.http.put<IWaybill>(this.url + this.waybillsRoute + '/' + id, waybill);
 	deleteWaybill = (id: number) => this.http.delete(this.url + this.waybillsRoute + '/' + id);
-
-	getAll(route: string){
-		return this.http.get(this.url + route);
-	}
-     
-	getOne(route: string, id: any){
-		return this.http.get(this.url + route + '/' + id);
-	}
      
 	create(route: string, object: any){
 		return this.http.post(this.url + route, object);

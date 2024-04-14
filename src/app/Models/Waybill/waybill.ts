@@ -1,7 +1,7 @@
 import { IDriver } from "../../Interfaces/iDriver";
 import { IWaybill } from "../../Interfaces/iWaybill";
 
-export class Waybill{
+export abstract class Waybill{
   public id: number = 0;
   public number: string = '';
   public date: Date = new Date();

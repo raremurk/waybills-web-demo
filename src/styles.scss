@@ -11,16 +11,8 @@ h1, h2, h3, h4, h5{ margin: 0; }
 
 .container{ padding: 0 16px; }
 
-.table-button-1{
-  width: 128px;
-  letter-spacing: 0;
-}
-
-.table-button-2{
-  width: 108px;
-  letter-spacing: 0;
-  margin-left: 4px;
-}
+.w-120px{ width: 120px; }
+.w-106px{ width: 106px; }
 
 .mat-green{
   background-color: #58BC82 !important;
@@ -52,7 +44,7 @@ h1, h2, h3, h4, h5{ margin: 0; }
 
 .mat-mdc-cell{
 	font-size: 16px;
-  span{ letter-spacing: 0.03125em; }
+  > span{ letter-spacing: 0.03125em; }
 }
 
 .table-density-3{
@@ -115,4 +107,10 @@ h1, h2, h3, h4, h5{ margin: 0; }
 .clearable-select{
   .mat-mdc-select-arrow{ display: none; }
   .mat-mdc-form-field-icon-suffix{ padding-right: 4px; }
+}
+
+.mat-mdc-unelevated-button{
+  border-radius: 9999px !important;
+  .mdc-button__label{ letter-spacing: .006rem; }
+  > .mat-icon{ margin-right: 4px !important; }
 }
