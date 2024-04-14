@@ -1,6 +1,6 @@
 import { IOperation } from "../../Interfaces/iOperation";
 
-export class Operation{
+export abstract class Operation{
   public id: number = 0;
   public productionCostCode: string = '';
   public numberOfRuns: string = '';

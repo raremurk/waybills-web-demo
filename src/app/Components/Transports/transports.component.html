@@ -40,20 +40,21 @@
 
     <ng-container matColumnDef="operations">
       <th mat-header-cell *matHeaderCellDef>
-        <button mat-raised-button color="primary" (click)="openDialog()"><mat-icon>add</mat-icon>Добавить</button>
+        <button mat-flat-button color="primary" (click)="openDialog()"><mat-icon>add</mat-icon>Добавить</button>
       </th>
-      <td mat-cell *matCellDef="let transport" [ngSwitch]="transport.id" class="button-density-2">
-        <div *ngSwitchCase="editableTransport.id" class="flex justify-end">
-          <button mat-raised-button color="green" (click)="updateTransport()" class="table-button-1">
-            <mat-icon>check</mat-icon>Сохранить</button>
-          <button mat-raised-button color="grey" (click)="cancel()" class="table-button-2">
-            <mat-icon>close</mat-icon>Отмена</button>
-        </div>
-        <div *ngSwitchDefault class="flex justify-end">
-          <button mat-raised-button color="primary" (click)="editTransport(transport)" class="table-button-1">
-            <mat-icon>edit</mat-icon>Изменить</button>
-          <button mat-raised-button color="warn" (click)="openDeleteDialog(transport)" class="table-button-2">
-            <mat-icon>delete</mat-icon>Удалить</button>
+      <td mat-cell *matCellDef="let transport">
+        <div class="flex gap-1 button-density-2">
+          @if (transport.id === editableTransport.id) {
+            <button mat-flat-button color="green" (click)="updateTransport()" class="w-120px">
+              <mat-icon>check</mat-icon>Сохранить</button>
+            <button mat-flat-button color="grey" (click)="cancel()" class="w-106px">
+              <mat-icon>close</mat-icon>Отмена</button>
+          } @else {
+            <button mat-flat-button color="primary" (click)="editTransport(transport)" class="w-120px">
+              <mat-icon>edit</mat-icon>Изменить</button>
+            <button mat-flat-button color="warn" (click)="openDeleteDialog(transport)" class="w-106px">
+              <mat-icon>delete</mat-icon>Удалить</button>
+          }
         </div>
       </td>
     </ng-container> 

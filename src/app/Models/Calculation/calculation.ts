@@ -1,6 +1,6 @@
 import { ICalculation } from "../../Interfaces/iCalculation";
 
-export class Calculation{
+export abstract class Calculation{
   public id: number = 0;
   public quantity: string = '';
   public price: string = '';

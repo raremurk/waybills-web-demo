@@ -1,19 +1,23 @@
-<nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false" class="container">
+<nav mat-tab-nav-bar [tabPanel]="tabPanel" mat-stretch-tabs="false">
 	<div class="mr-auto invisible"></div>
-	<a mat-tab-link *ngFor="let link of links; index as i"
-		routerLinkActive #rla="routerLinkActive"
-		[routerLinkActiveOptions]="{exact: false}"
-		[active]="rla.isActive"
-		routerLink="{{link}}"><span class="link">{{labels[i]}}</span></a>
-	<div class="flex items-center gap-2 form-field-density-5 ml-auto">
+	@for (route of routes; track route) {
+		<a mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" routerLink="{{route.link}}">
+			<span class="label">{{route.label}}</span>
+		</a>
+  }
+	<div class="flex items-center gap-2 form-field-density-5 ml-auto pr-4">
 		<mat-form-field class="w-40">
 			<mat-select [(ngModel)]="dateService.month">
-				<mat-option *ngFor="let month of dateService.months; index as i" [value]="i+1">{{month}}</mat-option>
+				@for (month of dateService.months; track month) {
+					<mat-option [value]="$index + 1">{{month}}</mat-option>
+				}
 			</mat-select>
 		</mat-form-field>
 		<mat-form-field class="w-24">
 			<mat-select [(ngModel)]="dateService.year">
-				<mat-option *ngFor="let year of dateService.years" [value]="year">{{year}}</mat-option>
+				@for (year of dateService.years; track year) {
+					<mat-option [value]="year">{{year}}</mat-option>
+				}
 			</mat-select>
 		</mat-form-field>
 	</div>

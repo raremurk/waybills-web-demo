@@ -1,9 +1,9 @@
 <div mat-dialog-content>
-  <div class="flex items-center justify-between icon-button-density-5">
+  <div class="flex items-center justify-between icon-button-density-3">
     <h2>Добавление транспорта</h2>
     <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
   </div>
-  <div class="text-center mt-5">
+  <div class="text-center mt-4">
     <mat-form-field>
       <mat-label>Название транспорта</mat-label>
       <input matInput [(ngModel)]="transport.name">
@@ -20,6 +20,6 @@
       <mat-label>Omnicomm ID</mat-label>
       <input matInput [(ngModel)]="transport.omnicommId">
     </mat-form-field>
-    <button mat-raised-button (click)="createTransport()" color="green">Добавить</button>
+    <button mat-flat-button (click)="createTransport()" color="green">Добавить</button>
   </div>
 </div>    
