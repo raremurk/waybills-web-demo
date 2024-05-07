@@ -1,25 +1,43 @@
-<h1 class="leading-9 text-center bg-neutral-100 mt-4 py-1">{{title}}</h1>
-<div class="tabs-density-3 tabs-custom-overflow custom-mat-tab-labels">
+<div class="tabs-density-3 custom-mat-tab-labels bg-neutral-100 mt-4">
+  <h1 class="leading-9 text-center py-1">{{title}}</h1>
   <mat-tab-group [(selectedIndex)]="tabIndex" mat-stretch-tabs="false" mat-align-tabs="center" animationDuration="0ms">
-    <mat-tab label="Итого">
-      <div class="container mt-2">
-        <div class="text-center button-toggle-density-3">
-          <mat-button-toggle-group [(ngModel)]="mainEntity" class="font-bold">
-            <mat-button-toggle value="driver">По водителям</mat-button-toggle>
-            <mat-button-toggle value="transport">По транспорту</mat-button-toggle>
-          </mat-button-toggle-group>
-        </div>
-        @if (mainEntity === 'driver') {
-          <drivers-fuel (identifiers)="showWaybills($event)"></drivers-fuel>
-        } @else {
-          <transports-fuel (identifiers)="showWaybills($event)"></transports-fuel>
-        }
-      </div>
-    </mat-tab>
-    <mat-tab label="Путевые листы">
-      <div class="container mt-2">
-        <fuel-waybills [identifiers]="identifiers"></fuel-waybills>
-      </div>
-    </mat-tab>
+    <mat-tab label="Итого" #fuelTotal></mat-tab>
+    <mat-tab label="Путевые листы" #fuelWaybills></mat-tab>
   </mat-tab-group>
+</div>
+<div class="container">
+  <div class="text-center mt-2" [class.hidden]="!fuelTotal.isActive">
+    <mat-button-toggle-group [(ngModel)]="mainEntity" class="button-toggle-density-3">
+      <mat-button-toggle value="driver">По водителям</mat-button-toggle>
+      <mat-button-toggle value="transport">По транспорту</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div class="flex gap-4 justify-center mat-select-font-bold form-field-density-5 icon-button-density-5 mt-2 mb-0.5" [class.hidden]="!fuelWaybills.isActive">
+    <mat-form-field class="w-64" [class.clearable-select]="identifiers.driverId">
+      <mat-select [(ngModel)]="identifiers.driverId" (ngModelChange)="updateIdentifiers()" placeholder="Укажите водителя">
+        <mat-option *ngFor="let driver of drivers" [value]="driver.id">{{driver | driverFullName}}</mat-option>
+      </mat-select>
+      @if (identifiers.driverId) {
+        <button matSuffix mat-icon-button
+          (click)="identifiers.driverId = 0; $event.stopPropagation(); updateIdentifiers();">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+    
+    <mat-form-field class="w-64" [class.clearable-select]="identifiers.transportId">
+      <mat-select [(ngModel)]="identifiers.transportId" (ngModelChange)="updateIdentifiers()" placeholder="Укажите транспорт">
+        <mat-option *ngFor="let transport of transports" [value]="transport.id">{{transport.name}}</mat-option>
+      </mat-select>
+      @if (identifiers.transportId) {
+        <button matSuffix mat-icon-button 
+          (click)="identifiers.transportId = 0; $event.stopPropagation(); updateIdentifiers();">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+    </mat-form-field>
+  </div>
+  <drivers-fuel (identifiers)="showWaybills($event)" [class.hidden]="!fuelTotal.isActive || mainEntity !== 'driver'"></drivers-fuel>
+  <transports-fuel (identifiers)="showWaybills($event)" [class.hidden]="!fuelTotal.isActive || mainEntity !== 'transport'"></transports-fuel>
+  <fuel-waybills [identifiers]="identifiers" [class.hidden]="!fuelWaybills.isActive"></fuel-waybills>
 </div>
