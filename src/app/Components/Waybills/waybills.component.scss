@@ -3,17 +3,18 @@ th{ font-weight: bold; }
 
 .mat-column-number, .mat-column-date, .mat-column-driverShortFullName, .mat-column-transportName, .mat-column-date,
 .mat-column-days, .mat-column-hours, .mat-column-earnings, .mat-column-weekend, .mat-column-bonus,
-.mat-column-factFuelConsumption, .mat-column-normalFuelConsumption{
+.mat-column-factFuelConsumption, .mat-column-normalFuelConsumption, .mat-column-conditionalReferenceHectares,
+.mat-column-operations{
   padding-right: 0;
 }
-
-.mat-column-operations.mat-mdc-header-cell{ padding: 0; }
 
 .mat-column-number, .mat-column-date, .mat-column-days, .mat-column-hours, .mat-column-earnings, .mat-column-weekend,
 .mat-column-bonus, .mat-column-factFuelConsumption, .mat-column-normalFuelConsumption, .mat-column-conditionalReferenceHectares,
 .mat-column-operations{
   text-align: end;
 }
+
+.mat-column-conditionalReferenceHectares{ width: 9%; }
 
 .mat-column-number, .mat-column-days{ padding-left: 0; }
 .mat-column-date, .mat-column-driverShortFullName, .mat-column-transportName{ white-space: nowrap; }

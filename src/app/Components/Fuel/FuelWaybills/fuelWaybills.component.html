@@ -1,29 +1,3 @@
-<div class="flex gap-4 justify-center mat-select-font-bold form-field-density-5 icon-button-density-5 mb-0.5">
-  <mat-form-field class="w-64" [class.clearable-select]="identifiers.driverId">
-    <mat-select [(ngModel)]="identifiers.driverId" (ngModelChange)="updateTableColumns(); getFuelWaybills()" placeholder="Укажите водителя">
-      <mat-option *ngFor="let driver of drivers" [value]="driver.id">{{driver | driverFullName}}</mat-option>
-    </mat-select>
-    @if (identifiers.driverId) {
-      <button matSuffix mat-icon-button
-        (click)="identifiers.driverId = 0; $event.stopPropagation(); updateTableColumns(); getFuelWaybills()">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-  </mat-form-field>
-  
-  <mat-form-field class="w-64" [class.clearable-select]="identifiers.transportId">
-    <mat-select [(ngModel)]="identifiers.transportId" (ngModelChange)="updateTableColumns(); getFuelWaybills()" placeholder="Укажите транспорт">
-      <mat-option *ngFor="let transport of transports" [value]="transport.id">{{transport.name}}</mat-option>
-    </mat-select>
-    @if (identifiers.transportId) {
-      <button matSuffix mat-icon-button 
-        (click)="identifiers.transportId = 0; $event.stopPropagation(); updateTableColumns(); getFuelWaybills()">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-  </mat-form-field>
-</div>
-
 <table mat-table [dataSource]="dataSource" class="table-density-4">
 
   <ng-container matColumnDef="driver">

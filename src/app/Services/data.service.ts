@@ -21,19 +21,29 @@ export class DataService {
 	transportsRoute = 'transports';
 	waybillsRoute = 'waybills';
 	reportsRoute = 'reports';
+	excelRoute = 'excel';
 	costPriceReportRoute = `${this.reportsRoute}/costCode`;
 	monthTotalRoute = `${this.reportsRoute}/monthTotal`;
 	driversFuelMonthTotalRoute = `${this.reportsRoute}/driversFuelMonthTotal`;
 	transportsFuelMonthTotalRoute = `${this.reportsRoute}/transportsFuelMonthTotal`;
 	omnicommFuelRoute = `${this.reportsRoute}/omnicommFuel`;
-
 	fuelWaybillsRoute = `${this.waybillsRoute}/fuelOnly`;
-	excelWithWaybillsRoute = `${this.waybillsRoute}/excel`;
+
+	costPriceReportExcelRoute = `${this.excelRoute}/costCode`;
+	monthTotalExcelRoute = `${this.excelRoute}/monthTotal`;
+	shortWaybillsExcelRoute = `${this.excelRoute}/waybills/short`;
+	detailedWaybillsExcelRoute = `${this.excelRoute}/waybills/detailed`;
 
 	constructor(private http: HttpClient) { }
 
-	getLinkOfExcelWithWaybills = (year: number, month: number, driverId: number) =>
-		this.url + this.excelWithWaybillsRoute + '/' + year + '/' + month + '/' + driverId;
+	getCostPriceReportExcelLink = (year: number, month: number, price: number) =>
+		this.url + this.costPriceReportExcelRoute + '/' + year + '/' + month + '/' + price;
+	getMonthTotalExcelLink = (year: number, month: number) =>
+		this.url + this.monthTotalExcelRoute + '/' + year + '/' + month;
+	getShortWaybillsExcelLink = (year: number, month: number) =>
+		this.url + this.shortWaybillsExcelRoute + '/' + year + '/' + month;
+	getDetailedWaybillsExcelLink = (year: number, month: number, driverId: number) =>
+		this.url + this.detailedWaybillsExcelRoute + '/' + year + '/' + month + '/' + driverId;
 
 	getOmnicommFuel = (date: Date, omnicommId: number) => 
 		this.http.get<IOmnicommFuel>(this.url + this.omnicommFuelRoute + '/' + formatDate(date, 'yyyy-MM-dd', 'ru') + '/' + omnicommId);

@@ -1,6 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,6 @@ import { ToFixedPipe } from '../../../Pipes/toFixedPipe';
 import { DataService } from '../../../Services/data.service';
 import { DateService } from '../../../Services/date.service';
 import { WaybillsDialogComponent } from '../../Waybills/Dialog/waybillsDialog.component';
-import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'cost-price',
@@ -43,8 +42,8 @@ import * as XLSX from 'xlsx';
   templateUrl: './costPrice.component.html',
   styleUrl: './costPrice.component.scss'
 })
-export class CostPriceComponent implements OnInit, AfterViewInit{
-  price = '32.00';
+export class CostPriceComponent implements OnInit, AfterViewInit, OnChanges{
+  @Input() price = '32.00';
   drivers: IDriver[] = [];
   transports: ITransport[] = [];
   dataSource = new MatTableDataSource<ICostPriceReport>();
@@ -63,6 +62,12 @@ export class CostPriceComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit(){
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if(changes['price']){
+      this.getCostPriceReport();
+    }
   }
 
   openDialog(waybillId: number){
@@ -102,19 +107,6 @@ export class CostPriceComponent implements OnInit, AfterViewInit{
     return this.dataSource.data.reduce((acc, value) => acc + value.costPrice, 0);
   }
 
-  exportExcel(): void{
-    let data = [...this.dataSource.data];
-
-
-    let fileName = `Себестоимость-${this.dateService.year, this.dateService.month}.xlsx`;
-    
-    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
-    var wscols = [{wch:14}, {wch:14}, {wch:14}];  
-    ws['!cols'] = wscols;
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    /* save to file */
-    XLSX.writeFile(wb, fileName);
-  }
+  getCostPriceReportExcelLink = () => 
+    this.dataService.getCostPriceReportExcelLink(this.dateService.year, this.dateService.month, Number(this.price));
 }

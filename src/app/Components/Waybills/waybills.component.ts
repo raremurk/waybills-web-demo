@@ -3,6 +3,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
+import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from "@angular/material/icon";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule, MatSort } from "@angular/material/sort";
@@ -28,6 +29,7 @@ import { WaybillsDialogComponent } from "./Dialog/waybillsDialog.component";
     MatSelectModule,
     MatSortModule,
     MatButtonModule,
+    MatMenuModule,
     MatIconModule,
     ToFixedPipe,
     RangeDatePipe,
@@ -44,10 +46,10 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
 
   dataSource = new MatTableDataSource<IShortWaybill>();
   mainHeadersColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'weekend', 'bonus',
-    'fuel', 'conditionalReferenceHectares', 'operations'];
+    'conditionalReferenceHectares', 'fuel', 'operations'];
   childHeadersColumns = ['factFuelConsumption', 'normalFuelConsumption'];
   dataColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'weekend', 'bonus',
-    'factFuelConsumption', 'normalFuelConsumption', 'conditionalReferenceHectares', 'operations'];
+    'conditionalReferenceHectares', 'factFuelConsumption', 'normalFuelConsumption', 'operations'];
 
   @ViewChild(MatSort) sort = new MatSort();
    
@@ -126,6 +128,8 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
     });
   }
 
-  getLinkOfExcelWithWaybills = () => 
-    this.dataService.getLinkOfExcelWithWaybills(this.dateService.year, this.dateService.month, this.driverId)
+  getShortWaybillsExcelLink = () => this.dataService.getShortWaybillsExcelLink(this.dateService.year, this.dateService.month);
+
+  getDetailedWaybillsExcelLink = () => 
+    this.dataService.getDetailedWaybillsExcelLink(this.dateService.year, this.dateService.month, this.driverId);
 }

@@ -79,6 +79,19 @@ h1, h2, h3, h4, h5{ margin: 0; }
   @include mat.tabs-density(-3);  
 }
 
+.mat-select-font-bold{
+  .mat-mdc-select-value{ font-weight: bold; }
+}
+
+.mat-input-font-bold{ 
+  .mat-mdc-input-element{ font-weight: bold !important; }
+} 
+
+.clearable-select{
+  .mat-mdc-select-arrow{ display: none; }
+  .mat-mdc-form-field-icon-suffix{ padding-right: 4px; }
+}
+
 .custom-mat-form-field-disabled-style{
   .mat-form-field-disabled{
     .mat-mdc-input-element, .mat-mdc-select-value{ color: #545454 !important; }
@@ -86,27 +99,11 @@ h1, h2, h3, h4, h5{ margin: 0; }
   }
 }
 
-.mat-select-font-bold{
-  .mat-mdc-select-value{ font-weight: bold; }
-} 
-
 .custom-mat-tab-labels{
-  .mat-mdc-tab-labels{ background-color: #F5F5F5; }
   .mdc-tab__text-label{
     font-size: 16px;
     font-weight: bold;    
   }
-}
-
-.tabs-custom-overflow{
-  .mat-mdc-tab-body-wrapper{ overflow: initial; }
-  .mat-mdc-tab-body-active{ overflow: initial !important; }
-  .mat-mdc-tab-body-content{ overflow: initial; }
-}
-
-.clearable-select{
-  .mat-mdc-select-arrow{ display: none; }
-  .mat-mdc-form-field-icon-suffix{ padding-right: 4px; }
 }
 
 .mat-mdc-unelevated-button{
