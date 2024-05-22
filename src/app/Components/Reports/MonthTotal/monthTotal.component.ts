@@ -52,16 +52,16 @@ export class MonthTotalComponent implements OnInit, AfterViewInit, OnChanges{
       footer: () => this.dataSource.data.reduce((acc, value) => acc + value.earnings, 0).toFixed(2)
     },
     {
-      columnDef: 'weekend',
-      header: 'Выхи',
-      cell: (total: IMonthTotal) => total.weekend.toFixed(2),
-      footer: () => this.dataSource.data.reduce((acc, value) => acc + value.weekend, 0).toFixed(2)
-    },
-    {
       columnDef: 'bonus',
       header: 'Премия',
       cell: (total: IMonthTotal) => total.bonus.toFixed(2),
       footer: () => this.dataSource.data.reduce((acc, value) => acc + value.bonus, 0).toFixed(2)
+    },
+    {
+      columnDef: 'weekend',
+      header: 'Выхи',
+      cell: (total: IMonthTotal) => total.weekend.toFixed(2),
+      footer: () => this.dataSource.data.reduce((acc, value) => acc + value.weekend, 0).toFixed(2)
     },
     {
       columnDef: 'numberOfRuns',
@@ -115,7 +115,7 @@ export class MonthTotalComponent implements OnInit, AfterViewInit, OnChanges{
   dataSource = new MatTableDataSource<IDetailedEntityMonthTotal>();
   dataColumns = ['mainEntityName', ... this.columns.map(c => c.columnDef), 'expand'];
   expandDataColumns = ['childEntityName', ... this.dataColumns.slice(1)];
-  mainHeadersColumns = ['mainEntityName', 'waybillsCount', 'days', 'hours', 'earnings', 'weekend', 'bonus', 'numberOfRuns',
+  mainHeadersColumns = ['mainEntityName', 'waybillsCount', 'days', 'hours', 'earnings', 'bonus', 'weekend', 'numberOfRuns',
     'mileage', 'transportedLoad', 'normShift', 'conditionalReferenceHectares', 'fuel', 'expand'];
   childHeadersColumns = ['totalMileage' , 'totalMileageWithLoad', 'factFuelConsumption', 'normalFuelConsumption'];
   expandedRow: IDetailedEntityMonthTotal | null = <IDetailedEntityMonthTotal>{};

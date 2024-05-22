@@ -14,9 +14,6 @@ export abstract class Waybill{
 
   public driver: IDriver | null = null;
 
-  public weekend: string = '';
-  public bonus: string = '';
-
   protected operationsCount: number = 12;
   protected calculationsCount: number = 6;
 
@@ -31,8 +28,6 @@ export abstract class Waybill{
       this.fuelTopUp = waybill.fuelTopUp.toString();
       this.endFuel = waybill.endFuel.toString();
       this.driver = waybill.driver;
-      this.weekend = waybill.weekend.toString();
-      this.bonus = waybill.bonus.toString();
     }
   }
 }

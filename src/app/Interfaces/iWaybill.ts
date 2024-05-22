@@ -17,8 +17,8 @@ export interface IWaybill{
   driver: IDriver | null,
   transport: ITransport | null,
   earnings: number,
-  weekend: number,
   bonus: number,
+  weekend: number,
   operations: IOperation[],
   calculations: ICalculation[]
 }

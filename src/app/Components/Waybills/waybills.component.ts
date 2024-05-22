@@ -45,10 +45,10 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
   editableWaybill = <IShortWaybill>{};
 
   dataSource = new MatTableDataSource<IShortWaybill>();
-  mainHeadersColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'weekend', 'bonus',
+  mainHeadersColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'bonus', 'weekend', 
     'conditionalReferenceHectares', 'fuel', 'operations'];
   childHeadersColumns = ['factFuelConsumption', 'normalFuelConsumption'];
-  dataColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'weekend', 'bonus',
+  dataColumns = ['number', 'date', 'driverShortFullName', 'transportName', 'days', 'hours', 'earnings', 'bonus', 'weekend',
     'conditionalReferenceHectares', 'factFuelConsumption', 'normalFuelConsumption', 'operations'];
 
   @ViewChild(MatSort) sort = new MatSort();

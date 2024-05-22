@@ -79,6 +79,10 @@ h1, h2, h3, h4, h5{ margin: 0; }
   @include mat.tabs-density(-3);  
 }
 
+.checkbox-density-3{
+  @include mat.checkbox-density(-3);  
+}
+
 .mat-select-font-bold{
   .mat-mdc-select-value{ font-weight: bold; }
 }

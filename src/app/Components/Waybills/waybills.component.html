@@ -52,14 +52,14 @@
       <td mat-cell *matCellDef="let waybill">{{waybill.earnings | toFixed : 2}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="weekend">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Выходные </th>
-      <td mat-cell *matCellDef="let waybill">{{waybill.weekend | toFixed : 2}}</td>
-    </ng-container>
-
     <ng-container matColumnDef="bonus">
       <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Премия </th>
       <td mat-cell *matCellDef="let waybill">{{waybill.bonus | toFixed : 2}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="weekend">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Выходные </th>
+      <td mat-cell *matCellDef="let waybill">{{waybill.weekend | toFixed : 2}}</td>
     </ng-container>
 
     <ng-container matColumnDef="conditionalReferenceHectares">
