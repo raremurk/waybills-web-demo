@@ -3,6 +3,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, Inject } from "@angular/co
 import { FormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -33,6 +34,7 @@ import { DataService } from "../../../Services/data.service";
     FormsModule,
     MatAutocompleteModule,
     MatButtonModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -188,7 +190,7 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   keyDescOrder = (a: KeyValue<number,number>, b: KeyValue<number,number>) => a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
 
   getOmnicommFuel(){
-    let omnicommId = this.waybill.transport ? this.waybill.transport.omnicommId : 0;
+    let omnicommId = this.waybill.transport?.omnicommId ?? 0;
     this.dataService.getOmnicommFuel(this.waybill.date, omnicommId).subscribe((data: IOmnicommFuel) => this.omnicommFuel = data);
   }
 }
