@@ -77,12 +77,10 @@ export class WaybillsComponent implements OnInit, AfterViewInit{
 
   openDialog(waybillId: number, mode: boolean){
     let dialogRef = this.dialog.open(WaybillsDialogComponent, 
-      { autoFocus: 'dialog', 
+      { autoFocus: 'dialog',
         disableClose: true,
-        height: "calc(100% - 16px)", 
-        width: "calc(100% - 16px)", 
-        maxWidth: "100%", 
-        maxHeight: "100%", 
+        maxWidth: "calc(100vw - 36px)",
+        maxHeight: "calc(100vh - 20px)",
         data: {
           waybillId: waybillId,
           editMode: mode,

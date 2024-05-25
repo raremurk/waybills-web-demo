@@ -59,32 +59,32 @@
         <h4>Транспорт</h4>
         <div class="display-value-cell mb-1">{{waybill.transport?.name}}</div>
         <div class="flex gap-1.5 items-center">
-          <h4>Табельный №</h4>
+          <h4 class="whitespace-nowrap">Табельный №</h4>
           <div class="display-value-cell w-16">{{waybill.driver?.personnelNumber}}</div>
         </div>
       </div>
   
       <div class="text-center">
         <h4>Выдача ГСМ</h4>
-        <div class="grid grid-cols-3 gap-x-1 mt-1">
+        <div class="grid grid-cols-fixed-3 gap-x-1 mt-1">
           <h5>Начало</h5>
           <h5>Выдано</h5>
           <h5>Конец</h5>
-          <mat-form-field class="w-20">
-            <input matInput [(ngModel)]="waybill.startFuel" [disabled]="!data.editMode">
+          <mat-form-field class="w-18">
+            <input matInput [(ngModel)]="waybill.startFuel" maxlength="4" [disabled]="!data.editMode">
           </mat-form-field>
-          <mat-form-field class="w-20">
-            <input matInput [(ngModel)]="waybill.fuelTopUp" [disabled]="!data.editMode">
+          <mat-form-field class="w-18">
+            <input matInput [(ngModel)]="waybill.fuelTopUp" maxlength="4" [disabled]="!data.editMode">
           </mat-form-field>
-          <mat-form-field class="w-20">
-            <input matInput [(ngModel)]="waybill.endFuel" [disabled]="!data.editMode">
+          <mat-form-field class="w-18">
+            <input matInput [(ngModel)]="waybill.endFuel" maxlength="4" [disabled]="!data.editMode">
           </mat-form-field>
         </div>
       </div>
   
       <div class="text-center">
         <h4>Расход ГСМ</h4>
-        <div class="grid grid-cols-2 gap-x-1 mt-1">
+        <div class="grid grid-cols-fixed-2 gap-x-1 mt-1">
           <h5>По факту</h5>
           <h5>По норме</h5>
           <div class="display-value-cell w-20">{{waybill.factFuelConsumption}}</div>
@@ -101,7 +101,7 @@
         </button>
       </div>
       <h5>{{omnicommFuel.transportName}}</h5>
-      <div class="grid grid-cols-5 gap-x-1">
+      <div class="grid grid-cols-fixed-5 gap-x-1">
         <h5>Начало</h5>
         <h5>Выдано</h5>
         <h5>Конец</h5>
@@ -130,7 +130,7 @@
     </div>
   </div>
 
-  <div class="table-density-4 sort-header-center mt-0.5 mb-3">
+  <div class="table-density-4 sort-header-center mt-0.5 mb-2">
     <table mat-table [dataSource]="dataSource" matSort>
 
       <ng-container matColumnDef="productionCostCode">
@@ -220,12 +220,12 @@
     </table>
   </div>
 
-  <div class="flex justify-between text-center">
+  <div class="flex gap-4 justify-between text-center">
     <div class="flex gap-4">
 
       <div class="w-36">
         <h4>Для расчетов</h4>
-        <div class="grid grid-cols-2 gap-x-2 gap-y-1">
+        <div class="grid grid-cols-fixed-2 gap-x-2 gap-y-1">
           <h5 class="h-4 leading-4">Норма</h5>
           <h5 class="h-4 leading-4">Факт</h5>
           @for (item of calculationHelp() | keyvalue: keyDescOrder; track item.key) {
@@ -239,7 +239,7 @@
       </div>
   
       <div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-1">
+        <div class="grid grid-cols-fixed-2 gap-x-4 gap-y-1">
           <div *ngFor="let _ of [].constructor(2)" class="flex gap-4">
             <h4 class="w-24">Количество</h4>
             <h4 class="w-23">Расценка</h4>
@@ -261,7 +261,7 @@
   
       <div>
         <h4>Отработано</h4>
-        <div class="grid grid-cols-2 gap-x-1.5 mt-1">
+        <div class="grid grid-cols-fixed-2 gap-x-1.5 mt-1">
           <h5>Дней</h5> 
           <h5>Часов</h5>
           <mat-form-field class="w-16">
