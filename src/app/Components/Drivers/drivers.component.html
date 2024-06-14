@@ -4,38 +4,54 @@
 
     <ng-container matColumnDef="lastName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Фамилия </th>    
-      <td mat-cell *matCellDef="let driver" [ngSwitch]="driver.id">
-        <mat-form-field *ngSwitchCase="editableDriver.id">
-          <input matInput [(ngModel)]="editableDriver.lastName" placeholder="Введите фамилию">
-        </mat-form-field>
-        <span *ngSwitchDefault>{{driver.lastName}}</span></td>
+      <td mat-cell *matCellDef="let driver">
+        @if (driver.id === editableDriver.id) {
+          <mat-form-field class="-ml-4">
+            <input matInput [(ngModel)]="editableDriver.lastName">
+          </mat-form-field>
+        } @else{
+          <span>{{driver.lastName}}</span>
+        }
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="firstName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Имя </th>
-      <td mat-cell *matCellDef="let driver" [ngSwitch]="driver.id">
-        <mat-form-field *ngSwitchCase="editableDriver.id">
-          <input matInput [(ngModel)]="editableDriver.firstName" placeholder="Введите имя">
-        </mat-form-field>
-        <span *ngSwitchDefault>{{driver.firstName}}</span></td>
+      <td mat-cell *matCellDef="let driver">
+        @if (driver.id === editableDriver.id) {
+          <mat-form-field class="-ml-4">
+            <input matInput [(ngModel)]="editableDriver.firstName">
+          </mat-form-field>
+        } @else{
+          <span>{{driver.firstName}}</span>
+        }
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="middleName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Отчество </th>
-      <td mat-cell *matCellDef="let driver" [ngSwitch]="driver.id">
-        <mat-form-field *ngSwitchCase="editableDriver.id">
-          <input matInput [(ngModel)]="editableDriver.middleName" placeholder="Введите отчество">
-        </mat-form-field>
-        <span *ngSwitchDefault>{{driver.middleName}}</span></td>
+      <td mat-cell *matCellDef="let driver">
+        @if (driver.id === editableDriver.id) {
+          <mat-form-field class="-ml-4">
+            <input matInput [(ngModel)]="editableDriver.middleName">
+          </mat-form-field>
+        } @else{
+          <span>{{driver.middleName}}</span>
+        }
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="personnelNumber">
       <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Табельный номер </th>
-      <td mat-cell *matCellDef="let driver" [ngSwitch]="driver.id">
-        <mat-form-field *ngSwitchCase="editableDriver.id">
-          <input matInput [(ngModel)]="editableDriver.personnelNumber" placeholder="Введите табельный номер">
-        </mat-form-field>
-        <span *ngSwitchDefault>{{driver.personnelNumber}}</span></td>
+      <td mat-cell *matCellDef="let driver">
+        @if (driver.id === editableDriver.id) {
+          <mat-form-field class="w-20 -mr-4">
+            <input matInput [(ngModel)]="editableDriver.personnelNumber" class="text-end">
+          </mat-form-field>
+        } @else{
+          <span>{{driver.personnelNumber}}</span>
+        }
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="operations">
@@ -45,14 +61,14 @@
       <td mat-cell *matCellDef="let driver">
         <div class="flex gap-1 button-density-2">
           @if (driver.id === editableDriver.id) {
-            <button mat-flat-button color="green" (click)="updateDriver()" class="w-120px">
+            <button mat-flat-button color="green" (click)="updateDriver()" class="w-30">
               <mat-icon>check</mat-icon>Сохранить</button>
-            <button mat-flat-button color="grey" (click)="cancel()" class="w-106px">
+            <button mat-flat-button color="grey" (click)="cancel()" class="w-27">
               <mat-icon>close</mat-icon>Отмена</button>
           } @else {
-            <button mat-flat-button color="primary" (click)="editDriver(driver)" class="w-120px">
+            <button mat-flat-button color="primary" (click)="editDriver(driver)" class="w-30">
               <mat-icon>edit</mat-icon>Изменить</button>
-            <button mat-flat-button color="warn" (click)="openDeleteDialog(driver)" class="w-106px">
+            <button mat-flat-button color="warn" (click)="openDeleteDialog(driver)" class="w-27">
               <mat-icon>delete</mat-icon>Удалить</button>
           }
         </div>

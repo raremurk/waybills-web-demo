@@ -4,81 +4,83 @@ import { Injectable } from "@angular/core";
 import { IDriverFuelMonthTotal } from "../Interfaces/Fuel/iDriverFuelMonthTotal";
 import { IFuelWaybill } from "../Interfaces/Fuel/iFuelWaybill";
 import { ITransportFuelMonthTotal } from "../Interfaces/Fuel/iTransportFuelMonthTotal";
+import { IOmnicommFuel } from "../Interfaces/IOmnicommFuel";
+import { ITransport } from "../Interfaces/ITransport";
+import { IDetailedEntityMonthTotal } from "../Interfaces/MonthTotal/iDetailedEntityMonthTotal";
 import { ICostPriceReport } from "../Interfaces/iCostPriceReport";
 import { IDriver } from "../Interfaces/iDriver";
-import { IOmnicommFuel } from "../Interfaces/IOmnicommFuel";
 import { IShortWaybill } from "../Interfaces/iShortWaybill";
-import { ITransport } from "../Interfaces/ITransport";
 import { IWaybill } from "../Interfaces/iWaybill";
-import { IDetailedEntityMonthTotal } from "../Interfaces/MonthTotal/iDetailedEntityMonthTotal";
 import { WaybillCreation } from "../Models/Waybill/waybillCreation";
-import '@angular/common/locales/global/ru';
- 
+import { Driver } from "../Models/driver";
+import { Transport } from "../Models/transport";
+
 @Injectable({ providedIn: 'root' })
 export class DataService {
-	url = 'https://localhost:7150/api/';
-	driversRoute = 'drivers';
-	transportsRoute = 'transports';
-	waybillsRoute = 'waybills';
-	reportsRoute = 'reports';
-	excelRoute = 'excel';
-	costPriceReportRoute = `${this.reportsRoute}/costCode`;
-	monthTotalRoute = `${this.reportsRoute}/monthTotal`;
-	driversFuelMonthTotalRoute = `${this.reportsRoute}/driversFuelMonthTotal`;
-	transportsFuelMonthTotalRoute = `${this.reportsRoute}/transportsFuelMonthTotal`;
-	omnicommFuelRoute = `${this.reportsRoute}/omnicommFuel`;
-	fuelWaybillsRoute = `${this.waybillsRoute}/fuelOnly`;
+	url = 'https://localhost:7150/api';
 
-	costPriceReportExcelRoute = `${this.excelRoute}/costCode`;
-	monthTotalExcelRoute = `${this.excelRoute}/monthTotal`;
-	shortWaybillsExcelRoute = `${this.excelRoute}/waybills/short`;
-	detailedWaybillsExcelRoute = `${this.excelRoute}/waybills/detailed`;
+	waybillsRoute = `${this.url}/waybills`;	
+	reportsRoute = `${this.url}/reports`;
+	driversRoute = `${this.url}/drivers`;
+	transportsRoute = `${this.url}/transports`;
+	excelRoute = `${this.url}/excel`;
 
 	constructor(private http: HttpClient) { }
 
-	getCostPriceReportExcelLink = (year: number, month: number, price: number) =>
-		this.url + this.costPriceReportExcelRoute + '/' + year + '/' + month + '/' + price;
-	getMonthTotalExcelLink = (year: number, month: number) =>
-		this.url + this.monthTotalExcelRoute + '/' + year + '/' + month;
-	getShortWaybillsExcelLink = (year: number, month: number) =>
-		this.url + this.shortWaybillsExcelRoute + '/' + year + '/' + month;
-	getDetailedWaybillsExcelLink = (year: number, month: number, driverId: number) =>
-		this.url + this.detailedWaybillsExcelRoute + '/' + year + '/' + month + '/' + driverId;
-
-	getOmnicommFuel = (date: Date, omnicommId: number) => 
-		this.http.get<IOmnicommFuel>(this.url + this.omnicommFuelRoute + '/' + formatDate(date, 'yyyy-MM-dd', 'ru') + '/' + omnicommId);
-
-	getCostPriceReport = (year: number, month: number, price: number) => 
-		this.http.get<ICostPriceReport[]>(this.url + this.costPriceReportRoute + '/' + year + '/' + month + '/' + price);
-	getMonthTotals = (year: number, month: number, entity: string) => 
-		this.http.get<IDetailedEntityMonthTotal[]>(this.url + this.monthTotalRoute + '/' + year + '/' + month + '/' + entity);
-
-	getDriversFuelMonthTotal = (year: number, month: number) => 
-		this.http.get<IDriverFuelMonthTotal[]>(this.url + this.driversFuelMonthTotalRoute + '/' + year + '/' + month);
-	getTransportsFuelMonthTotal = (year: number, month: number) => 
-		this.http.get<ITransportFuelMonthTotal[]>(this.url + this.transportsFuelMonthTotalRoute + '/' + year + '/' + month);
 	getFuelWaybills = (year: number, month: number, driverId: number, transportId: number) => 
-		this.http.get<IFuelWaybill[]>(this.url + this.fuelWaybillsRoute + '/' + year + '/' + month + '/' + driverId + '/' + transportId);
- 
-	getAllDrivers = () => this.http.get<IDriver[]>(this.url + this.driversRoute);
-	getAllTransports = () => this.http.get<ITransport[]>(this.url + this.transportsRoute);
-	getAllWaybills = (year: number, month: number, driverId: number) => 
-		this.http.get<IShortWaybill[]>(this.url + this.waybillsRoute + '/' + year + '/' + month + '/' + driverId);
+		this.http.get<IFuelWaybill[]>(`${this.waybillsRoute}/fuelOnly/${year}/${month}/${driverId}/${transportId}`);
+	getAllWaybills = (year: number, month: number, driverId: number) =>
+		this.http.get<IShortWaybill[]>(`${this.waybillsRoute}/${year}/${month}/${driverId}`);
+	createWaybill = (waybill: WaybillCreation) =>
+		this.http.post<IWaybill>(this.waybillsRoute, waybill);
+	getWaybill = (id: number) =>
+		this.http.get<IWaybill>(`${this.waybillsRoute}/${id}`);
+	updateWaybill = (id: number, waybill: WaybillCreation) =>
+		this.http.put<IWaybill>(`${this.waybillsRoute}/${id}`, waybill);
+	deleteWaybill = (id: number) =>
+		this.http.delete(`${this.waybillsRoute}/${id}`);
 
-	getWaybill = (id: number) => this.http.get<IWaybill>(this.url + this.waybillsRoute + '/' + id);
-	createWaybill = (waybill: WaybillCreation) => this.http.post<IWaybill>(this.url + this.waybillsRoute, waybill);
-	updateWaybill = (id: number, waybill: WaybillCreation) => this.http.put<IWaybill>(this.url + this.waybillsRoute + '/' + id, waybill);
-	deleteWaybill = (id: number) => this.http.delete(this.url + this.waybillsRoute + '/' + id);
-     
-	create(route: string, object: any){
-		return this.http.post(this.url + route, object);
-	}
+	getAllDrivers = () =>
+		this.http.get<IDriver[]>(this.driversRoute);
+	createDriver = (driver: Driver) =>
+		this.http.post<IDriver>(this.driversRoute, driver);
+	getDriver = (id: number) =>
+		this.http.get<IDriver>(`${this.driversRoute}/${id}`);
+	updateDriver = (id: number, driver: Driver) =>
+		this.http.put<IDriver>(`${this.driversRoute}/${id}`, driver);
+	deleteDriver = (id: number) =>
+		this.http.delete(`${this.driversRoute}/${id}`);
 
-	delete(route: string, id: any){
-		return this.http.delete(this.url + route + '/' + id);
-	}
+	getAllTransports = () =>
+		this.http.get<ITransport[]>(this.transportsRoute);
+	createTransport = (transport: Transport) =>
+		this.http.post<ITransport>(this.transportsRoute, transport);
+	getTransport = (id: number) =>
+		this.http.get<ITransport>(`${this.transportsRoute}/${id}`);
+	updateTransport = (id: number, transport: Transport) =>
+		this.http.put<ITransport>(`${this.transportsRoute}/${id}`, transport);
+	deleteTransport = (id: number) =>
+		this.http.delete(`${this.transportsRoute}/${id}`);
 
-	update(route: string, id: any, object: any){
-		return this.http.put(this.url + route + '/' + id, object);
-	}
+
+	getMonthTotals = (year: number, month: number, entity: string) => 
+		this.http.get<IDetailedEntityMonthTotal[]>(`${this.reportsRoute}/monthTotal/${year}/${month}/${entity}`);
+	getCostPriceReport = (year: number, month: number, price: number) => 
+		this.http.get<ICostPriceReport[]>(`${this.reportsRoute}/costCode/${year}/${month}/${price}`);
+	getDriversFuelMonthTotal = (year: number, month: number) => 
+		this.http.get<IDriverFuelMonthTotal[]>(`${this.reportsRoute}/driversFuelMonthTotal/${year}/${month}`);
+	getTransportsFuelMonthTotal = (year: number, month: number) => 
+		this.http.get<ITransportFuelMonthTotal[]>(`${this.reportsRoute}/transportsFuelMonthTotal/${year}/${month}`);
+	getOmnicommFuel = (date: Date, omnicommId: number) => 
+		this.http.get<IOmnicommFuel>(`${this.reportsRoute}/omnicommFuel/${formatDate(date, 'yyyy-MM-dd', 'en-US')}/${omnicommId}`);
+
+
+	getShortWaybillsExcelLink = (year: number, month: number) =>
+		`${this.excelRoute}/waybills/short/${year}/${month}`;
+	getDetailedWaybillsExcelLink = (year: number, month: number, driverId: number) =>
+		`${this.excelRoute}/waybills/detailed/${year}/${month}/${driverId}`;
+	getMonthTotalExcelLink = (year: number, month: number) =>
+		`${this.excelRoute}/monthTotal/${year}/${month}`;
+	getCostPriceReportExcelLink = (year: number, month: number, price: number) =>
+		`${this.excelRoute}/costCode/${year}/${month}/${price}`;
 }

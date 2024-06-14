@@ -4,38 +4,54 @@
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Название транспорта </th>
-      <td mat-cell *matCellDef="let transport" [ngSwitch]="transport.id">
-        <mat-form-field *ngSwitchCase="editableTransport.id">
-          <input matInput [(ngModel)]="editableTransport.name">
-        </mat-form-field>
-        <span *ngSwitchDefault>{{transport.name}}</span></td>
+      <td mat-cell *matCellDef="let transport">
+        @if (transport.id === editableTransport.id) {
+          <mat-form-field class="-ml-4">
+            <input matInput [(ngModel)]="editableTransport.name">
+          </mat-form-field>
+        } @else{
+          <span>{{transport.name}}</span>
+        }
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="code">
       <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Шифр </th>
-      <td mat-cell *matCellDef="let transport" [ngSwitch]="transport.id">  
-        <mat-form-field *ngSwitchCase="editableTransport.id">
-          <input matInput [(ngModel)]="editableTransport.code">
-        </mat-form-field>
-        <span *ngSwitchDefault>{{transport.code}}</span></td>
+      <td mat-cell *matCellDef="let transport">
+        @if (transport.id === editableTransport.id) {
+          <mat-form-field class="w-20 -mr-4">
+            <input matInput [(ngModel)]="editableTransport.code" class="text-end">
+          </mat-form-field>
+        } @else{
+          <span>{{transport.code}}</span>
+        }
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="coefficient">
       <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Коэффициент </th>
-      <td mat-cell *matCellDef="let transport" [ngSwitch]="transport.id">  
-        <mat-form-field *ngSwitchCase="editableTransport.id">
-          <input matInput [(ngModel)]="editableTransport.coefficient">
-        </mat-form-field>
-        <span *ngSwitchDefault>{{transport.coefficient}}</span></td>
+      <td mat-cell *matCellDef="let transport">
+        @if (transport.id === editableTransport.id) {
+          <mat-form-field class="w-20 -mr-4">
+            <input matInput [(ngModel)]="editableTransport.coefficient" class="text-end">
+          </mat-form-field>
+        } @else{
+          <span>{{transport.coefficient}}</span>
+        }
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="omnicommId">
       <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Omnicomm ID </th>
-      <td mat-cell *matCellDef="let transport" [ngSwitch]="transport.id">  
-        <mat-form-field *ngSwitchCase="editableTransport.id">
-          <input matInput [(ngModel)]="editableTransport.omnicommId">
-        </mat-form-field>
-        <span *ngSwitchDefault>{{transport.omnicommId}}</span></td>
+      <td mat-cell *matCellDef="let transport">
+        @if (transport.id === editableTransport.id) {
+          <mat-form-field class="w-36 -mr-4">
+            <input matInput [(ngModel)]="editableTransport.omnicommId" class="text-end">
+          </mat-form-field>
+        } @else{
+          <span>{{transport.omnicommId}}</span>
+        }
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="operations">
@@ -45,14 +61,14 @@
       <td mat-cell *matCellDef="let transport">
         <div class="flex gap-1 button-density-2">
           @if (transport.id === editableTransport.id) {
-            <button mat-flat-button color="green" (click)="updateTransport()" class="w-120px">
+            <button mat-flat-button color="green" (click)="updateTransport()" class="w-30">
               <mat-icon>check</mat-icon>Сохранить</button>
-            <button mat-flat-button color="grey" (click)="cancel()" class="w-106px">
+            <button mat-flat-button color="grey" (click)="cancel()" class="w-27">
               <mat-icon>close</mat-icon>Отмена</button>
           } @else {
-            <button mat-flat-button color="primary" (click)="editTransport(transport)" class="w-120px">
+            <button mat-flat-button color="primary" (click)="editTransport(transport)" class="w-30">
               <mat-icon>edit</mat-icon>Изменить</button>
-            <button mat-flat-button color="warn" (click)="openDeleteDialog(transport)" class="w-106px">
+            <button mat-flat-button color="warn" (click)="openDeleteDialog(transport)" class="w-27">
               <mat-icon>delete</mat-icon>Удалить</button>
           }
         </div>

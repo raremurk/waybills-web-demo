@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -19,7 +18,6 @@ import { DriversDialogComponent } from "./Dialog/driversDialog.component";
 @Component({
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -33,7 +31,6 @@ import { DriversDialogComponent } from "./Dialog/driversDialog.component";
 })
 export class DriversComponent implements OnInit, AfterViewInit{
   title = 'Водители';
-  driversRoute = 'drivers'; 
   driver = new Driver();
   editableDriver = new Driver(); 
   dataSource = new MatTableDataSource<IDriver>();
@@ -53,10 +50,11 @@ export class DriversComponent implements OnInit, AfterViewInit{
   }
  
   openDialog(){
-    this.dialog.open(DriversDialogComponent, { autoFocus: 'dialog', width: '478px' }).afterClosed().subscribe((result: Driver) => {
-      if(result.id === 0) {
-        this.dataService.create(this.driversRoute, result)
-          .subscribe({next:(createdDriver: any) => this.dataSource.data = [...this.dataSource.data, createdDriver]});
+    let dialogRef = this.dialog.open(DriversDialogComponent, { autoFocus: 'dialog', width: '428px' });
+    dialogRef.afterClosed().subscribe((dialogResult: Driver) => {
+      if(dialogResult.id === 0){
+        this.dataService.createDriver(dialogResult).subscribe((createdDriver: IDriver) => 
+          this.dataSource.data = [createdDriver, ...this.dataSource.data]);
       }
     });
   }
@@ -77,7 +75,7 @@ export class DriversComponent implements OnInit, AfterViewInit{
   }
 
   loadAllDrivers(){
-    this.dataService.getAllDrivers().subscribe({next:(data: IDriver[]) => this.dataSource.data = data}); 
+    this.dataService.getAllDrivers().subscribe((data: IDriver[]) => this.dataSource.data = data); 
   }
 
   editDriver(_driver: Driver){
@@ -86,14 +84,14 @@ export class DriversComponent implements OnInit, AfterViewInit{
   }
 
   updateDriver(){
-    this.dataService.update(this.driversRoute, this.editableDriver.id, this.editableDriver).subscribe(() => {
+    this.dataService.updateDriver(this.editableDriver.id, this.editableDriver).subscribe(() => {
       Object.assign(this.driver, this.editableDriver); 
       this.cancel();
     });
   }
 
   deleteDriver(id: number){
-    this.dataService.delete(this.driversRoute, id).subscribe(() => {
+    this.dataService.deleteDriver(id).subscribe(() => {
       var index = this.dataSource.data.findIndex(x => x.id == id);
       this.dataSource.data.splice(index, 1);
       this.dataSource.data = [...this.dataSource.data];
