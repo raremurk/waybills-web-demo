@@ -16,10 +16,9 @@ import { Transport } from "../../../Models/transport";
 export class TransportsDialogComponent{
   transport: Transport = new Transport();
 
-  constructor(public dialogRef: MatDialogRef<TransportsDialogComponent>) { }
+  constructor(private dialogRef: MatDialogRef<TransportsDialogComponent>) { }
 
   createTransport() {
-    this.transport.id = 0;
     this.dialogRef.close(this.transport);
   }
 }

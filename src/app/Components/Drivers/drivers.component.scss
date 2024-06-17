@@ -1,21 +1,11 @@
 th{ font-weight: bold; }
 
-.mat-column-firstName, .mat-column-lastName, .mat-column-middleName{
-  min-width: 250px;
-  mat-form-field{ margin-left: -16px; }
-}
+.mat-column-firstName, .mat-column-lastName, .mat-column-middleName{ min-width: 250px; }
 
-.mat-column-personnelNumber{
-  text-align: end;
-	mat-form-field{
-		width: 80px;
-		margin-right: -16px;
-		input{ text-align: end;	}		
-	}
-}
+.mat-column-personnelNumber{ text-align: end; }
 
 .mat-column-operations{
-	width: 246px;
+	width: 248px;
 	padding-right: 0;
 	text-align: end;
 }

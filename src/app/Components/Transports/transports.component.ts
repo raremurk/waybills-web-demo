@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -18,7 +17,6 @@ import { TransportsDialogComponent } from "./Dialog/transportsDialog.component";
 @Component({
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -31,7 +29,6 @@ import { TransportsDialogComponent } from "./Dialog/transportsDialog.component";
 })
 export class TransportsComponent implements OnInit, AfterViewInit{
   title = 'Транспорт';     
-  transportsRoute = 'transports';
   transport = new Transport();
   editableTransport = new Transport();
   dataSource = new MatTableDataSource<ITransport>();
@@ -50,11 +47,11 @@ export class TransportsComponent implements OnInit, AfterViewInit{
   }
 
   openDialog(){
-    this.dialog.open(TransportsDialogComponent, { autoFocus: 'dialog', width: '428px'})
-    .afterClosed().subscribe((result: Transport) => {
-      if(result.id === 0){
-        this.dataService.create(this.transportsRoute, result)
-        .subscribe({next:(createdTransport: any) => this.dataSource.data = [...this.dataSource.data, createdTransport]});
+    let dialogRef = this.dialog.open(TransportsDialogComponent, { autoFocus: 'dialog', width: '428px'});
+    dialogRef.afterClosed().subscribe((dialogResult: Transport) => {
+      if(dialogResult.id === 0){
+        this.dataService.createTransport(dialogResult).subscribe((createdTransport: ITransport) => 
+          this.dataSource.data = [createdTransport, ...this.dataSource.data]);
       }
     });
   }
@@ -75,7 +72,7 @@ export class TransportsComponent implements OnInit, AfterViewInit{
   }
     
   loadAllTransports(){
-    this.dataService.getAllTransports().subscribe({next:(data: ITransport[]) => this.dataSource.data = data});    
+    this.dataService.getAllTransports().subscribe((data: ITransport[]) => this.dataSource.data = data);    
   }
 
   editTransport(_transport: Transport){
@@ -84,14 +81,14 @@ export class TransportsComponent implements OnInit, AfterViewInit{
   }
 
   updateTransport(){
-    this.dataService.update(this.transportsRoute, this.editableTransport.id, this.editableTransport).subscribe(() => {
+    this.dataService.updateTransport(this.editableTransport.id, this.editableTransport).subscribe(() => {
       Object.assign(this.transport, this.editableTransport); 
       this.cancel();
     });
   }  
 
   deleteTransport(id: number){
-    this.dataService.delete(this.transportsRoute, id).subscribe(() => {
+    this.dataService.deleteTransport(id).subscribe(() => {
       var index = this.dataSource.data.findIndex(x => x.id === id);
       this.dataSource.data.splice(index, 1);
       this.dataSource.data = [...this.dataSource.data];

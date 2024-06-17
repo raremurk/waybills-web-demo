@@ -1,18 +1,15 @@
 @use '@angular/material' as mat;
 @tailwind utilities;
 
-@font-face {
+@font-face{
   font-family: 'Inter Tight';
   src: url('./assets/InterTight-ExtraLight.ttf');
 }
 
-body { margin: 0; font-family: 'Inter Tight', sans-serif; }
+body{ margin: 0; font-family: 'Inter Tight', sans-serif; }
 h1, h2, h3, h4, h5{ margin: 0; }
 
 .container{ padding: 0 16px; }
-
-.w-120px{ width: 120px; }
-.w-106px{ width: 106px; }
 
 .mat-green{
   background-color: #58BC82 !important;

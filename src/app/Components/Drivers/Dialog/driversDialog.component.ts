@@ -16,7 +16,7 @@ import { Driver } from "../../../Models/driver";
 export class DriversDialogComponent{
   driver: Driver = new Driver();
 
-  constructor(public dialogRef: MatDialogRef<DriversDialogComponent>) { }
+  constructor(private dialogRef: MatDialogRef<DriversDialogComponent>) { }
 
   createDriver() {
     this.dialogRef.close(this.driver);
