@@ -14,8 +14,8 @@
   </mat-form-field>
   <button mat-flat-button color="primary" class="ml-auto" (click)="openCreateDialog()"><mat-icon>add</mat-icon>Добавить</button>
 </div>
-<div class="container table-density-4">
-  <table mat-table [dataSource]="dataSource" matSort>
+<div class="px-4">
+  <table mat-table [dataSource]="dataSource" matSort class="table-density-4 table-font-16">
 
     <ng-container matColumnDef="number">
       <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Номер </th>
@@ -105,6 +105,6 @@
 
     <tr mat-header-row *matHeaderRowDef="mainHeadersColumns" class="small-header"></tr>
     <tr mat-header-row *matHeaderRowDef="childHeadersColumns" class="small-header"></tr>
-    <tr mat-row *matRowDef="let row; columns: dataColumns;"></tr> 
+    <tr mat-row *matRowDef="let row; columns: dataColumns;" class="hoverable-row"></tr> 
   </table>
 </div>

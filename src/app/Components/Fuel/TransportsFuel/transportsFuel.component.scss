@@ -1,13 +1,12 @@
 th{ font-weight: bold; }
 .table-header{ height: 44px; }
 
-.mat-column-driver{ padding-left: 32px; }
-.mat-column-driver, .mat-column-transport{
+.mat-column-entity{
   min-width: 300px;
   width: 300px;  
 }
 
-.mat-column-startFuel, .mat-column-fuelTopUp, .mat-column-endFuel, .mat-column-factFuelConsumption{
+.mat-column-startFuel, .mat-column-fuelTopUp, .mat-column-factFuelConsumption, .mat-column-endFuel{
   min-width: 112px;
   width: 25%;
   text-align: end;
@@ -16,6 +15,8 @@ th{ font-weight: bold; }
 .mat-column-deviation{
   min-width: 88px;
   width: 88px;
+  overflow: initial;
+  text-align: center;
 }
 
 .mat-column-expand{
@@ -26,28 +27,7 @@ th{ font-weight: bold; }
 
 .mat-column-expandedRow{
   padding: 0;
-  tr:first-child:not(:only-child) td{ border-top: 1px solid #E0E0E0; }
+  tr:not(:last-child) td{ border-bottom: 1px solid #E0E0E0; }
 }
 
-.data-row td{ border-bottom-width: 0; }
-tr.expanded-row{ height: 0;}
-
-.mdc-data-table__row:hover{
-  font-weight: bold;
-  background: whitesmoke;
-}
-
-.mat-mdc-footer-row td{
-  font-size: 18px;
-  font-weight: bold;
-  border-top: 1px solid #1F1F1F;
-}
-
-.code-cell{
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  height: 20px;
-  padding: 0 8px;
-  border-radius: 2px; 
-}
+.no-border-bottom td { border-bottom-width: 0; }

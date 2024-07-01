@@ -1,6 +1,6 @@
 <h1 class="leading-10 text-center bg-neutral-100 mt-4 py-2">{{title}}</h1>
-<div class="container table-density-3 form-field-density-5">
-  <table mat-table [dataSource]="dataSource" matSort>
+<div class="form-field-density-5 px-4">
+  <table mat-table [dataSource]="dataSource" matSort class="table-density-3 table-font-16">
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Название транспорта </th>
@@ -10,7 +10,7 @@
             <input matInput [(ngModel)]="editableTransport.name">
           </mat-form-field>
         } @else{
-          <span>{{transport.name}}</span>
+          {{transport.name}}
         }
       </td>
     </ng-container>
@@ -23,7 +23,7 @@
             <input matInput [(ngModel)]="editableTransport.code" class="text-end">
           </mat-form-field>
         } @else{
-          <span>{{transport.code}}</span>
+          {{transport.code}}
         }
       </td>
     </ng-container>
@@ -36,7 +36,7 @@
             <input matInput [(ngModel)]="editableTransport.coefficient" class="text-end">
           </mat-form-field>
         } @else{
-          <span>{{transport.coefficient}}</span>
+          {{transport.coefficient}}
         }
       </td>
     </ng-container>
@@ -49,7 +49,7 @@
             <input matInput [(ngModel)]="editableTransport.omnicommId" class="text-end">
           </mat-form-field>
         } @else{
-          <span>{{transport.omnicommId}}</span>
+          {{transport.omnicommId}}
         }
       </td>
     </ng-container>
@@ -76,6 +76,6 @@
     </ng-container> 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="inline-editing-row"></tr>
   </table>
 </div>

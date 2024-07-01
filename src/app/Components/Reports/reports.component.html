@@ -17,13 +17,7 @@
     </div>
   </div>
 </div>
-<div class="container">
-  <div class="text-center mt-2 mb-1" [class.hidden]="!monthTotal.isActive">
-    <mat-button-toggle-group [(ngModel)]="mainEntity" class="button-toggle-density-3">
-      <mat-button-toggle value="Водитель">По водителям</mat-button-toggle>
-      <mat-button-toggle value="Транспорт">По транспорту</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-  <month-total [mainEntity]="mainEntity" [class.hidden]="!monthTotal.isActive"></month-total>
-  <cost-price [price]="price" [class.hidden]="!costPrice.isActive"></cost-price>
+<div class="px-4">
+  <month-total [hidden]="!monthTotal.isActive"></month-total>
+  <cost-price [price]="price" [hidden]="!costPrice.isActive"></cost-price>
 </div>

@@ -15,7 +15,10 @@ module.exports = {
         '23': '5.75rem',
         '27': '6.75rem',
         '30': '7.5rem',
-      }
+      },
+      fontSize: {
+        '14': ['14px'],
+      },
     },
   },
   plugins: [],

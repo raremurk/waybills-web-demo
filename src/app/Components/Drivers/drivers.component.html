@@ -1,6 +1,6 @@
 <h1 class="leading-10 text-center bg-neutral-100 mt-4 py-2">{{title}}</h1>
-<div class="container table-density-3 form-field-density-5">
-  <table mat-table [dataSource]="dataSource" matSort>
+<div class="form-field-density-5 px-4">
+  <table mat-table [dataSource]="dataSource" matSort class="table-density-3 table-font-16">
 
     <ng-container matColumnDef="lastName">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Фамилия </th>    
@@ -10,7 +10,7 @@
             <input matInput [(ngModel)]="editableDriver.lastName">
           </mat-form-field>
         } @else{
-          <span>{{driver.lastName}}</span>
+          {{driver.lastName}}
         }
       </td>
     </ng-container>
@@ -23,7 +23,7 @@
             <input matInput [(ngModel)]="editableDriver.firstName">
           </mat-form-field>
         } @else{
-          <span>{{driver.firstName}}</span>
+          {{driver.firstName}}
         }
       </td>
     </ng-container>
@@ -36,7 +36,7 @@
             <input matInput [(ngModel)]="editableDriver.middleName">
           </mat-form-field>
         } @else{
-          <span>{{driver.middleName}}</span>
+          {{driver.middleName}}
         }
       </td>
     </ng-container>
@@ -49,7 +49,7 @@
             <input matInput [(ngModel)]="editableDriver.personnelNumber" class="text-end">
           </mat-form-field>
         } @else{
-          <span>{{driver.personnelNumber}}</span>
+          {{driver.personnelNumber}}
         }
       </td>
     </ng-container>
@@ -76,6 +76,6 @@
     </ng-container> 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="inline-editing-row"></tr>
   </table>
 </div>

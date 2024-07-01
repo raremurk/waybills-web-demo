@@ -1,9 +1,9 @@
 import { formatDate } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { IDriverFuelMonthTotal } from "../Interfaces/Fuel/iDriverFuelMonthTotal";
+import { IDetailedDriverFuelMonthTotal } from "../Interfaces/Fuel/Drivers/iDetailedDriverFuelMonthTotal";
+import { IDetailedTransportFuelMonthTotal } from "../Interfaces/Fuel/Transports/iDetailedTransportFuelMonthTotal";
 import { IFuelWaybill } from "../Interfaces/Fuel/iFuelWaybill";
-import { ITransportFuelMonthTotal } from "../Interfaces/Fuel/iTransportFuelMonthTotal";
 import { IOmnicommFuel } from "../Interfaces/IOmnicommFuel";
 import { ITransport } from "../Interfaces/ITransport";
 import { IDetailedEntityMonthTotal } from "../Interfaces/MonthTotal/iDetailedEntityMonthTotal";
@@ -68,9 +68,9 @@ export class DataService {
 	getCostPriceReport = (year: number, month: number, price: number) => 
 		this.http.get<ICostPriceReport[]>(`${this.reportsRoute}/costCode/${year}/${month}/${price}`);
 	getDriversFuelMonthTotal = (year: number, month: number) => 
-		this.http.get<IDriverFuelMonthTotal[]>(`${this.reportsRoute}/driversFuelMonthTotal/${year}/${month}`);
+		this.http.get<IDetailedDriverFuelMonthTotal[]>(`${this.reportsRoute}/driversFuelMonthTotal/${year}/${month}`);
 	getTransportsFuelMonthTotal = (year: number, month: number) => 
-		this.http.get<ITransportFuelMonthTotal[]>(`${this.reportsRoute}/transportsFuelMonthTotal/${year}/${month}`);
+		this.http.get<IDetailedTransportFuelMonthTotal[]>(`${this.reportsRoute}/transportsFuelMonthTotal/${year}/${month}`);
 	getOmnicommFuel = (date: Date, omnicommId: number) => 
 		this.http.get<IOmnicommFuel>(`${this.reportsRoute}/omnicommFuel/${formatDate(date, 'yyyy-MM-dd', 'en-US')}/${omnicommId}`);
 

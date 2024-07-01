@@ -6,7 +6,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
-import { ITransportFuelMonthTotal } from "../../../Interfaces/Fuel/iTransportFuelMonthTotal";
+import { IDetailedTransportFuelMonthTotal } from "../../../Interfaces/Fuel/Transports/iDetailedTransportFuelMonthTotal";
 import { DriverFullNamePipe } from "../../../Pipes/driverFullNamePipe";
 import { DataService } from "../../../Services/data.service";
 import { DateService } from "../../../Services/date.service";
@@ -26,9 +26,8 @@ import { DateService } from "../../../Services/date.service";
   styleUrl: './transportsFuel.component.scss'
 })
 export class TransportsFuelComponent implements OnInit, AfterViewInit{
-  dataSource = new MatTableDataSource<ITransportFuelMonthTotal>();
-  dataColumns = ['transport', 'openWaybills', 'startFuel', 'fuelTopUp', 'endFuel', 'deviation', 'factFuelConsumption', 'expand'];
-  expandDataColumns = ['driver', ... this.dataColumns.slice(1)];
+  dataSource = new MatTableDataSource<IDetailedTransportFuelMonthTotal>();
+  dataColumns = ['entity', 'openWaybills', 'startFuel', 'fuelTopUp', 'factFuelConsumption', 'endFuel', 'deviation', 'expand'];
   expandedRow = null;
   @ViewChild(MatSort) sort = new MatSort();
   @Output() identifiers = new EventEmitter<{driverId: number, transportId: number}>();
@@ -46,7 +45,7 @@ export class TransportsFuelComponent implements OnInit, AfterViewInit{
 
   getTransportsFuelMonthTotal(){
     this.dataService.getTransportsFuelMonthTotal(this.dateService.year, this.dateService.month)
-      .subscribe((data: ITransportFuelMonthTotal[]) => this.dataSource.data = data);
+      .subscribe((data: IDetailedTransportFuelMonthTotal[]) => this.dataSource.data = data);
   }
 
   sendIdentifiers = (driverId: number, transportId: number) => this.identifiers.emit({driverId, transportId});
@@ -56,4 +55,6 @@ export class TransportsFuelComponent implements OnInit, AfterViewInit{
   getTotalFactFuelConsumption = () => this.dataSource.data.reduce((acc, value) => acc + value.factFuelConsumption, 0);
   getTotalEndFuel = () => this.dataSource.data.reduce((acc, value) => acc + value.endFuel, 0);
   getTotalDeviation = () => this.dataSource.data.reduce((acc, value) => acc + value.deviation, 0);
+
+  subTotalsExist = (index: number) => this.dataSource._orderData(this.dataSource.data)[index].subTotals.length > 1;
 }
