@@ -11,12 +11,4 @@ th{ font-weight: bold; }
 
 .mat-column-expand{ text-align: center; }
 
-.mat-mdc-footer-row td{
-  border-top: 1px solid #1F1F1F;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-tr.expanded-row { height: 0; }
 .data-row td { border-bottom-width: 0; }
-tr.data-row:not(.active-expanded-row):hover { background: whitesmoke; }

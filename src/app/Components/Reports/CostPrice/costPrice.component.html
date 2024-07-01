@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="table-density-4">
+<table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="table-density-4 table-font-16">
 
   <ng-container matColumnDef="productionCostCode">
     <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc"> ШПЗ </th>
@@ -45,10 +45,10 @@
 
   <tr mat-header-row *matHeaderRowDef="dataColumns; sticky: true"></tr>
   <tr mat-row *matRowDef="let row; columns: dataColumns;"
-      class="data-row"
-      [class.active-expanded-row]="expandedRow === row"
-      (click)="expandedRow = expandedRow === row ? null : row">
+      class="data-row hoverable-row"
+      [class.active-expanded-row]="expandedRow == row"
+      (click)="expandedRow = expandedRow == row ? null : row">
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedRow']" class="expanded-row"></tr>
-  <tr mat-footer-row *matFooterRowDef="dataColumns; sticky: true"></tr>
+  <tr mat-footer-row *matFooterRowDef="dataColumns; sticky: true" class="table-footer *:text-lg"></tr>
 </table>

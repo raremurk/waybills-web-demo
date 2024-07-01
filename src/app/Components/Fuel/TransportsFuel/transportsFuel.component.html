@@ -1,10 +1,18 @@
-<table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="table-density-4">
+<table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="table-density-4 table-font-16">
 
-  <ng-container matColumnDef="transport">
+  <ng-container matColumnDef="entity">
     <th mat-header-cell *matHeaderCellDef rowspan="2"> Транспорт </th>
     <td mat-cell *matCellDef="let row">
-      <span class="code-cell bg-cyan-800">{{row.transport.code}}</span>
-      {{row.transport.name}}
+      <div class="flex gap-1 items-center mat-table-row-height">
+        <span class="code-cell bg-cyan-800 px-1.5">{{row.transport.code}}</span>
+        {{row.transport.name}}
+      </div>
+      @if (row.subTotals.length === 1) {
+        <div class="text-14 h-[25px] pl-8" [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
+          <span class="code-cell bg-emerald-600 px-1">{{row.subTotals[0].driver.personnelNumber}}</span>
+          {{row.subTotals[0].driver | driverFullName}}
+        </div>
+      }
     </td>
     <td mat-footer-cell *matFooterCellDef> Итого </td>
   </ng-container>
@@ -20,19 +28,25 @@
   </ng-container>
   
   <ng-container matColumnDef="startFuel">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Остаток на начало  </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Начало </th>
     <td mat-cell *matCellDef="let row">{{row.startFuel}}</td>
     <td mat-footer-cell *matFooterCellDef>{{getTotalStartFuel()}}</td>
   </ng-container>
   
   <ng-container matColumnDef="fuelTopUp">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Выдано топлива </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Выдано </th>
     <td mat-cell *matCellDef="let row">{{row.fuelTopUp}}</td>
     <td mat-footer-cell *matFooterCellDef>{{getTotalFuelTopUp()}}</td>
   </ng-container>
+
+  <ng-container matColumnDef="factFuelConsumption">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Расход </th>
+    <td mat-cell *matCellDef="let row">{{row.factFuelConsumption}}</td>
+    <td mat-footer-cell *matFooterCellDef>{{getTotalFactFuelConsumption()}}</td>
+  </ng-container>
   
   <ng-container matColumnDef="endFuel">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Остаток на конец  </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Конец </th>
     <td mat-cell *matCellDef="let row">{{row.endFuel}}</td>
     <td mat-footer-cell *matFooterCellDef>{{getTotalEndFuel()}}</td>
   </ng-container>
@@ -40,31 +54,19 @@
   <ng-container matColumnDef="deviation">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let row">
-      <div class="flex items-center">
-        @if (row.deviation === 0) {
-          <mat-icon class="text-green-500">check</mat-icon>
-        } @else {
-          <mat-icon class="text-red-500">error</mat-icon>
-          <span>{{row.deviation}}</span>
-        }
-      </div>
+      @if (row.deviation === 0) {
+        <mat-icon class="text-green-500">check</mat-icon>
+      } @else {
+        <mat-icon class="text-red-700" matBadge="{{row.deviation}}" matBadgeColor="warn" matBadgeSize="small">close</mat-icon>
+      }
     </td>
     <td mat-footer-cell *matFooterCellDef>
-      <div class="flex items-center">
-        @if (getTotalDeviation() === 0) {
-          <mat-icon class="text-green-500">check</mat-icon>
-        } @else {
-          <mat-icon class="text-red-500">error</mat-icon>
-          <span>{{getTotalDeviation()}}</span>
-        }
-      </div>
+      @if (getTotalDeviation() === 0) {
+        <mat-icon class="text-green-500">check</mat-icon>
+      } @else {
+        {{getTotalDeviation()}}
+      }
     </td>
-  </ng-container>
-
-  <ng-container matColumnDef="factFuelConsumption">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" rowspan="2"> Расход по факту</th>
-    <td mat-cell *matCellDef="let row">{{row.factFuelConsumption}}</td>
-    <td mat-footer-cell *matFooterCellDef>{{getTotalFactFuelConsumption()}}</td>
   </ng-container>
 
   <ng-container matColumnDef="expand">
@@ -84,9 +86,9 @@
       <div [@detailExpand]="row == expandedRow ? 'expanded' : 'collapsed'">
         <table mat-table [dataSource]="row.subTotals">
 
-          <ng-container matColumnDef="driver">
+          <ng-container matColumnDef="entity">
             <td mat-cell *matCellDef="let row">
-              <span class="code-cell bg-emerald-600">{{row.driver.personnelNumber}}</span>
+              <span class="code-cell bg-emerald-600 px-1 ml-8">{{row.driver.personnelNumber}}</span>
               {{row.driver | driverFullName}}
             </td>
           </ng-container>
@@ -106,6 +108,10 @@
           <ng-container matColumnDef="fuelTopUp">
             <td mat-cell *matCellDef="let row">{{row.fuelTopUp}}</td>
           </ng-container>
+
+          <ng-container matColumnDef="factFuelConsumption">
+            <td mat-cell *matCellDef="let row">{{row.factFuelConsumption}}</td>
+          </ng-container>
           
           <ng-container matColumnDef="endFuel">
             <td mat-cell *matCellDef="let row">{{row.endFuel}}</td>
@@ -113,38 +119,26 @@
 
           <ng-container matColumnDef="deviation">
             <td mat-cell *matCellDef="let row">
-              <div class="flex items-center">
-                @if (row.deviation === 0) {
-                  <mat-icon class="text-green-500">check</mat-icon>
-                } @else {
-                  <mat-icon class="text-red-500">error</mat-icon>
-                  <span>{{row.deviation}}</span>
-                }
-              </div>
+              @if (row.deviation === 0) {
+                <mat-icon class="text-green-500">check</mat-icon>
+              } @else {
+                <span class="font-bold text-red-700">{{row.deviation}}</span>
+              }
             </td>
-          </ng-container>
-
-          <ng-container matColumnDef="factFuelConsumption">
-            <td mat-cell *matCellDef="let row">{{row.factFuelConsumption}}</td>
           </ng-container>
           
           <ng-container matColumnDef="expand">
             <td mat-cell *matCellDef="let row"></td>
           </ng-container>
 
-          @if (row.subTotals[1]) {
-            <tr mat-row *matRowDef="let row; columns: expandDataColumns;"></tr>
-          } @else {
-            <tr mat-row *matRowDef="let row; columns: ['driver', 'openWaybills'];"></tr>
-          }              
+          <tr mat-row *matRowDef="let row; columns: dataColumns;" class="hoverable-row"></tr>
         </table>
       </div>
     </td>
   </ng-container>
   
   <tr mat-header-row *matHeaderRowDef="dataColumns; sticky: true" class="table-header"></tr>
-  <tr mat-row *matRowDef="let row; columns: dataColumns;" (click)="expandedRow = expandedRow == row ? null : row" class="data-row"></tr>
-  <tr mat-row *matRowDef="let row; columns: ['expandedRow'];" class="expanded-row"></tr>
-  <tr mat-footer-row *matFooterRowDef="dataColumns; sticky: true"></tr>
-
+  <tr mat-row *matRowDef="let row; columns: dataColumns;" class="hoverable-row" (click)="expandedRow = expandedRow == row ? null : row"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['expandedRow']; when: subTotalsExist" class="expanded-row" [class.no-border-bottom]="row != expandedRow"></tr>
+  <tr mat-footer-row *matFooterRowDef="dataColumns; sticky: true" class="table-footer *:text-lg"></tr>
 </table>

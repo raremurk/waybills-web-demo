@@ -9,22 +9,31 @@
 body{ margin: 0; font-family: 'Inter Tight', sans-serif; }
 h1, h2, h3, h4, h5{ margin: 0; }
 
-.container{ padding: 0 16px; }
-
-.mat-green{
-  background-color: #58BC82 !important;
-  color: white !important;
-}
-  
-.mat-grey{
-  background-color: #6c8794 !important;
-  color: white !important;
-}
-
 @include mat.form-field-density(-1);
 
+//-----------------MAT TABLE SECTION-----------------
+.table-font-16{
+  > thead > tr > .mat-mdc-header-cell{
+    font-size: 16px;
+    line-height: 16px;
+  }
+  > tbody > tr > .mat-mdc-cell{ font-size: 16px; }
+}
+
+.hoverable-row:not(.active-expanded-row):hover{
+  font-weight: bold;
+  background: whitesmoke;
+}
+
+.table-footer td{
+  font-weight: bold;
+  border-top: 1px solid #8E8E8E;
+}
+
+.inline-editing-row > .mat-mdc-cell{ letter-spacing: var(--mat-form-field-container-text-tracking); }
+
 .sort-arrow-margin-0{
-  .mat-sort-header-arrow{ margin: 0 !important; }
+  div.mat-sort-header-arrow{ margin: 0; }
 }
 
 .sort-header-center{
@@ -34,14 +43,18 @@ h1, h2, h3, h4, h5{ margin: 0; }
   }
 }
 
-.mat-mdc-header-cell{
-  line-height: 16px !important;
-	font-size: 16px;
-}
+tr.expanded-row{ height: 0; }
+.mat-table-row-height{ height: calc(var(--mat-table-row-item-container-height) - 1px); }
+//-----------------END OF MAT TABLE SECTION-----------------
 
-.mat-mdc-cell{
-	font-size: 16px;
-  > span{ letter-spacing: 0.03125em; }
+.mat-green{
+  background-color: #58BC82 !important;
+  color: white !important;
+}
+  
+.mat-grey{
+  background-color: #6c8794 !important;
+  color: white !important;
 }
 
 .table-density-3{
@@ -111,4 +124,11 @@ h1, h2, h3, h4, h5{ margin: 0; }
   border-radius: 9999px !important;
   .mdc-button__label{ letter-spacing: .006rem; }
   > .mat-icon{ margin-right: 4px !important; }
+}
+
+.code-cell{
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 2px; 
 }

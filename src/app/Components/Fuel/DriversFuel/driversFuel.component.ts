@@ -6,7 +6,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
-import { IDriverFuelMonthTotal } from "../../../Interfaces/Fuel/iDriverFuelMonthTotal";
+import { IDetailedDriverFuelMonthTotal } from "../../../Interfaces/Fuel/Drivers/iDetailedDriverFuelMonthTotal";
 import { DriverFullNamePipe } from "../../../Pipes/driverFullNamePipe";
 import { DataService } from "../../../Services/data.service";
 import { DateService } from "../../../Services/date.service";
@@ -26,11 +26,10 @@ import { DateService } from "../../../Services/date.service";
   styleUrl: './driversFuel.component.scss'
 })
 export class DriversFuelComponent implements OnInit, AfterViewInit{
-  dataSource = new MatTableDataSource<IDriverFuelMonthTotal>();
-  mainHeadersColumns = ['driver', 'openWaybills', 'fuelTopUp', 'fuelConsumption', 'fuelEconomy', 'expand'];
+  dataSource = new MatTableDataSource<IDetailedDriverFuelMonthTotal>();
+  mainHeadersColumns = ['entity', 'openWaybills', 'fuelTopUp', 'fuelConsumption', 'fuelEconomy', 'expand'];
   childHeadersColumns = ['factFuelConsumption', 'normalFuelConsumption'];
-  dataColumns = ['driver', 'openWaybills', 'fuelTopUp', 'factFuelConsumption', 'normalFuelConsumption', 'fuelEconomy', 'expand'];
-  expandDataColumns = ['transport', ... this.dataColumns.slice(1)];
+  dataColumns = ['entity', 'openWaybills', 'fuelTopUp', 'factFuelConsumption', 'normalFuelConsumption', 'fuelEconomy', 'expand'];
   expandedRow = null;
   @ViewChild(MatSort) sort = new MatSort();
   @Output() identifiers = new EventEmitter<{driverId: number, transportId: number}>();
@@ -48,7 +47,7 @@ export class DriversFuelComponent implements OnInit, AfterViewInit{
 
   getDriversFuelMonthTotal(){
     this.dataService.getDriversFuelMonthTotal(this.dateService.year, this.dateService.month)
-      .subscribe((data: IDriverFuelMonthTotal[]) => this.dataSource.data = data);
+      .subscribe((data: IDetailedDriverFuelMonthTotal[]) => this.dataSource.data = data);
   }
 
   sendIdentifiers = (driverId: number, transportId: number) => this.identifiers.emit({driverId, transportId});
@@ -57,4 +56,6 @@ export class DriversFuelComponent implements OnInit, AfterViewInit{
   getTotalFactFuelConsumption = () => this.dataSource.data.reduce((acc, value) => acc + value.factFuelConsumption, 0);
   getTotalNormalFuelConsumption = () => this.dataSource.data.reduce((acc, value) => acc + value.normalFuelConsumption, 0);
   getTotalFuelEconomy = () => this.dataSource.data.reduce((acc, value) => acc + value.fuelEconomy, 0);
+
+  subTotalsExist = (index: number) => this.dataSource._orderData(this.dataSource.data)[index].subTotals.length > 1;
 }

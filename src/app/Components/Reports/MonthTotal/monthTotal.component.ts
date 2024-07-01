@@ -1,6 +1,6 @@
 import { trigger, state, style, transition, animate } from "@angular/animations";
-import { Component, OnInit, AfterViewInit, ViewChild, Input, OnChanges, SimpleChanges } from "@angular/core";
-import { MatBadgeModule } from '@angular/material/badge';
+import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
+import { MatBadgeModule } from "@angular/material/badge";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSortModule, MatSort } from "@angular/material/sort";
@@ -24,8 +24,9 @@ import { DateService } from "../../../Services/date.service";
   templateUrl: './monthTotal.component.html',
   styleUrl: './monthTotal.component.scss'
 })
-export class MonthTotalComponent implements OnInit, AfterViewInit, OnChanges{
-  @Input() mainEntity = 'Водитель';
+export class MonthTotalComponent implements OnInit, AfterViewInit{
+  mainEntity = {name: 'Водитель', color: 'bg-emerald-600', route: 'driver'};
+  childEntity = {name: 'Транспорт', color: 'bg-cyan-800', route: 'transport'};
   columns = [
     {
       columnDef: 'waybillsCount',
@@ -113,9 +114,8 @@ export class MonthTotalComponent implements OnInit, AfterViewInit, OnChanges{
     }
   ];
   dataSource = new MatTableDataSource<IDetailedEntityMonthTotal>();
-  dataColumns = ['mainEntityName', ... this.columns.map(c => c.columnDef), 'expand'];
-  expandDataColumns = ['childEntityName', ... this.dataColumns.slice(1)];
-  mainHeadersColumns = ['mainEntityName', 'waybillsCount', 'days', 'hours', 'earnings', 'bonus', 'weekend', 'numberOfRuns',
+  dataColumns = ['entityName', ... this.columns.map(c => c.columnDef), 'expand'];
+  mainHeadersColumns = ['entityName', 'waybillsCount', 'days', 'hours', 'earnings', 'bonus', 'weekend', 'numberOfRuns',
     'mileage', 'transportedLoad', 'normShift', 'conditionalReferenceHectares', 'fuel', 'expand'];
   childHeadersColumns = ['totalMileage' , 'totalMileageWithLoad', 'factFuelConsumption', 'normalFuelConsumption'];
   expandedRow: IDetailedEntityMonthTotal | null = <IDetailedEntityMonthTotal>{};
@@ -132,17 +132,17 @@ export class MonthTotalComponent implements OnInit, AfterViewInit, OnChanges{
     this.dataSource.sort = this.sort;
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    if(changes['mainEntity']){
-      this.getMonthTotals();
-    }
-  }
-
   getMonthTotals(){
-    let mainEntity = this.mainEntity === 'Транспорт' ? 'transport' : 'driver';
-    this.dataService.getMonthTotals(this.dateService.year, this.dateService.month, mainEntity)
+    this.dataService.getMonthTotals(this.dateService.year, this.dateService.month, this.mainEntity.route)
       .subscribe((data: IDetailedEntityMonthTotal[]) => this.dataSource.data = data);
   }
 
   getMonthTotalExcelLink = () => this.dataService.getMonthTotalExcelLink(this.dateService.year, this.dateService.month);
+
+  switchEntities(){
+    [this.mainEntity, this.childEntity] = [this.childEntity, this.mainEntity];
+    this.getMonthTotals();
+  }
+
+  subTotalsExist = (index: number) => this.dataSource._orderData(this.dataSource.data)[index].subTotals.length > 1;
 }

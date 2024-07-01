@@ -1,18 +1,20 @@
 th{ font-weight: bold; }
-.small-header{ height: 22px; }
+.main-headers{ height: 26px; }
+.child-headers{ height: 22px; }
 
-.mat-column-days, .mat-column-hours, .mat-column-earnings, .mat-column-weekend, .mat-column-bonus, 
-.mat-column-factFuelConsumption, .mat-column-normalFuelConsumption, .mat-column-numberOfRuns, .mat-column-totalMileage, 
-.mat-column-totalMileageWithLoad, .mat-column-transportedLoad, .mat-column-normShift, .mat-column-conditionalReferenceHectares{
+.child-entity-text-color{ color: rgba(0, 0, 0, 0.6); }
+
+.mat-column-days, .mat-column-hours, .mat-column-earnings, .mat-column-weekend, .mat-column-bonus, .mat-column-numberOfRuns,
+.mat-column-totalMileage, .mat-column-totalMileageWithLoad, .mat-column-transportedLoad, .mat-column-normShift,
+.mat-column-conditionalReferenceHectares, .mat-column-factFuelConsumption, .mat-column-normalFuelConsumption{
   text-align: end;
   padding: 0 0 0 6px;
 }
 
-.mat-column-mainEntityName{ padding-right: 0; }
-.mat-column-childEntityName{ padding: 0 0 0 32px; }
-.mat-column-mainEntityName, .mat-column-childEntityName{
+.mat-column-entityName{
   min-width: 248px;
-  width: 248px;  
+  width: 248px;
+  padding-right: 0;
 }
 
 .mat-column-waybillsCount{
@@ -110,28 +112,7 @@ th{ font-weight: bold; }
 
 .mat-column-expandedRow{
   padding: 0;
-  tr:first-child:not(:only-child) td{ border-top: 1px solid #E0E0E0; }
+  tr:not(:last-child) td{ border-bottom: 1px solid #E0E0E0; }
 }
 
-.data-row td{ border-bottom-width: 0; }
-tr.expanded-row{ height: 0;}
-
-.mdc-data-table__row:hover{
-  font-weight: bold;
-  background: whitesmoke;
-}
-
-.mat-mdc-footer-row td{
-  font-size: 16px;
-  font-weight: bold;
-  border-top: 1px solid #1F1F1F;
-}
-
-.code-cell{
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  height: 20px;
-  padding: 0 8px;
-  border-radius: 2px; 
-}
+.no-border-bottom td { border-bottom-width: 0; }
