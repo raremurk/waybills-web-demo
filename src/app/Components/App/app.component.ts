@@ -18,7 +18,8 @@ export class AppComponent{
     { link: 'reports', label: 'Отчеты' },
     { link: 'fuel', label: 'Топливо' },
     { link: 'drivers', label: 'Водители' },
-    { link: 'transports', label: 'Транспорт' }
+    { link: 'transports', label: 'Транспорт' },
+    { link: 'rates', label: 'Расценки' }
   ];
 
   constructor(public dateService: DateService){ }

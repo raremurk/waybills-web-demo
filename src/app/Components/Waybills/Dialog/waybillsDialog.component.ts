@@ -11,12 +11,12 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule, MatPaginator } from "@angular/material/paginator";
 import { MatSelectModule } from "@angular/material/select";
-import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { firstValueFrom } from "rxjs";
-import { IDriver } from "../../../Interfaces/iDriver";
 import { IOmnicommFuel } from "../../../Interfaces/IOmnicommFuel";
 import { ITransport } from "../../../Interfaces/ITransport";
+import { IDriver } from "../../../Interfaces/iDriver";
+import { IRate } from "../../../Interfaces/iRate";
 import { IWaybill } from "../../../Interfaces/iWaybill";
 import { OperationCreation } from "../../../Models/Operation/operationCreation";
 import { OperationView } from "../../../Models/Operation/operationView";
@@ -26,6 +26,7 @@ import { DriverFullNamePipe } from "../../../Pipes/driverFullNamePipe";
 import { RangeDatePipe } from "../../../Pipes/rangeDatePipe";
 import { ToFixedPipe } from "../../../Pipes/toFixedPipe";
 import { DataService } from "../../../Services/data.service";
+import { CalculationCreation } from "../../../Models/Calculation/calculationCreation";
 
 @Component({
   standalone: true,
@@ -42,7 +43,6 @@ import { DataService } from "../../../Services/data.service";
     MatInputModule,
     MatPaginatorModule,
     MatSelectModule,
-    MatSortModule,
     MatTableModule,
     ToFixedPipe,
     RangeDatePipe,
@@ -65,6 +65,9 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   driverFilter: IDriver | string = '';
   filteredDrivers: IDriver[] = [];
 
+  private _calculationHelp = new Map<number, {quantity: number, rate: number}>();
+  rates: IRate[] = [];
+
   pageSize = 5;
   pageSizes = Array.from({length: 13 - this.pageSize}, (_, i) => i + this.pageSize);
 
@@ -76,7 +79,6 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   dataColumns = ['productionCostCode', 'numberOfRuns', 'totalMileage', 'totalMileageWithLoad', 'transportedLoad','norm', 'fact',
     'mileageWithLoad', 'normShift', 'conditionalReferenceHectares', 'fuelConsumptionPerUnit', 'totalFuelConsumption'];
 
-  @ViewChild(MatSort) sort = new MatSort();
   @ViewChild(MatPaginator) paginator = <MatPaginator>{};
   
   constructor(private dataService: DataService, public driverFullNamePipe: DriverFullNamePipe, 
@@ -92,13 +94,14 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
     this.initializeWaybill();
     this.filteredTransports = this.data.transports;
     this.filteredDrivers = this.data.drivers;
+    this.getAllRates();
   }
 
   ngAfterViewInit(){
-    this.sort.getNextSortDirection = () => this.sort.direction === '' ? 'desc' : '';
-    this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
+
+  getAllRates = () => this.dataService.getAllRates().subscribe((data: IRate[]) => this.rates = data);
 
   async initializeWaybill(){
     if(this.data.waybillId){
@@ -176,18 +179,29 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   changePageSize = () => this.paginator._changePageSize(this.pageSize);
 
   calculationHelp(){
-    let map = new Map<number, number>();
-    let operations = this.waybill.operations.map(x => { return {norm: Number(x.norm), fact: Number(x.fact)} });
-    operations = operations.filter(x => x.norm > 0 && x.fact > 0);
+    let map = new Map<number, {quantity: number, rate: number}>();
+    let operations = this.waybill.operations
+        .filter(x => Number(x.norm) > 0 && Number(x.fact) > 0)
+        .map(x => { return {norm: Number(x.norm), fact: Number(x.fact)} });
     operations.forEach(x => {
       let currentValue = map.get(x.norm);
-      let newValue = currentValue === undefined ? x.fact : currentValue + x.fact;
-      map.set(x.norm, newValue);
+      let newValue = currentValue === undefined ? x.fact : currentValue.quantity + x.fact;
+      map.set(x.norm, {quantity: newValue, rate: this.rates.find(z => z.norm === x.norm)?.value ?? 0});
     });
-    return map;
+    this._calculationHelp = map;
+    return this._calculationHelp;
+  }
+  
+  transferValues(){
+    let calculations = Array.from(this._calculationHelp).map(x => 
+      new CalculationCreation({id: 0, quantity: x[1].quantity, price: x[1].rate, sum: 0}));
+    while(calculations.length < 6){
+      calculations.push(new CalculationCreation());
+    }
+    this.waybill.calculations = calculations;
   }
 
-  keyDescOrder = (a: KeyValue<number,number>, b: KeyValue<number,number>) => a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
+  keyDescOrder = (a: KeyValue<number,{quantity: number, rate: number}>, b: KeyValue<number,{quantity: number, rate: number}>) => a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
 
   getOmnicommFuel(){
     let omnicommId = this.waybill.transport?.omnicommId ?? 0;

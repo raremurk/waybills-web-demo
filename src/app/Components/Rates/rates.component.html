@@ -1,0 +1,68 @@
+<h1 class="leading-10 text-center bg-neutral-100 mt-4 py-2">{{title}}</h1>
+<div class="form-field-density-5 px-4">
+  <table mat-table [dataSource]="dataSource" matSort class="table-density-3 table-font-16">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Наименование работ </th>    
+      <td mat-cell *matCellDef="let rate">
+        @if (rate.id === editableRate.id) {
+          <mat-form-field class="-ml-4">
+            <input matInput [(ngModel)]="editableRate.name">
+          </mat-form-field>
+        } @else{
+          {{rate.name}}
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="norm">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Норма </th>
+      <td mat-cell *matCellDef="let rate">
+        @if (rate.id === editableRate.id) {
+          <mat-form-field class="w-20 -mr-4">
+            <input matInput [(ngModel)]="editableRate.norm" class="text-end">
+          </mat-form-field>
+        } @else{
+          {{rate.norm}}
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Расценка </th>
+      <td mat-cell *matCellDef="let rate">
+        @if (rate.id === editableRate.id) {
+          <mat-form-field class="w-20 -mr-4">
+            <input matInput [(ngModel)]="editableRate.value" class="text-end">
+          </mat-form-field>
+        } @else{
+          {{rate.value}}
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="operations">
+      <th mat-header-cell *matHeaderCellDef>
+        <button mat-flat-button color="primary" (click)="openDialog()"><mat-icon>add</mat-icon>Добавить</button>
+      </th>
+      <td mat-cell *matCellDef="let rate">
+        <div class="flex gap-1 button-density-2">
+          @if (rate.id === editableRate.id) {
+            <button mat-flat-button color="green" (click)="updateRate()" class="w-30">
+              <mat-icon>check</mat-icon>Сохранить</button>
+            <button mat-flat-button color="grey" (click)="cancel()" class="w-27">
+              <mat-icon>close</mat-icon>Отмена</button>
+          } @else {
+            <button mat-flat-button color="primary" (click)="editRate(rate)" class="w-30">
+              <mat-icon>edit</mat-icon>Изменить</button>
+            <button mat-flat-button color="warn" (click)="openDeleteDialog(rate)" class="w-27">
+              <mat-icon>delete</mat-icon>Удалить</button>
+          }
+        </div>
+      </td>
+    </ng-container> 
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="inline-editing-row"></tr>
+  </table>
+</div>

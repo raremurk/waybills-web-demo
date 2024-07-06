@@ -1,0 +1,15 @@
+th{ font-weight: bold; }
+
+.mat-column-name{ min-width: 250px; width: 20%; }
+
+.mat-column-norm, .mat-column-rate{
+	min-width: 180px;
+	width: 40%;
+	text-align: end;
+}
+
+.mat-column-operations{
+	width: 248px;
+	padding-right: 0;
+	text-align: end;
+}
