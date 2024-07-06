@@ -9,10 +9,12 @@ import { ITransport } from "../Interfaces/ITransport";
 import { IDetailedEntityMonthTotal } from "../Interfaces/MonthTotal/iDetailedEntityMonthTotal";
 import { ICostPriceReport } from "../Interfaces/iCostPriceReport";
 import { IDriver } from "../Interfaces/iDriver";
+import { IRate } from "../Interfaces/iRate";
 import { IShortWaybill } from "../Interfaces/iShortWaybill";
 import { IWaybill } from "../Interfaces/iWaybill";
 import { WaybillCreation } from "../Models/Waybill/waybillCreation";
 import { Driver } from "../Models/driver";
+import { Rate } from "../Models/rate";
 import { Transport } from "../Models/transport";
 
 @Injectable({ providedIn: 'root' })
@@ -23,6 +25,7 @@ export class DataService {
 	reportsRoute = `${this.url}/reports`;
 	driversRoute = `${this.url}/drivers`;
 	transportsRoute = `${this.url}/transports`;
+	ratesRoute = `${this.url}/rates`;
 	excelRoute = `${this.url}/excel`;
 
 	constructor(private http: HttpClient) { }
@@ -61,6 +64,17 @@ export class DataService {
 		this.http.put<ITransport>(`${this.transportsRoute}/${id}`, transport);
 	deleteTransport = (id: number) =>
 		this.http.delete(`${this.transportsRoute}/${id}`);
+
+	getAllRates = () =>
+		this.http.get<IRate[]>(this.ratesRoute);
+	createRate = (rate: Rate) =>
+		this.http.post<IRate>(this.ratesRoute, rate);
+	getRate = (id: number) =>
+		this.http.get<IRate>(`${this.ratesRoute}/${id}`);
+	updateRate = (id: number, rate: Rate) =>
+		this.http.put<IRate>(`${this.ratesRoute}/${id}`, rate);
+	deleteRate = (id: number) =>
+		this.http.delete(`${this.ratesRoute}/${id}`);
 
 
 	getMonthTotals = (year: number, month: number, entity: string) => 

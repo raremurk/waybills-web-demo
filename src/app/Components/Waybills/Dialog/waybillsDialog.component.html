@@ -130,8 +130,8 @@
     </div>
   </div>
 
-  <div class="sort-header-center mt-0.5 mb-2">
-    <table mat-table [dataSource]="dataSource" matSort class="table-density-4 table-font-16">
+  <div class="mt-0.5 mb-2">
+    <table mat-table [dataSource]="dataSource" class="table-density-4 table-font-16">
 
       <ng-container matColumnDef="productionCostCode">
         <th mat-header-cell *matHeaderCellDef rowspan="2"> ШПЗ </th>    
@@ -164,7 +164,7 @@
       </ng-container>
 
       <ng-container matColumnDef="norm">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc"> Норма </th>
+        <th mat-header-cell *matHeaderCellDef> Норма </th>
         <td mat-cell *matCellDef="let operation">
           <input [(ngModel)]="operation.norm" class="table-input" [disabled]="!data.editMode"></td>
       </ng-container>
@@ -223,37 +223,45 @@
   <div class="flex gap-4 justify-between text-center">
     <div class="flex gap-4">
 
-      <div class="w-36">
-        <h4>Для расчетов</h4>
-        <div class="grid grid-cols-fixed-2 gap-x-2 gap-y-1">
+      <div class="w-54">
+        <div class="flex items-center justify-center gap-1 icon-button-density-5">
+          <h4>Для расчетов</h4>
+          <button mat-icon-button color="primary" (click)="transferValues()" [disabled]="!data.editMode"><mat-icon>arrow_forward</mat-icon></button>
+        </div>
+        <div class="grid grid-cols-fixed-3 gap-1">
           <h5 class="h-4 leading-4">Норма</h5>
           <h5 class="h-4 leading-4">Факт</h5>
+          <h5 class="h-4 leading-4">Расценка</h5>
           @for (item of calculationHelp() | keyvalue: keyDescOrder; track item.key) {
             <div class="calculation-helper-cell bg-cyan-800">{{item.key | toFixed: 2}}</div>
-            <div class="calculation-helper-cell bg-emerald-600">{{item.value | toFixed: 3}}</div>
+            <div class="calculation-helper-cell bg-emerald-600">{{item.value.quantity | toFixed: 3}}</div>
+            <div class="calculation-helper-cell bg-pink-600">{{item.value.rate | toFixed: 3}}</div>
           } @empty {
             <div class="calculation-helper-cell bg-cyan-800">0.00</div>
             <div class="calculation-helper-cell bg-emerald-600">0.000</div>
+            <div class="calculation-helper-cell bg-pink-600">0.000</div>
           }
         </div>
       </div>
   
       <div>
-        <div class="grid grid-cols-fixed-2 gap-x-4 gap-y-1">
-          <div *ngFor="let _ of [].constructor(2)" class="flex gap-4">
+        <div class="flex gap-4 mb-1">
+          <div *ngFor="let _ of [].constructor(2)" class="flex gap-3">
             <h4 class="w-24">Количество</h4>
-            <h4 class="w-23">Расценка</h4>
+            <h4 class="w-20">Расценка</h4>
             <h4 class="w-20">Сумма</h4>
           </div>
+        </div>
+        <div class="grid grid-rows-3 grid-flow-col gap-x-4 gap-y-1">
           <div *ngFor="let calculation of waybill.calculations" class="flex items-center">
             <mat-form-field class="w-24">
               <input matInput [(ngModel)]="calculation.quantity" [disabled]="!data.editMode">
             </mat-form-field>
-            <span class="w-4">&#215;</span>
-            <mat-form-field class="w-23">
+            <span class="w-3">&#215;</span>
+            <mat-form-field class="w-20">
               <input matInput [(ngModel)]="calculation.price" [disabled]="!data.editMode">
             </mat-form-field>
-            <span class="w-4">=</span>
+            <span class="w-3">=</span>
             <div class="display-value-cell w-20">{{calculation.sum}}</div>
           </div>
         </div>
@@ -261,7 +269,7 @@
   
       <div>
         <h4>Отработано</h4>
-        <div class="grid grid-cols-fixed-2 gap-x-1.5 mt-1">
+        <div class="grid grid-cols-fixed-2 gap-x-1 mt-1">
           <h5>Дней</h5> 
           <h5>Часов</h5>
           <mat-form-field class="w-16">
@@ -276,29 +284,29 @@
 
     <div class="flex gap-4">
 
-      <div class="w-36 pt-1.5">
+      <div class="w-34 pt-1.5">
         <h3 class="leading-6">Сумма заработка</h3>
         <div class="w-full money-div mt-1">{{waybill.earnings}}</div>   
       </div>
 
-      <div>
+      <div class="w-38">
         <div class="flex justify-between items-center mb-1">
           <h4>Премия</h4>
           <mat-form-field class="mat-input-font-bold mat-form-field-infix-y-padding-0 w-20">
-            <input matInput [(ngModel)]="waybill.bonusSizeInPercentages" [disabled]="!data.editMode">
-            <span matSuffix class="font-bold pr-2">%</span>
+            <input matInput [(ngModel)]="waybill.bonusSizeInPercentages" class="text-end" [disabled]="!data.editMode">
+            <span matSuffix class="font-bold pr-1.5">%</span>
           </mat-form-field>
         </div>
-        <mat-form-field class="mat-input-font-bold w-40">
+        <mat-form-field class="mat-input-font-bold w-full">
           <input matInput [(ngModel)]="waybill.bonus" [disabled]="!data.editMode || +waybill.bonusSizeInPercentages !== 0">
         </mat-form-field>
         <div class="flex justify-between items-center my-0.5">
           <h4>Выходные</h4>
-          <mat-checkbox matPrefix [(ngModel)]="waybill.weekendEqualsEarnings" class="checkbox-density-3" color="primary" [disabled]="!data.editMode">
-            <span class="font-bold">100%</span>
+          <mat-checkbox [(ngModel)]="waybill.weekendEqualsEarnings" class="checkbox-density-3" color="primary" [disabled]="!data.editMode">
+            <span class="font-bold -ml-1">100%</span>
           </mat-checkbox>
         </div>
-        <mat-form-field class="mat-input-font-bold w-40">
+        <mat-form-field class="mat-input-font-bold w-full">
           <input matInput [(ngModel)]="waybill.weekend" [disabled]="!data.editMode || waybill.weekendEqualsEarnings">
         </mat-form-field>
       </div>

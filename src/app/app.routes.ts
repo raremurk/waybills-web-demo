@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { DriversComponent } from './Components/Drivers/drivers.component';
 import { FuelComponent } from './Components/Fuel/fuel.component';
 import { NotFoundComponent } from './Components/Not-found/not-found.component';
+import { RatesComponent } from './Components/Rates/rates.component';
 import { ReportsComponent } from './Components/Reports/reports.component';
 import { TransportsComponent } from './Components/Transports/transports.component';
 import { WaybillsComponent } from './Components/Waybills/waybills.component';
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'fuel', component: FuelComponent},
   { path: 'drivers', component: DriversComponent},
   { path: 'transports', component: TransportsComponent},
+  { path: 'rates', component: RatesComponent},
   { path: '**', component: NotFoundComponent }
 ];
