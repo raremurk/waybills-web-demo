@@ -65,7 +65,7 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   driverFilter: IDriver | string = '';
   filteredDrivers: IDriver[] = [];
 
-  private _calculationHelp = new Map<number, {quantity: number, rate: number}>();
+  private _calculationHelp: {norm: number, quantity: number, rate: number}[] = [];
   rates: IRate[] = [];
 
   pageSize = 5;
@@ -178,30 +178,30 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
 
   changePageSize = () => this.paginator._changePageSize(this.pageSize);
 
-  calculationHelp(){
-    let map = new Map<number, {quantity: number, rate: number}>();
+  calculationHelp(){    
     let operations = this.waybill.operations
-        .filter(x => Number(x.norm) > 0 && Number(x.fact) > 0)
-        .map(x => { return {norm: Number(x.norm), fact: Number(x.fact)} });
+        .map(x => { return {norm: Number(x.norm), fact: Number(x.fact)} })
+        .filter(x => x.norm > 0 && x.fact > 0)        
+        .sort(function (a, b) { return b.norm - a.norm; });
+    
+    let map = new Map<number, {quantity: number, rate: number}>();
     operations.forEach(x => {
       let currentValue = map.get(x.norm);
       let newValue = currentValue === undefined ? x.fact : currentValue.quantity + x.fact;
-      map.set(x.norm, {quantity: newValue, rate: this.rates.find(z => z.norm === x.norm)?.value ?? 0});
+      map.set(x.norm, {quantity: Number(newValue.toFixed(3)), rate: this.rates.find(z => z.norm === x.norm)?.value ?? 0});
     });
-    this._calculationHelp = map;
+
+    this._calculationHelp = Array.from(map, ([key, value]) => ({norm: key, quantity: value.quantity, rate: value.rate}));
     return this._calculationHelp;
   }
   
   transferValues(){
-    let calculations = Array.from(this._calculationHelp).map(x => 
-      new CalculationCreation({id: 0, quantity: x[1].quantity, price: x[1].rate, sum: 0}));
+    let calculations = this._calculationHelp.map(x => new CalculationCreation({id: 0, quantity: x.quantity, price: x.rate, sum: 0}));
     while(calculations.length < 6){
       calculations.push(new CalculationCreation());
     }
     this.waybill.calculations = calculations;
   }
-
-  keyDescOrder = (a: KeyValue<number,{quantity: number, rate: number}>, b: KeyValue<number,{quantity: number, rate: number}>) => a.key > b.key ? -1 : (b.key > a.key ? 1 : 0);
 
   getOmnicommFuel(){
     let omnicommId = this.waybill.transport?.omnicommId ?? 0;
