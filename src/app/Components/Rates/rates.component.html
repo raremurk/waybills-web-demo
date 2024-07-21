@@ -3,10 +3,10 @@
   <table mat-table [dataSource]="dataSource" matSort class="table-density-3 table-font-16">
 
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Наименование работ </th>    
+      <th mat-header-cell *matHeaderCellDef> Наименование работ </th>    
       <td mat-cell *matCellDef="let rate">
         @if (rate.id === editableRate.id) {
-          <mat-form-field class="-ml-4">
+          <mat-form-field class="w-72 -ml-4">
             <input matInput [(ngModel)]="editableRate.name">
           </mat-form-field>
         } @else{
@@ -28,7 +28,7 @@
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="rate">
+    <ng-container matColumnDef="value">
       <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Расценка </th>
       <td mat-cell *matCellDef="let rate">
         @if (rate.id === editableRate.id) {
@@ -37,6 +37,19 @@
           </mat-form-field>
         } @else{
           {{rate.value}}
+        }
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fuelConsumption">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before"> Норма расхода ГСМ </th>
+      <td mat-cell *matCellDef="let rate">
+        @if (rate.id === editableRate.id) {
+          <mat-form-field class="w-20 -mr-4">
+            <input matInput [(ngModel)]="editableRate.fuelConsumption" class="text-end">
+          </mat-form-field>
+        } @else{
+          {{rate.fuelConsumption}}
         }
       </td>
     </ng-container>

@@ -14,8 +14,8 @@ export abstract class Waybill{
 
   public driver: IDriver | null = null;
 
-  protected operationsCount: number = 12;
-  protected calculationsCount: number = 6;
+  public readonly operationsCount: number = 12;
+  public readonly calculationsCount: number = 6;
 
   constructor(waybill?: IWaybill){
     if(waybill){

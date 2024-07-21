@@ -1,4 +1,4 @@
-import { CommonModule, KeyValue } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import { Component, OnInit, AfterViewInit, ViewChild, Inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
@@ -26,7 +26,6 @@ import { DriverFullNamePipe } from "../../../Pipes/driverFullNamePipe";
 import { RangeDatePipe } from "../../../Pipes/rangeDatePipe";
 import { ToFixedPipe } from "../../../Pipes/toFixedPipe";
 import { DataService } from "../../../Services/data.service";
-import { CalculationCreation } from "../../../Models/Calculation/calculationCreation";
 
 @Component({
   standalone: true,
@@ -69,7 +68,7 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   rates: IRate[] = [];
 
   pageSize = 5;
-  pageSizes = Array.from({length: 13 - this.pageSize}, (_, i) => i + this.pageSize);
+  pageSizes = Array.from({length: this.waybill.operationsCount - (this.pageSize - 1)}, (_, i) => i + this.pageSize);
 
   dataSource = new MatTableDataSource<OperationCreation | OperationView>();
   mainHeadersColumns = ['productionCostCode', 'numberOfRuns', 'mileage', 'transportedLoad', 'done', 'normShift',
@@ -196,11 +195,14 @@ export class WaybillsDialogComponent implements OnInit, AfterViewInit{
   }
   
   transferValues(){
-    let calculations = this._calculationHelp.map(x => new CalculationCreation({id: 0, quantity: x.quantity, price: x.rate, sum: 0}));
-    while(calculations.length < 6){
-      calculations.push(new CalculationCreation());
+    for(let i = 0; i < this.waybill.calculationsCount; i++){
+      this.waybill.calculations[i].quantity = this._calculationHelp[i]?.quantity.toString() ?? '';
+      this.waybill.calculations[i].price = this._calculationHelp[i]?.rate.toString() ?? '';
     }
-    this.waybill.calculations = calculations;
+  }
+
+  checkFuelConsumptionRate(operation: OperationCreation){
+    operation.fuelConsumptionPerUnit = this.rates.find(x => x.norm === Number(operation.norm))?.fuelConsumption.toString() ?? '';
   }
 
   getOmnicommFuel(){
