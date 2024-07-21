@@ -2,5 +2,6 @@ export interface IRate{
 	id: number,
 	name: string,
 	norm: number,
-	value: number
+	value: number,
+	fuelConsumption: number
 }

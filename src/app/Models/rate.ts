@@ -3,4 +3,5 @@ export class Rate{
 	public name: string = '';
 	public norm: string = '';
 	public value: string = '';
+	public fuelConsumption: string = '';
 }

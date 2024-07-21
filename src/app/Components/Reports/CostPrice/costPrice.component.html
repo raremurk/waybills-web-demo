@@ -1,7 +1,7 @@
 <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows class="table-density-4 table-font-16">
 
   <ng-container matColumnDef="productionCostCode">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc"> ШПЗ </th>
+    <th mat-header-cell *matHeaderCellDef> ШПЗ </th>
     <td mat-cell *matCellDef="let row">{{row.productionCostCode}}</td>
     <td mat-footer-cell *matFooterCellDef> Итого </td>
   </ng-container>

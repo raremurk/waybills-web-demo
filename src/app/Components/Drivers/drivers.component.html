@@ -3,7 +3,7 @@
   <table mat-table [dataSource]="dataSource" matSort class="table-density-3 table-font-16">
 
     <ng-container matColumnDef="lastName">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Фамилия </th>    
+      <th mat-header-cell *matHeaderCellDef> Фамилия </th>    
       <td mat-cell *matCellDef="let driver">
         @if (driver.id === editableDriver.id) {
           <mat-form-field class="-ml-4">

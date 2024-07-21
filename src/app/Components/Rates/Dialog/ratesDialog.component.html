@@ -16,6 +16,10 @@
       <mat-label>Расценка</mat-label>
       <input matInput [(ngModel)]="rate.value">
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Норма расхода ГСМ</mat-label>
+      <input matInput [(ngModel)]="rate.fuelConsumption">
+    </mat-form-field>
     <button mat-flat-button (click)="createRate()" color="green">Добавить</button>
   </div>     
 </div>    

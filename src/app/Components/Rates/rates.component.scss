@@ -1,12 +1,8 @@
 th{ font-weight: bold; }
 
-.mat-column-name{ min-width: 250px; width: 20%; }
+.mat-column-name{ min-width: 320px; }
 
-.mat-column-norm, .mat-column-rate{
-	min-width: 180px;
-	width: 40%;
-	text-align: end;
-}
+.mat-column-norm, .mat-column-value, .mat-column-fuelConsumption{ text-align: end; }
 
 .mat-column-operations{
 	width: 248px;

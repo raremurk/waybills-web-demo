@@ -32,7 +32,7 @@ export class RatesComponent implements OnInit, AfterViewInit{
   rate = new Rate();
   editableRate = new Rate(); 
   dataSource = new MatTableDataSource<IRate>();
-  displayedColumns = ['name', 'norm', 'rate', 'operations'];  
+  displayedColumns = ['name', 'norm', 'value', 'fuelConsumption', 'operations'];  
   @ViewChild(MatSort) sort = new MatSort();
 
   constructor(private dialog: MatDialog, private titleService: Title, private dataService: DataService){ }
@@ -47,7 +47,7 @@ export class RatesComponent implements OnInit, AfterViewInit{
   }
  
   openDialog(){
-    let dialogRef = this.dialog.open(RatesDialogComponent, { autoFocus: 'dialog', width: '368px' });
+    let dialogRef = this.dialog.open(RatesDialogComponent, { autoFocus: 'dialog', width: '428px' });
     dialogRef.afterClosed().subscribe((dialogResult: Rate) => {
       if(dialogResult.id === 0){
         this.dataService.createRate(dialogResult).subscribe((createdRate: IRate) => 
