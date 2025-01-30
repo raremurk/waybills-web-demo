@@ -19,7 +19,7 @@ import { Transport } from "../Models/transport";
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
-	url = 'https://localhost:7150/api';
+	url = 'https://waybills-demo.somee.com/api';
 
 	waybillsRoute = `${this.url}/waybills`;	
 	reportsRoute = `${this.url}/reports`;

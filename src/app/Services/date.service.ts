@@ -17,8 +17,8 @@ export class DateService{
     {
       date.setDate(0);
     }
-    this._year = date.getFullYear();
-    this._month = date.getMonth() + 1;
+    this._year = 2024;
+    this._month = 4;
   }
 
   public get year(){
